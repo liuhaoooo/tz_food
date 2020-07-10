@@ -5,5 +5,5 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.post('/api/getopenid', controller.user.getopenid);//获取openid
+  router.post('/api/getopenid', controller.user.getopenid);//??openid
 };

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "uni-popup": "/node-modules/_@dcloudio_uni-ui@1.2.3@@dcloudio/uni-ui/lib/uni-popup/uni-popup"
+  }
+}

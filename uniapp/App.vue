@@ -1,19 +1,20 @@
 <script>
+	import {
+		mapActions
+	} from 'vuex';
 	export default {
-		onLaunch: function() {
-			uni.authorize({
-			    scope: 'scope.userLocation',
-			    success() {
-			        uni.getLocation()
-			    }
-			})
-			console.log('App Launch')
+		methods: {
+			...mapActions(['get_openid']),
 		},
-		onShow: function() {
-			console.log('App Show')
+		onLaunch() {
+			console.log('Launch')
 		},
-		onHide: function() {
-			console.log('App Hide')
+		onShow() {
+			this.get_openid()
+			console.log('Show')
+		},
+		onHide() {
+			console.log('Hide')
 		}
 	}
 </script>

@@ -13,6 +13,7 @@ class UserController extends Controller {
         }
         let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
         let result = await this.service.user.getopenid(url)
+        let hasUser = await this.service.user.hasUser(result.openid)
         ctx.status = 200;
         ctx.body = result
     }

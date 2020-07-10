@@ -14,6 +14,11 @@ class UserService extends Service {
             return
         }
     }
+    async hasUser(openid){
+        const { ctx } = this;
+        console.log(openid)
+        // let user = await app.mysql.get('user', { openid })
+    }
     async setUser() {
 
     }
