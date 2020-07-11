@@ -8731,11 +8731,15 @@ _vue.default.use(_vuex.default);
 
 var store = new _vuex.default.Store({
   state: {
-    openid: "" },
+    openid: "",
+    hasUser: false },
 
   getters: {
     openid: function openid(state) {
       return state.openid;
+    },
+    hasUser: function hasUser(state) {
+      return state.hasUser;
     } },
 
   mutations: {
@@ -8744,6 +8748,9 @@ var store = new _vuex.default.Store({
       try {
         uni.setStorageSync('openid', data);
       } catch (e) {}
+    },
+    HAS_USER: function HAS_USER(state, data) {
+      state.hasUser = data;
     } },
 
   actions: {
@@ -8762,7 +8769,9 @@ var store = new _vuex.default.Store({
               data: _data,
               method: 'post' }).
             then(function (data) {
+              console.log(data);
               state.commit('SET_OPENID', data.openid);
+              state.commit('HAS_USER', data.hasUser);
             });
           }
         },
@@ -9239,7 +9248,8 @@ defaults;exports.default = _default;
 var appid = "wx555f1a207ea3e072";
 var secret = "97a6c883303a59ffb45b8f28da571409";
 var interfaces = {
-  GET_OPENID: 'getopenid' //获取用户openid
+  GET_OPENID: 'getopenid', //获取用户openid
+  SET_USER: 'setUser' //设置用户
 };
 module.exports = {
   interfaces: interfaces,

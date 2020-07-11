@@ -6,4 +6,5 @@
 module.exports = app => {
   const { router, controller } = app;
   router.post('/api/getopenid', controller.user.getopenid);//??openid
+  router.post('/api/setUser', controller.user.setUser);//????
 };

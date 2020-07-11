@@ -10,11 +10,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		openid: ""
+		openid: "",
+		hasUser:false
 	},
 	getters: {
 		openid(state) {
 			return state.openid
+		},
+		hasUser(state) {
+			return state.hasUser
 		}
 	},
 	mutations: {
@@ -24,6 +28,9 @@ const store = new Vuex.Store({
 				uni.setStorageSync('openid', data);
 			} catch (e) {}
 		},
+		HAS_USER(state,data){
+			state.hasUser = data
+		}
 	},
 	actions: {
 		//获取用户openid
@@ -41,7 +48,9 @@ const store = new Vuex.Store({
 							data,
 							method: 'post',
 						}).then(data => {
+							console.log(data)
 							state.commit('SET_OPENID', data.openid)
+							state.commit('HAS_USER', data.hasUser)
 						})
 					}
 				},

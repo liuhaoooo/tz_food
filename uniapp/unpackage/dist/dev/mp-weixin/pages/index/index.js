@@ -128,7 +128,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -146,22 +146,40 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
 
 
 
+
 {
   components: {
-    uniPopup: _uniPopup },
-
+    uniPopup: _uniPopup
+    // uniPopupDialog
+  },
   data: function data() {
-    return {};
-
+    return {
+      input: "" };
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['openid'])),
+  (0, _vuex.mapGetters)(['openid', 'hasUser'])),
 
   methods: {
-    open: function open() {
-      this.$refs.popup.open();
+    change: function change(e) {
+      console.log('popup ' + e.type + ' 状态', e.show);
+    },
+    dialogInputConfirm: function dialogInputConfirm(done, val) {
+      uni.showLoading({
+        title: '3秒后会关闭' });
+
+      console.log(val);
+      this.value = val;
+      setTimeout(function () {
+        uni.hideLoading();
+        // 关闭窗口后，恢复默认内容
+        done();
+      }, 3000);
+    },
+    confirmDialog: function confirmDialog() {
+      this.$refs.dialogInput.open();
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 
