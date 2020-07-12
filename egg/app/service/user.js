@@ -24,7 +24,11 @@ class UserService extends Service {
     //设置用户
     async setUser(json) {
         const { app } = this;
-        const result = await app.mysql.insert('user', json);
+        let data = {
+            openid:json.openid,
+            user_name:json.userName
+        }
+        const result = await app.mysql.insert('user', data);
         return result.affectedRows === 1
     }
 }

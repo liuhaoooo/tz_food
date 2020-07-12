@@ -346,9 +346,9 @@ function upx2px(number, newDeviceWidth) {
   result = Math.floor(result + EPS);
   if (result === 0) {
     if (deviceDPR === 1 || !isIOS) {
-      return 1;
+      result = 1;
     } else {
-      return 0.5;
+      result = 0.5;
     }
   }
   return number < 0 ? -result : result;
@@ -421,7 +421,10 @@ var protocols = {
 
 
 var todos = [
-'vibrate'];
+'vibrate',
+'preloadPage',
+'unPreloadPage',
+'loadSubPackage'];
 
 var canIUses = [];
 
@@ -720,10 +723,10 @@ function initVueComponent(Vue, vueOptions) {
   var VueComponent;
   if (isFn(vueOptions)) {
     VueComponent = vueOptions;
-    vueOptions = VueComponent.extendOptions;
   } else {
     VueComponent = Vue.extend(vueOptions);
   }
+  vueOptions = VueComponent.options;
   return [VueComponent, vueOptions];
 }
 
@@ -757,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1409,6 +1412,10 @@ function parseBaseComponent(vueComponentOptions)
       __e: handleEvent } };
 
 
+  // externalClasses
+  if (vueOptions.externalClasses) {
+    componentOptions.externalClasses = vueOptions.externalClasses;
+  }
 
   if (Array.isArray(vueOptions.wxsCallMethods)) {
     vueOptions.wxsCallMethods.forEach(function (callMethod) {
@@ -2193,12 +2200,10 @@ if (true) {
   };
 
   formatComponentName = function (vm, includeFile) {
-    {
-      if(vm.$scope && vm.$scope.is){
-        return vm.$scope.is
-      }
-    }
     if (vm.$root === vm) {
+      if (vm.$options && vm.$options.__file) { // fixed by xxxxxx
+        return ('') + vm.$options.__file
+      }
       return '<Root>'
     }
     var options = typeof vm === 'function' && vm.cid != null
@@ -2233,7 +2238,7 @@ if (true) {
     if (vm._isVue && vm.$parent) {
       var tree = [];
       var currentRecursiveSequence = 0;
-      while (vm) {
+      while (vm && vm.$options.name !== 'PageBody') {
         if (tree.length > 0) {
           var last = tree[tree.length - 1];
           if (last.constructor === vm.constructor) {
@@ -2245,7 +2250,7 @@ if (true) {
             currentRecursiveSequence = 0;
           }
         }
-        tree.push(vm);
+        !vm.$options.isReserved && tree.push(vm);
         vm = vm.$parent;
       }
       return '\n\nfound in\n\n' + tree
@@ -7091,7 +7096,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7112,14 +7117,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7195,7 +7200,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7365,9 +7370,10 @@ function getTarget(obj, path) {
   return getTarget(obj[key], parts.slice(1).join('.'))
 }
 
-function internalMixin(Vue) {
+function internalMixin(Vue ) {
 
-  Vue.config.errorHandler = function(err) {
+  Vue.config.errorHandler = function(err, vm, info) {
+    Vue.util.warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
     console.error(err);
     /* eslint-disable no-undef */
     var app = getApp();
@@ -7631,7 +7637,235 @@ module.exports = g;
 /* 5 */,
 /* 6 */,
 /* 7 */,
-/* 8 */
+/* 8 */,
+/* 9 */,
+/* 10 */
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 11 */
+/*!********************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/store/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _request = _interopRequireDefault(__webpack_require__(/*! ../request/request.js */ 13));
+var _config = __webpack_require__(/*! ../config/config.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+    openid: "",
+    hasUser: false },
+
+  getters: {
+    openid: function openid(state) {
+      return state.openid;
+    },
+    hasUser: function hasUser(state) {
+      return state.hasUser;
+    } },
+
+  mutations: {
+    SET_OPENID: function SET_OPENID(state, data) {
+      state.openid = data;
+      try {
+        uni.setStorageSync('openid', data);
+      } catch (e) {}
+    },
+    HAS_USER: function HAS_USER(state, data) {
+      state.hasUser = data;
+    } },
+
+  actions: {
+    //获取用户openid
+    get_openid: function get_openid(state, data) {
+      return new Promise(function (resolve, reject) {
+        wx.login({
+          success: function success(res) {
+            if (res.code) {
+              var _data = {
+                appid: _config.appid,
+                secret: _config.secret,
+                code: res.code };
+
+              (0, _request.default)({
+                url: _config.interfaces.GET_OPENID,
+                data: _data,
+                method: 'post' }).
+              then(function (data) {
+                state.commit('SET_OPENID', data.openid);
+                state.commit('HAS_USER', data.hasUser);
+                data.success ? resolve(data) : reject();
+              }).catch(function (err) {return reject(err);});
+            }
+          },
+          fail: function fail(err) {return reject(err);} });
+
+      });
+    },
+    set_user: function set_user(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.SET_USER,
+          data: data,
+          method: 'post' }).
+        then(function (res) {
+          res.success ? resolve(res) : reject();
+        }).catch(function (err) {return reject(err);});
+      });
+    },
+    get_foodlist: function get_foodlist(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.GET_FOODLIST,
+          data: data,
+          method: 'post' }).
+        then(function (res) {
+          res.success ? resolve(res.data) : reject();
+        }).catch(function (err) {return reject(err);});
+      });
+    } } });var _default =
+
+
+
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+/* 12 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -8581,212 +8815,6 @@ var index_esm = {
 
 
 /***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 12 */
-/*!********************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/store/index.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 8));
-var _request = _interopRequireDefault(__webpack_require__(/*! ../request/request.js */ 13));
-var _config = __webpack_require__(/*! ../config/config.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-
-
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-    openid: "",
-    hasUser: false },
-
-  getters: {
-    openid: function openid(state) {
-      return state.openid;
-    },
-    hasUser: function hasUser(state) {
-      return state.hasUser;
-    } },
-
-  mutations: {
-    SET_OPENID: function SET_OPENID(state, data) {
-      state.openid = data;
-      try {
-        uni.setStorageSync('openid', data);
-      } catch (e) {}
-    },
-    HAS_USER: function HAS_USER(state, data) {
-      state.hasUser = data;
-    } },
-
-  actions: {
-    //获取用户openid
-    get_openid: function get_openid(state, data) {
-      wx.login({
-        success: function success(res) {
-          if (res.code) {
-            var _data = {
-              appid: _config.appid,
-              secret: _config.secret,
-              code: res.code };
-
-            (0, _request.default)({
-              url: _config.interfaces.GET_OPENID,
-              data: _data,
-              method: 'post' }).
-            then(function (data) {
-              console.log(data);
-              state.commit('SET_OPENID', data.openid);
-              state.commit('HAS_USER', data.hasUser);
-            });
-          }
-        },
-        fail: function fail(err) {
-          throw err;
-        } });
-
-    } } });var _default =
-
-
-
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
 /* 13 */
 /*!************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/request/request.js ***!
@@ -8799,7 +8827,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 _uniRequest.default.defaults.baseURL = 'http://127.0.0.1:8848/api/'; // api的base_url
 _uniRequest.default.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
 // 请求拦截
 _uniRequest.default.interceptors.request.use(
 function (request) {
@@ -9249,7 +9276,8 @@ var appid = "wx555f1a207ea3e072";
 var secret = "97a6c883303a59ffb45b8f28da571409";
 var interfaces = {
   GET_OPENID: 'getopenid', //获取用户openid
-  SET_USER: 'setUser' //设置用户
+  SET_USER: 'setUser', //设置用户
+  GET_FOODLIST: 'getFoodList' //获取菜单
 };
 module.exports = {
   interfaces: interfaces,
@@ -9263,20 +9291,32 @@ module.exports = {
 /* 25 */,
 /* 26 */,
 /* 27 */,
-/* 28 */,
+/* 28 */
+/*!************************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/static/images/default_food.png ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,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"
+
+/***/ }),
 /* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */
-/*!**********************************************************************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_@dcloudio_uni-ui@1.2.3@@dcloudio/uni-ui/lib/uni-popup/popup.js ***!
-  \**********************************************************************************************************************/
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */
+/*!***********************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 34));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -9302,10 +9342,10 @@ var config = {
   mixins: [_message.default] };exports.default = _default;
 
 /***/ }),
-/* 34 */
-/*!************************************************************************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_@dcloudio_uni-ui@1.2.3@@dcloudio/uni-ui/lib/uni-popup/message.js ***!
-  \************************************************************************************************************************/
+/* 37 */
+/*!*************************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
