@@ -1,28 +1,33 @@
 <template>
-	<view>
+	<view class="foodList-content">
 		<uni-popup ref="dialogInput" type="dialog" maskClick="false">
-			<uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="submit">
+			<uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser">
 			</uni-popup-dialog>
 		</uni-popup>
-		<h2>主菜</h2>
-		<uni-grid column="2" :show-border="false">
-			<uni-grid-item v-for="(item,index) in foodList" :key="item.food_id">
-				<view class="foodList-content">
-					<text class="text">{{item.food_name}}</text>
-					<!-- <image 
-					style="width: 100%; height: 100%;" 
-					mode="center"
-					:src="item.food_image!=null?item.food_image:default_img">
-					</image> -->
-					<dh-image 
-						mode="center"
-						:src="item.food_image!=null?item.food_image:default_img"
-						:errorSrc="default_img">
-					</dh-image>
-				</view>
-			</uni-grid-item>
-		</uni-grid>
+		<h2>主菜（{{foodList[0].bus_name}})</h2>
+		<view class="uni-list">
+			<radio-group @change="radioChange">
+				<label class="uni-list-cell uni-list-cell-pd" v-for="(item, index) in foodList" :key="item.food_id">
+					<view style="display: flex;margin-bottom: 1rem;margin-top: 1em;">
+						<radio :value="item.food_id" :checked="index === current" />
+						<view style="margin-left: 2em;">{{item.food_name}}</view>
+					</view>
+				</label>
+			</radio-group>
+		</view>
 		<h2>副菜</h2>
+		<h2>备注</h2>
+		<template>
+			<view class="container">
+				<editor
+				 @input="editor_input"
+				class="ql-container" 
+				placeholder="添加备注..."
+				v-model="text"
+				></editor>
+			</view>
+		</template>
+		<button type="primary" @tap="submit">提交</button>
 	</view>
 </template>
 
@@ -49,9 +54,11 @@
 		},
 		data() {
 			return {
-				userName: "",
+				userName: '',
 				foodList: [],
-				default_img: require('@/static/images/default_food.png')
+				current: 0,
+				food_id: '1',
+				text:''
 			}
 		},
 		computed: {
@@ -76,7 +83,16 @@
 					uni.hideLoading()
 				})
 			},
-			submit(done, val) {
+			radioChange(evt) {
+				this.food_id = evt.target.value
+				for (let i in this.foodList) {
+					if (this.foodList[i].value === evt.target.value) {
+						this.current = i;
+						break;
+					}
+				}
+			},
+			setUser(done, val) {
 				uni.showLoading({
 					title: '设置中'
 				})
@@ -102,6 +118,12 @@
 					done()
 				})
 			},
+			editor_input(e){
+				this.text = e.target.text
+			},
+			submit() {
+				console.log(this.text,this.food_id,this.openid)
+			},
 		}
 	}
 </script>
@@ -109,13 +131,10 @@
 <style>
 	.foodList-content {
 		width: 90%;
-		height: 90%;
 		margin: auto;
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: 0;
-		bottom: 0;
 		overflow: hidden;
 	}
 </style>
