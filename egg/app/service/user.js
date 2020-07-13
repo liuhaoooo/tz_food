@@ -16,19 +16,31 @@ class UserService extends Service {
         }
     }
     //判断是否已存在
-    async hasUser(openid){
+    async hasUser(openid) {
         const { app } = this;
         let user = await app.mysql.get('user', { openid })
-        return user != null
+        return user != null ? user : false
     }
     //设置用户
     async setUser(json) {
         const { app } = this;
         let data = {
-            openid:json.openid,
-            user_name:json.userName
+            openid: json.openid,
+            user_name: json.userName
         }
         const result = await app.mysql.insert('user', data);
+        return result.affectedRows === 1
+    }
+    //设置用户状态
+    async setUser_select(openid, key) {
+        const { app } = this;
+        const row = {
+            is_select: key
+        };
+        const options = {
+            where: { openid }
+        };
+        const result = await app.mysql.update('user', row, options);
         return result.affectedRows === 1
     }
 }

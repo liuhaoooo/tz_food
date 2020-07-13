@@ -1,1 +1,0 @@
-<image src="{{imageSrc}}" mode="{{mode}}" data-event-opts="{{[['error',[['error',['$event']]]],['load',[['load',['$event']]]]]}}" binderror="__e" bindload="__e"></image>

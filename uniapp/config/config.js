@@ -4,6 +4,8 @@ const interfaces = {
     GET_OPENID:'getopenid',//获取用户openid
 	SET_USER:'setUser',//设置用户
 	GET_FOODLIST:'getFoodList',//获取菜单
+	SELECT_FOOD:'selectFood',
+	GET_SELECT_FOOD:'getSelectFood',
 }
 module.exports = {
 	interfaces,

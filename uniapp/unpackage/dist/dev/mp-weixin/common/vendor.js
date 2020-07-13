@@ -346,9 +346,9 @@ function upx2px(number, newDeviceWidth) {
   result = Math.floor(result + EPS);
   if (result === 0) {
     if (deviceDPR === 1 || !isIOS) {
-      result = 1;
+      return 1;
     } else {
-      result = 0.5;
+      return 0.5;
     }
   }
   return number < 0 ? -result : result;
@@ -421,10 +421,7 @@ var protocols = {
 
 
 var todos = [
-'vibrate',
-'preloadPage',
-'unPreloadPage',
-'loadSubPackage'];
+'vibrate'];
 
 var canIUses = [];
 
@@ -723,10 +720,10 @@ function initVueComponent(Vue, vueOptions) {
   var VueComponent;
   if (isFn(vueOptions)) {
     VueComponent = vueOptions;
+    vueOptions = VueComponent.extendOptions;
   } else {
     VueComponent = Vue.extend(vueOptions);
   }
-  vueOptions = VueComponent.options;
   return [VueComponent, vueOptions];
 }
 
@@ -1412,10 +1409,6 @@ function parseBaseComponent(vueComponentOptions)
       __e: handleEvent } };
 
 
-  // externalClasses
-  if (vueOptions.externalClasses) {
-    componentOptions.externalClasses = vueOptions.externalClasses;
-  }
 
   if (Array.isArray(vueOptions.wxsCallMethods)) {
     vueOptions.wxsCallMethods.forEach(function (callMethod) {
@@ -2200,10 +2193,12 @@ if (true) {
   };
 
   formatComponentName = function (vm, includeFile) {
-    if (vm.$root === vm) {
-      if (vm.$options && vm.$options.__file) { // fixed by xxxxxx
-        return ('') + vm.$options.__file
+    {
+      if(vm.$scope && vm.$scope.is){
+        return vm.$scope.is
       }
+    }
+    if (vm.$root === vm) {
       return '<Root>'
     }
     var options = typeof vm === 'function' && vm.cid != null
@@ -2238,7 +2233,7 @@ if (true) {
     if (vm._isVue && vm.$parent) {
       var tree = [];
       var currentRecursiveSequence = 0;
-      while (vm && vm.$options.name !== 'PageBody') {
+      while (vm) {
         if (tree.length > 0) {
           var last = tree[tree.length - 1];
           if (last.constructor === vm.constructor) {
@@ -2250,7 +2245,7 @@ if (true) {
             currentRecursiveSequence = 0;
           }
         }
-        !vm.$options.isReserved && tree.push(vm);
+        tree.push(vm);
         vm = vm.$parent;
       }
       return '\n\nfound in\n\n' + tree
@@ -7370,10 +7365,9 @@ function getTarget(obj, path) {
   return getTarget(obj[key], parts.slice(1).join('.'))
 }
 
-function internalMixin(Vue ) {
+function internalMixin(Vue) {
 
-  Vue.config.errorHandler = function(err, vm, info) {
-    Vue.util.warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
+  Vue.config.errorHandler = function(err) {
     console.error(err);
     /* eslint-disable no-undef */
     var app = getApp();
@@ -7788,7 +7782,7 @@ _vue.default.use(_vuex.default);
 var store = new _vuex.default.Store({
   state: {
     openid: "",
-    hasUser: false },
+    hasUser: null },
 
   getters: {
     openid: function openid(state) {
@@ -7854,6 +7848,30 @@ var store = new _vuex.default.Store({
           data: data,
           method: 'post' }).
         then(function (res) {
+          res.success ? resolve(res.data) : reject();
+        }).catch(function (err) {return reject(err);});
+      });
+    },
+    get_select_food: function get_select_food(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.GET_SELECT_FOOD,
+          data: data,
+          method: 'post' }).
+        then(function (res) {
+          console.log(res);
+          res.success ? resolve(res.data) : reject();
+        }).catch(function (err) {return reject(err);});
+      });
+    },
+    select_food: function select_food(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.SELECT_FOOD,
+          data: data,
+          method: 'post' }).
+        then(function (res) {
+          console.log(res);
           res.success ? resolve(res.data) : reject();
         }).catch(function (err) {return reject(err);});
       });
@@ -9277,8 +9295,10 @@ var secret = "97a6c883303a59ffb45b8f28da571409";
 var interfaces = {
   GET_OPENID: 'getopenid', //获取用户openid
   SET_USER: 'setUser', //设置用户
-  GET_FOODLIST: 'getFoodList' //获取菜单
-};
+  GET_FOODLIST: 'getFoodList', //获取菜单
+  SELECT_FOOD: 'selectFood',
+  GET_SELECT_FOOD: 'getSelectFood' };
+
 module.exports = {
   interfaces: interfaces,
   appid: appid,
@@ -9299,7 +9319,10 @@ module.exports = {
 /* 33 */,
 /* 34 */,
 /* 35 */,
-/* 36 */
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /*!***********************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
   \***********************************************************************/
@@ -9307,7 +9330,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 37));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 40));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -9333,7 +9356,7 @@ var config = {
   mixins: [_message.default] };exports.default = _default;
 
 /***/ }),
-/* 37 */
+/* 40 */
 /*!*************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
   \*************************************************************************/

@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///C:/Users/1/Desktop/tz_food/uniapp/main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;AACA;AACA,uN;AACAA,UAAU,CAACC,cAAD,CAAV,C","file":"pages/selectList/index/index.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/selectList/index/index.vue'\ncreatePage(Page)"],"sourceRoot":""}

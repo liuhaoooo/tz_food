@@ -11,7 +11,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		openid: "",
-		hasUser: false
+		hasUser: null
 	},
 	getters: {
 		openid(state) {
@@ -77,6 +77,30 @@ const store = new Vuex.Store({
 					data,
 					method: 'post',
 				}).then(res => {
+					res.success ? resolve(res.data) : reject()
+				}).catch(err => reject(err))
+			})
+		},
+		get_select_food(state, data){
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.GET_SELECT_FOOD,
+					data,
+					method: 'post',
+				}).then(res => {
+					console.log(res)
+					res.success ? resolve(res.data) : reject()
+				}).catch(err => reject(err))
+			})
+		},
+		select_food(state, data){
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.SELECT_FOOD,
+					data,
+					method: 'post',
+				}).then(res => {
+					console.log(res)
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
 			})

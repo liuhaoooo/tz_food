@@ -7,7 +7,7 @@
     "urlCheck": false
   },
   "compileType": "miniprogram",
-  "libVersion": "",
+  "libVersion": "2.9.2",
   "appid": "wx555f1a207ea3e072",
   "projectname": "uniapp",
   "condition": {

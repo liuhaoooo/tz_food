@@ -19,12 +19,7 @@
 		<h2>备注</h2>
 		<template>
 			<view class="container">
-				<editor
-				 @input="editor_input"
-				class="ql-container" 
-				placeholder="添加备注..."
-				v-model="text"
-				></editor>
+				<editor @input="editor_input" class="ql-container" placeholder="添加备注..." v-model="text"></editor>
 			</view>
 		</template>
 		<button type="primary" @tap="submit">提交</button>
@@ -35,9 +30,6 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
 	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
-	import uniGrid from "@/components/uni-grid/uni-grid.vue"
-	import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue"
-	import dhImage from '@/components/dh-image/dh-image'
 	import {
 		mapActions,
 		mapState,
@@ -48,9 +40,6 @@
 			uniPopup,
 			uniPopupMessage,
 			uniPopupDialog,
-			uniGrid,
-			uniGridItem,
-			dhImage
 		},
 		data() {
 			return {
@@ -58,7 +47,7 @@
 				foodList: [],
 				current: 0,
 				food_id: '1',
-				text:''
+				text: ''
 			}
 		},
 		computed: {
@@ -66,10 +55,20 @@
 		},
 		onLoad() {
 			this.getFoodlist()
-			this.get_openid().then(() => !this.hasUser && this.$refs.dialogInput.open())
+			this.get_openid().then(() => {
+				if (!this.hasUser) {
+					this.$refs.dialogInput.open()
+					return
+				}
+				//判断用户是否已选菜
+				if (this.hasUser.is_select == 1) {
+					
+				}
+				this.get_select_food({openid:this.openid})
+			})
 		},
 		methods: {
-			...mapActions(['set_user', 'get_openid', 'get_foodlist']),
+			...mapActions(['set_user', 'get_openid', 'get_foodlist','get_select_food','select_food']),
 			getFoodlist() {
 				uni.showLoading({
 					title: ''
@@ -118,11 +117,16 @@
 					done()
 				})
 			},
-			editor_input(e){
+			editor_input(e) {
 				this.text = e.target.text
 			},
 			submit() {
-				console.log(this.text,this.food_id,this.openid)
+				let data = {
+					text:this.text,
+					food_id:this.food_id,
+					openid:this.openid
+				}
+				this.select_food(data)
 			},
 		}
 	}
