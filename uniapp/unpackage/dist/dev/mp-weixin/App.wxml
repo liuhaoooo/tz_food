@@ -1,1 +1,1 @@
-<view><button data-event-opts="{{[['tap',[['open',['$event']]]]]}}" bindtap="__e">打开弹窗</button><uni-popup class="vue-ref" vue-id="c31923fa-1" type="dialog" mode="input" title="请输入姓名" data-ref="popup" bind:__l="__l" vue-slots="{{['default']}}">{{''+openid+''}}</uni-popup></view>
+<view><button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button></view>

@@ -7631,9 +7631,7 @@ module.exports = g;
 /* 5 */,
 /* 6 */,
 /* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
+/* 8 */
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
   \**********************************************************************************************************/
@@ -7761,7 +7759,7 @@ function normalizeComponent (
 
 
 /***/ }),
-/* 11 */
+/* 9 */
 /*!********************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/store/index.js ***!
   \********************************************************/
@@ -7770,9 +7768,9 @@ function normalizeComponent (
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
-var _request = _interopRequireDefault(__webpack_require__(/*! ../request/request.js */ 13));
-var _config = __webpack_require__(/*! ../config/config.js */ 21);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 10));
+var _request = _interopRequireDefault(__webpack_require__(/*! ../request/request.js */ 11));
+var _config = __webpack_require__(/*! ../config/config.js */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 
 
@@ -7807,7 +7805,7 @@ var store = new _vuex.default.Store({
     //获取用户openid
     get_openid: function get_openid(state, data) {
       return new Promise(function (resolve, reject) {
-        wx.login({
+        uni.login({
           success: function success(res) {
             if (res.code) {
               var _data = {
@@ -7830,6 +7828,7 @@ var store = new _vuex.default.Store({
 
       });
     },
+    //设置用户
     set_user: function set_user(state, data) {
       return new Promise(function (resolve, reject) {
         (0, _request.default)({
@@ -7841,6 +7840,7 @@ var store = new _vuex.default.Store({
         }).catch(function (err) {return reject(err);});
       });
     },
+    //获取菜单列表
     get_foodlist: function get_foodlist(state, data) {
       return new Promise(function (resolve, reject) {
         (0, _request.default)({
@@ -7852,6 +7852,7 @@ var store = new _vuex.default.Store({
         }).catch(function (err) {return reject(err);});
       });
     },
+    //获取已选择菜单列表
     get_select_food: function get_select_food(state, data) {
       return new Promise(function (resolve, reject) {
         (0, _request.default)({
@@ -7864,6 +7865,7 @@ var store = new _vuex.default.Store({
         }).catch(function (err) {return reject(err);});
       });
     },
+    //选择食物
     select_food: function select_food(state, data) {
       return new Promise(function (resolve, reject) {
         (0, _request.default)({
@@ -7883,7 +7885,7 @@ store;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 12 */
+/* 10 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -8833,7 +8835,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 13 */
+/* 11 */
 /*!************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/request/request.js ***!
   \************************************************************/
@@ -8841,7 +8843,7 @@ var index_esm = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniRequest = _interopRequireDefault(__webpack_require__(/*! uni-request */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniRequest = _interopRequireDefault(__webpack_require__(/*! uni-request */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 _uniRequest.default.defaults.baseURL = 'http://127.0.0.1:8848/api/'; // api的base_url
 _uniRequest.default.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -8866,7 +8868,7 @@ _uniRequest.default.interceptors.response.use(function (response) {
 _uniRequest.default;exports.default = _default;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /*!**********************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/index.js ***!
   \**********************************************************************************************/
@@ -8876,12 +8878,12 @@ _uniRequest.default;exports.default = _default;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-var _request = _interopRequireDefault(__webpack_require__(/*! ./src/request */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+var _request = _interopRequireDefault(__webpack_require__(/*! ./src/request */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 
 _request.default;exports.default = _default;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /*!****************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/request.js ***!
   \****************************************************************************************************/
@@ -8896,9 +8898,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _class = _interopRequireDefault(__webpack_require__(/*! ./class */ 16));
-var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 17));
-var _defaults = _interopRequireDefault(__webpack_require__(/*! ./defaults */ 20));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _class = _interopRequireDefault(__webpack_require__(/*! ./class */ 14));
+var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 15));
+var _defaults = _interopRequireDefault(__webpack_require__(/*! ./defaults */ 18));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 
 function createInstance(config) {
@@ -8928,7 +8930,7 @@ request.spread = function (callback) {
 request;exports.default = _default;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /*!**************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/class.js ***!
   \**************************************************************************************************/
@@ -8936,9 +8938,9 @@ request;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 17));
-var _InterceptorManager = _interopRequireDefault(__webpack_require__(/*! ./InterceptorManager */ 18));
-var _dispatchRequest = __webpack_require__(/*! ./core/dispatchRequest */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 15));
+var _InterceptorManager = _interopRequireDefault(__webpack_require__(/*! ./InterceptorManager */ 16));
+var _dispatchRequest = __webpack_require__(/*! ./core/dispatchRequest */ 17);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
 
 
 Request = /*#__PURE__*/function () {
@@ -9008,7 +9010,7 @@ Request = /*#__PURE__*/function () {
 Request;exports.default = _default;
 
 /***/ }),
-/* 17 */
+/* 15 */
 /*!*********************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/helpers/util.js ***!
   \*********************************************************************************************************/
@@ -9119,7 +9121,7 @@ var isAbsoluteURL = function isAbsoluteURL(url) {
 };exports.isAbsoluteURL = isAbsoluteURL;
 
 /***/ }),
-/* 18 */
+/* 16 */
 /*!***************************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/InterceptorManager.js ***!
   \***************************************************************************************************************/
@@ -9155,7 +9157,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } }]);return InterceptorManager;}();exports.default = InterceptorManager;
 
 /***/ }),
-/* 19 */
+/* 17 */
 /*!*****************************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/core/dispatchRequest.js ***!
   \*****************************************************************************************************************/
@@ -9163,7 +9165,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.dispatchRequest = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ../helpers/util */ 17));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.dispatchRequest = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ../helpers/util */ 15));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}
 
 
 var dispatchRequest = function dispatchRequest(config) {
@@ -9231,7 +9233,7 @@ var dispatchRequest = function dispatchRequest(config) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 20 */
+/* 18 */
 /*!*****************************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/src/defaults.js ***!
   \*****************************************************************************************************/
@@ -9239,7 +9241,7 @@ var dispatchRequest = function dispatchRequest(config) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 17));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var util = _interopRequireWildcard(__webpack_require__(/*! ./helpers/util */ 15));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded' };
@@ -9283,7 +9285,7 @@ defaults.headers = {
 defaults;exports.default = _default;
 
 /***/ }),
-/* 21 */
+/* 19 */
 /*!**********************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/config/config.js ***!
   \**********************************************************/
@@ -9305,6 +9307,8 @@ module.exports = {
   secret: secret };
 
 /***/ }),
+/* 20 */,
+/* 21 */,
 /* 22 */,
 /* 23 */,
 /* 24 */,
@@ -9322,7 +9326,9 @@ module.exports = {
 /* 36 */,
 /* 37 */,
 /* 38 */,
-/* 39 */
+/* 39 */,
+/* 40 */,
+/* 41 */
 /*!***********************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
   \***********************************************************************/
@@ -9330,7 +9336,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 40));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 42));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -9356,7 +9362,7 @@ var config = {
   mixins: [_message.default] };exports.default = _default;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /*!*************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
   \*************************************************************************/

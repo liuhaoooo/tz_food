@@ -1,5 +1,6 @@
 <template>
 	<view class="foodList-content">
+		<button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
 		<uni-popup ref="dialogInput" type="dialog" maskClick="false">
 			<uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser">
 			</uni-popup-dialog>
@@ -54,21 +55,29 @@
 			...mapGetters(['openid', 'hasUser'])
 		},
 		onLoad() {
+			uni.getUserInfo({
+				provider: 'weixin',
+				success: function(res) {
+					console.log(res.userInfo.avatarUrl);
+				}
+			});
+			uni.getSetting({
+			   success(res) {
+			      console.log(res.authSetting)
+			   }
+			})
 			this.getFoodlist()
 			this.get_openid().then(() => {
-				if (!this.hasUser) {
-					this.$refs.dialogInput.open()
-					return
-				}
 				//判断用户是否已选菜
 				if (this.hasUser.is_select == 1) {
-					
+					uni.reLaunch({
+						url: '/pages/selectList/index'
+					});
 				}
-				this.get_select_food({openid:this.openid})
 			})
 		},
 		methods: {
-			...mapActions(['set_user', 'get_openid', 'get_foodlist','get_select_food','select_food']),
+			...mapActions(['set_user', 'get_openid', 'get_foodlist', 'select_food']),
 			getFoodlist() {
 				uni.showLoading({
 					title: ''
@@ -77,7 +86,6 @@
 					busId: '1'
 				}
 				this.get_foodlist(data).then(res => {
-					console.log(res)
 					this.foodList = res
 					uni.hideLoading()
 				})
@@ -121,12 +129,28 @@
 				this.text = e.target.text
 			},
 			submit() {
-				let data = {
-					text:this.text,
-					food_id:this.food_id,
-					openid:this.openid
+				if (!this.hasUser) {
+					this.$refs.dialogInput.open()
+					return
 				}
-				this.select_food(data)
+				uni.showLoading({
+					title: ''
+				})
+				let data = {
+					text: this.text,
+					food_id: this.food_id,
+					openid: this.openid
+				}
+				this.select_food(data).then(res => {
+					uni.hideLoading()
+					uni.showToast({
+						title: '选择成功',
+						duration: 1000
+					});
+					uni.navigateTo({
+						url: '/pages/selectList/index'
+					});
+				})
 			},
 		}
 	}

@@ -36,7 +36,7 @@ const store = new Vuex.Store({
 		//获取用户openid
 		get_openid(state, data) {
 			return new Promise((resolve, reject) => {
-				wx.login({
+				uni.login({
 					success: res => {
 						if (res.code) {
 							let data = {
@@ -59,6 +59,7 @@ const store = new Vuex.Store({
 				});
 			})
 		},
+		//设置用户
 		set_user(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
@@ -70,6 +71,7 @@ const store = new Vuex.Store({
 				}).catch(err => reject(err))
 			})
 		},
+		//获取菜单列表
 		get_foodlist(state, data){
 			return new Promise((resolve, reject) => {
 				uniRequest({
@@ -81,6 +83,7 @@ const store = new Vuex.Store({
 				}).catch(err => reject(err))
 			})
 		},
+		//获取已选择菜单列表
 		get_select_food(state, data){
 			return new Promise((resolve, reject) => {
 				uniRequest({
@@ -93,6 +96,7 @@ const store = new Vuex.Store({
 				}).catch(err => reject(err))
 			})
 		},
+		//选择食物
 		select_food(state, data){
 			return new Promise((resolve, reject) => {
 				uniRequest({

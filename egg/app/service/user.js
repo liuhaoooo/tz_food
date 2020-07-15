@@ -26,12 +26,13 @@ class UserService extends Service {
         const { app } = this;
         let data = {
             openid: json.openid,
-            user_name: json.userName
+            user_name: json.userName,
+            is_select: 0
         }
         const result = await app.mysql.insert('user', data);
         return result.affectedRows === 1
     }
-    //设置用户状态
+    //设置用户状态(废弃)
     async setUser_select(openid, key) {
         const { app } = this;
         const row = {

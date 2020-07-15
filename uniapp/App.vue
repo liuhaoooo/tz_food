@@ -1,10 +1,8 @@
+
 <script>
 	export default {
-		onLaunch() {
-			console.log('Launch')
-		},
-		onShow() {
-			console.log('Show')
+		onLoad() {
+			
 		},
 		onHide() {
 			console.log('Hide')
@@ -13,5 +11,4 @@
 </script>
 
 <style>
-	/*每个页面公共css */
 </style>
