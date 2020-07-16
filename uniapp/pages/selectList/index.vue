@@ -1,6 +1,12 @@
 <template>
 	<view>
-		123
+		<view class="select-foodlist">
+			<!-- <list ref="list">
+				<cell v-for="num in lists" :key="item.id">
+					<text>{{num}}</text>
+				</cell>
+			</list> -->
+		</view>
 	</view>
 </template>
 <script>
@@ -10,12 +16,22 @@
 		mapGetters
 	} from 'vuex';
 	export default {
+		data() {
+			return {
+				select_foodlist: []
+			}
+		},
 		onLoad() {
-			this.get_select_food().then(res=>{
+			uni.showLoading({
+				title: ''
+			})
+			this.get_select_food().then(res => {
+				this.select_foodlist = res
+				uni.hideLoading()
 				console.log(res)
 			})
 		},
-		methods:{
+		methods: {
 			...mapActions(['get_select_food']),
 		}
 	}

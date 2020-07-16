@@ -130,7 +130,13 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
 
 
 
@@ -142,13 +148,24 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
 
 
 {
-  onLoad: function onLoad() {
+  data: function data() {
+    return {
+      select_foodlist: [] };
+
+  },
+  onLoad: function onLoad() {var _this = this;
+    uni.showLoading({
+      title: '' });
+
     this.get_select_food().then(function (res) {
+      _this.select_foodlist = res;
+      uni.hideLoading();
       console.log(res);
     });
   },
   methods: _objectSpread({},
   (0, _vuex.mapActions)(['get_select_food'])) };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

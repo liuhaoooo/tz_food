@@ -167,6 +167,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 36));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 45));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 52));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
@@ -184,28 +193,18 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
       foodList: [],
       current: 0,
       food_id: '1',
-      text: '' };
+      text: '',
+      avatarUrl: '' };
 
   },
   computed: _objectSpread({},
   (0, _vuex.mapGetters)(['openid', 'hasUser'])),
 
-  onLoad: function onLoad() {var _this = this;
-    uni.getUserInfo({
-      provider: 'weixin',
-      success: function success(res) {
-        console.log(res.userInfo.avatarUrl);
-      } });
-
-    uni.getSetting({
-      success: function success(res) {
-        console.log(res.authSetting);
-      } });
-
+  onLoad: function onLoad() {var _this2 = this;
+    this.get_auth();
     this.getFoodlist();
     this.get_openid().then(function () {
-      //判断用户是否已选菜
-      if (_this.hasUser.is_select == 1) {
+      if (_this2.hasUser.is_select == 1) {//判断用户是否已选菜
         uni.reLaunch({
           url: '/pages/selectList/index' });
 
@@ -214,7 +213,35 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
   },
   methods: _objectSpread({},
   (0, _vuex.mapActions)(['set_user', 'get_openid', 'get_foodlist', 'select_food']), {
-    getFoodlist: function getFoodlist() {var _this2 = this;
+    //获取权限
+    get_auth: function get_auth() {
+      var _this = this;
+      uni.getUserInfo({
+        provider: 'weixin',
+        success: function success(res) {
+          _this.avatarUrl = res.userInfo.avatarUrl;
+        },
+        fail: function fail(err) {
+          _this.$refs.dialogAuth.open();
+        } });
+
+    },
+    //是否授权回调
+    bindGetUserInfo: function bindGetUserInfo(e) {
+      if (e.target.errMsg === 'getUserInfo:ok') {
+        this.get_auth();
+        this.$refs.dialogAuth.close();
+      } else {
+        uni.showToast({
+          title: '需要授权',
+          icon: 'none',
+          duration: 1000 });
+
+      }
+
+    },
+    //获取菜单
+    getFoodlist: function getFoodlist() {var _this3 = this;
       uni.showLoading({
         title: '' });
 
@@ -222,10 +249,11 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
         busId: '1' };
 
       this.get_foodlist(data).then(function (res) {
-        _this2.foodList = res;
+        _this3.foodList = res;
         uni.hideLoading();
       });
     },
+    //选择菜单触发
     radioChange: function radioChange(evt) {
       this.food_id = evt.target.value;
       for (var i in this.foodList) {
@@ -235,7 +263,8 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
         }
       }
     },
-    setUser: function setUser(done, val) {
+    //设置姓名
+    setUser: function setUser(done, val) {var _this4 = this;
       uni.showLoading({
         title: '设置中' });
 
@@ -250,25 +279,30 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
       }
       var data = {
         userName: val,
-        openid: this.openid };
+        openid: this.openid,
+        avatarUrl: this.avatarUrl };
 
       this.set_user(data).then(function (res) {
         uni.hideLoading();
-        uni.showToast({
-          title: '设置成功',
-          duration: 1000 });
-
+        _this4.submit();
         done();
       });
     },
+    //备注输入框
     editor_input: function editor_input(e) {
       this.text = e.target.text;
     },
-    submit: function submit() {
+    //点击提交按钮（做判断）
+    click_submit: function click_submit() {
       if (!this.hasUser) {
         this.$refs.dialogInput.open();
         return;
+      } else {
+        this.submit();
       }
+    },
+    //提交数据
+    submit: function submit() {
       uni.showLoading({
         title: '' });
 
@@ -283,7 +317,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
           title: '选择成功',
           duration: 1000 });
 
-        uni.navigateTo({
+        uni.reLaunch({
           url: '/pages/selectList/index' });
 
       });

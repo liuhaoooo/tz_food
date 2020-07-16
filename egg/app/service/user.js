@@ -27,6 +27,7 @@ class UserService extends Service {
         let data = {
             openid: json.openid,
             user_name: json.userName,
+            avatar_url:json.avatarUrl,
             is_select: 0
         }
         const result = await app.mysql.insert('user', data);

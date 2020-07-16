@@ -31,8 +31,8 @@ class UserController extends Controller {
      */
     async setUser() {
         const { ctx, service } = this;
-        let { userName, openid } = ctx.request.body
-        let json = { userName, openid }
+        let { userName, openid, avatarUrl } = ctx.request.body
+        let json = { userName, openid, avatarUrl }
         let isok = await service.user.setUser(json)
         if (isok) {
             ctx.status = 200;
