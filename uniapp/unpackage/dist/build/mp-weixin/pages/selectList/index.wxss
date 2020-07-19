@@ -1,0 +1,1 @@
+.cell-container{width:100%;background:#fff;height:3rem;display:-webkit-box;display:-webkit-flex;display:flex;line-height:3rem;border-bottom:#f1f1f1 solid .001rem}.cell-container text{margin-left:2rem}.cell-container image{width:2.3rem;height:2.3rem;background-color:#eee;margin:.3rem .3rem .3rem 1rem}

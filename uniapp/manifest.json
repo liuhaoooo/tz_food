@@ -1,5 +1,5 @@
 {
-    "name" : "uniapp",
+    "name" : "tz_food",
     "appid" : "__UNI__AACBA2F",
     "description" : "",
     "versionName" : "1.0.0",
@@ -59,7 +59,9 @@
     "mp-weixin" : {
         "appid" : "wx555f1a207ea3e072",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true,
+            "minified" : true
         },
         "usingComponents" : true
     },
