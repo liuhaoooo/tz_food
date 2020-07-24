@@ -44,6 +44,17 @@ class FoodController extends Controller {
     ctx.status = 200;
     ctx.body = { success: true, data }
   }
+  /**
+   * 取消选择的菜单
+   * { openid }
+   */
+  async cancelSelect() {
+    const { ctx, service } = this;
+    let { openid } = ctx.request.body
+    let data = await service.food.cancelSelect(openid)
+    ctx.status = 200;
+    ctx.body = { success: true, data }
+  }
 }
 
 module.exports = FoodController;

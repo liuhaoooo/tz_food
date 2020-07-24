@@ -30,13 +30,17 @@ class FoodService extends Service {
   async getSelectFood(openid = '') {
     const { app } = this;
     let where = openid ? `WHERE S.openid =` + app.mysql.escape(openid) : '';
-    let sql = `SELECT F.food_id,F.food_name,U.user_name,U.is_select,U.avatar_url,S.time
+    let sql = `SELECT F.food_id,F.food_name,U.user_name,U.is_select,U.avatar_url,S.time,S.id,S.openid
               FROM select_food_list AS S 
               INNER JOIN food_list AS F ON (F.food_id = S.food_id) 
               INNER JOIN user AS U 
               ON (U.openid = S.openid)`+ where;
     let result = await app.mysql.query(sql)
     return result
+  }
+  async cancelSelect(openid){
+    const {app} = this
+    
   }
 }
 

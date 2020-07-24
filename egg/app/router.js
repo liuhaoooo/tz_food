@@ -10,4 +10,5 @@ module.exports = app => {
   router.post('/api/getFoodList', controller.food.getFoodList);//获取菜单
   router.post('/api/selectFood', controller.food.selectFood);
   router.post('/api/getSelectFood', controller.food.getSelectFood);
+  router.post('/api/cancelSelect', controller.food.cancelSelect);
 };
