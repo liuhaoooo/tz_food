@@ -6,6 +6,7 @@ const interfaces = {
 	GET_FOODLIST:'getFoodList',//获取菜单
 	SELECT_FOOD:'selectFood',
 	GET_SELECT_FOOD:'getSelectFood',
+	CANCEL_SELECT:'cancelSelect'
 }
 module.exports = {
 	interfaces,

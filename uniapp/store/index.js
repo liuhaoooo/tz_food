@@ -108,6 +108,18 @@ const store = new Vuex.Store({
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
 			})
+		},
+		//取消已选择的食物
+		cancel_select(state, data){
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.CANCEL_SELECT,
+					data,
+					method: 'post',
+				}).then(res => {
+					res.success ? resolve(res.success) : reject()
+				}).catch(err => reject(err))
+			})
 		}
 	}
 })

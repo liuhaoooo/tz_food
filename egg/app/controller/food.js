@@ -51,9 +51,8 @@ class FoodController extends Controller {
   async cancelSelect() {
     const { ctx, service } = this;
     let { openid } = ctx.request.body
-    let data = await service.food.cancelSelect(openid)
-    ctx.status = 200;
-    ctx.body = { success: true, data }
+    let res = await service.food.cancelSelect(openid)
+    ctx.body = { success: res }
   }
 }
 

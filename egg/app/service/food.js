@@ -23,9 +23,6 @@ class FoodService extends Service {
       return true;
     }, ctx);
     return result
-    // let result = await app.mysql.insert('select_food_list', data)
-    // let isok = result.affectedRows === 1 && await service.user.setUser_select(json.openid, 1)
-    // return isok
   }
   async getSelectFood(openid = '') {
     const { app } = this;
@@ -39,8 +36,13 @@ class FoodService extends Service {
     return result
   }
   async cancelSelect(openid){
-    const {app} = this
-    
+    const { app, ctx } = this;
+    const result = await app.mysql.beginTransactionScope(async conn => {
+      await conn.delete('select_food_list', {openid});
+      await conn.update('user', { is_select: 0 }, { where: { openid } });
+      return true;
+    }, ctx);
+    return result
   }
 }
 

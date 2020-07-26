@@ -97,6 +97,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.select_foodlist, function(item, index) {
+    var f0 = _vm._f("get_date")(item.time)
+
+    return {
+      $orig: _vm.__get_orig(item),
+      f0: f0
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -148,7 +165,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 
 
@@ -157,13 +173,28 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
 {
   data: function data() {
     return {
-      select_foodlist: [] };
+      select_foodlist: [],
+      btn_text: "取消",
+      timer: null,
+      disable: false };
 
   },
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)(['openid', 'hasUser'])),
+
+  filters: {
+    get_date: function get_date(val) {
+      var date = new Date(val);
+      return "".concat(date.getHours(), ":").concat(date.getMinutes(), ":").concat(date.getSeconds());
+    } },
+
   onLoad: function onLoad() {var _this = this;
+    clearInterval(this.timer);
     uni.showLoading({
       title: '' });
 
+    this.disable = true;
+    this.countdown(10);
     this.get_select_food().then(function (res) {
       _this.select_foodlist = res;
       uni.hideLoading();
@@ -171,7 +202,45 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
     });
   },
   methods: _objectSpread({},
-  (0, _vuex.mapActions)(['get_select_food'])) };exports.default = _default;
+  (0, _vuex.mapActions)(['get_select_food', 'cancel_select']), {
+    cancel: function cancel() {
+      uni.showLoading({
+        title: '' });
+
+      this.cancel_select({
+        openid: this.openid }).
+      then(function (res) {
+        if (res) {
+          uni.reLaunch({
+            url: '/pages/index/index' });
+
+        } else {
+          uni.showToast({
+            title: '取消失败',
+            icon: 'none',
+            duration: 1000 });
+
+        }
+        uni.hideLoading();
+      });
+    },
+    //倒计时
+    countdown: function countdown(sec) {var _this2 = this;
+      this.timer = setInterval(function () {
+        _this2.btn_text = "(".concat(sec, ")\u79D2\u540E\u53EF\u53D6\u6D88");
+        sec--;
+        if (sec == "00") {
+          _this2.btn_text = "取消";
+          _this2.disable = false;
+          clearInterval(_this2.timer);
+          return;
+        }
+        if (sec < 10) {
+          sec = "0" + sec;
+        }
+        _this2.btn_text = "(".concat(sec, ")\u79D2\u540E\u53EF\u53D6\u6D88");
+      }, 1000);
+    } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
