@@ -35,6 +35,15 @@ class FoodService extends Service {
     let result = await app.mysql.query(sql)
     return result
   }
+  async getTotal() {
+    const { app } = this;
+    let sql = `SELECT food_list.food_name,count(select_food_list.food_id) num 
+            FROM select_food_list 
+            INNER JOIN food_list ON (select_food_list.food_id = food_list.food_id)
+            GROUP BY select_food_list.food_id;`;
+    let result = await app.mysql.query(sql)
+    return result
+  }
   async cancelSelect(openid){
     const { app, ctx } = this;
     const result = await app.mysql.beginTransactionScope(async conn => {

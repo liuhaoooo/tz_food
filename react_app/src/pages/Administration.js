@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Table } from 'antd';
-function Administration(){
+export default function Administration(){
     
     return(
         <div>
-            管理
+            Administration
         </div>
     )
 }
-export default Administration

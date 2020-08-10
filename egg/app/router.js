@@ -11,4 +11,5 @@ module.exports = app => {
   router.post('/api/selectFood', controller.food.selectFood);
   router.post('/api/getSelectFood', controller.food.getSelectFood);
   router.post('/api/cancelSelect', controller.food.cancelSelect);
+  router.post('/api/getTotal', controller.food.getTotal);//统计
 };

@@ -45,6 +45,15 @@ class FoodController extends Controller {
     ctx.body = { success: true, data }
   }
   /**
+   * 统计
+   */
+  async getTotal() {
+    const { ctx, service } = this;
+    let data = await service.food.getTotal()
+    ctx.status = 200;
+    ctx.body = { success: true, data }
+  }
+  /**
    * 取消选择的菜单
    * { openid }
    */

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd';
 const axiosRequest = axios.create({
     baseURL: '/api/',
     timeout: 1000,
@@ -7,6 +8,7 @@ const axiosRequest = axios.create({
 axiosRequest.interceptors.request.use((config) => {
     return config;
 }, (error) => {
+    message.error('请求失败，请检查网络');
     return Promise.reject(error);
 });
 
@@ -14,6 +16,7 @@ axiosRequest.interceptors.request.use((config) => {
 axiosRequest.interceptors.response.use((response) => {
     return response.data;
 }, (error) => {
+    message.error('请求失败，请检查网络');
     return Promise.reject(error);
 });
 

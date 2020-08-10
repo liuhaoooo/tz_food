@@ -1,28 +1,29 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Avatar, Table, Button } from 'antd';
-import { getFoodList } from '../common/api'
+import { Spin, Table, Button } from 'antd';
+import { getFoodList, getTotal } from '../common/api'
 
-function Foodlist() {
-    const [dataList, setDataList] = useState([])
-    useEffect(() => {
-        getFoodList().then(res => {
-            console.log(res)
-            setDataList(res.data)
-        })
-    }, [])
+export default function Foodlist() {
     return (
         <div style={{ display: 'flex' }}>
-            <Lists dataList={dataList} />
+            <Lists />
             <Total />
         </div>
     )
 }
-export default Foodlist
 
 //详情表
-function Lists({ dataList }) {
+function Lists() {
     const [filteredInfo, setFilteredInfo] = useState({})
     const [sortedInfo, setSortedInfo] = useState({})
+    const [dataList, setDataList] = useState([])
+    const [showLoading, setShowLoading] = useState(true)
+    useEffect(() => {
+        getFoodList().then(res => {
+            setDataList(res.data)
+            setShowLoading(false)
+        })
+    }, [])
+    //展示数据
     const datas = useMemo(() => {
         let data = [];
         for (let i in dataList) {
@@ -36,27 +37,33 @@ function Lists({ dataList }) {
         }
         return () => data
     }, [dataList])
+    //过滤的选项数据
     const filters = useMemo(() => {
-        let filters = [];
+        let filter = [], obj = {};
         for (let i in dataList) {
-            filters.push({
-                text: dataList[i].food_name,
-                value: dataList[i].food_name
-            })
+            if (!obj[dataList[i].food_name]) {//去重
+                filter.push({
+                    text: dataList[i].food_name,
+                    value: dataList[i].food_name
+                })
+                obj[dataList[i].food_name] = true;
+            }
         }
-        return () => filters
+        return () => filter
     }, [dataList])
+
     function handleChange(pagination, filters, sorter) {
         setFilteredInfo(filters)
         setSortedInfo(sorter)
     };
+    //清除过滤
     function clearAll() {
         setFilteredInfo({})
         setSortedInfo({})
     };
     const columns = [
         {
-            width:60,
+            width: 60,
             title: '',
             dataIndex: 'avatar_url',
             key: 'avatar_url',
@@ -66,7 +73,7 @@ function Lists({ dataList }) {
             title: '姓名',
             dataIndex: 'user_name',
             key: 'user_name',
-            width:130,
+            width: 120,
         },
         {
             title: '主菜',
@@ -76,13 +83,13 @@ function Lists({ dataList }) {
             filteredValue: filteredInfo.food_name || null,
             onFilter: (value, record) => record.food_name.includes(value),
             ellipsis: true,
-            width:200,
+            width: 200,
         },
         {
             title: '配菜',
             dataIndex: '',
             key: '',
-            width:130,
+            width: 120,
         },
         {
             title: '订餐时间',
@@ -91,15 +98,13 @@ function Lists({ dataList }) {
             sorter: (a, b) => new Date(a.time) - new Date(b.time),
             sortOrder: sortedInfo.columnKey === 'time' && sortedInfo.order,
             ellipsis: true,
-        },
-        {
-            title: '编辑',
-            width:130,
-        },
+        }
     ];
     return (
         <div style={{ width: '100vw' }}>
-            <Table columns={columns} dataSource={datas()} onChange={handleChange} />
+            <Spin tip="" spinning={showLoading}>
+                <Table columns={columns} dataSource={datas()} onChange={handleChange} />
+            </Spin>
             <Button onClick={clearAll}>清除过滤</Button>
         </div>
     );
@@ -108,6 +113,26 @@ function Lists({ dataList }) {
 
 //统计表
 function Total() {
+    const [total, setTotal] = useState([])
+    const [showLoading, setShowLoading] = useState(true)
+    useEffect(() => {
+        getTotal().then(res => {
+            setTotal(res.data)
+            setShowLoading(false)
+        })
+    }, [])
+    //展示数据
+    const datas = useMemo(() => {
+        let data = [];
+        for (let i in total) {
+            data.push({
+                key: i,
+                name: total[i].food_name,
+                count: total[i].num
+            })
+        }
+        return () => data
+    }, [total])
     const columns = [
         {
             title: '菜名',
@@ -122,27 +147,9 @@ function Total() {
             },
         }
     ];
-    const data = [
-        {
-            key: '1',
-            name: '萝卜牛腩',
-            count: 2
-        },
-        {
-            key: '1',
-            name: '剁椒鱼块',
-            count: 3
-        },
-        {
-            key: '1',
-            name: '孜然鱿鱼',
-            count: 5
-        },
-        {
-            key: '2',
-            name: '烧鸭',
-            count: 1
-        }
-    ];
-    return (<Table columns={columns} dataSource={data} style={{ width: '50vw', marginLeft: 30 }} pagination={false} />)
+    return (
+        <Spin tip="" spinning={showLoading}>
+            <Table columns={columns} dataSource={datas()} style={{ width: '20vw', marginLeft: 30 }} pagination={false} />
+        </Spin>
+    )
 }
