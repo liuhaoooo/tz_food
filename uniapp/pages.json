@@ -3,13 +3,15 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true
 			}
 		}
 	    ,{
             "path" : "pages/selectList/index",
             "style" : {
-				"navigationBarTitleText": "列表"
+				"navigationBarTitleText": "列表",
+				"enablePullDownRefresh": true
 			}
         }
     ],

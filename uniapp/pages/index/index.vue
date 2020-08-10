@@ -24,7 +24,7 @@
 					</label>
 				</radio-group>
 			</view>
-			<h2>副菜类</h2>
+			<!-- <h2>副菜类</h2> -->
 			<h2>备注</h2>
 			<template>
 				<view class="container">

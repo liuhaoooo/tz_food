@@ -91,7 +91,6 @@ const store = new Vuex.Store({
 					data,
 					method: 'post',
 				}).then(res => {
-					console.log(res)
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
 			})
@@ -104,7 +103,6 @@ const store = new Vuex.Store({
 					data,
 					method: 'post',
 				}).then(res => {
-					console.log(res)
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
 			})

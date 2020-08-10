@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="select-foodlist">
-			<list ref="list">
+			<list style="height: 85vh;">
 				<cell v-for="(item,index) in select_foodlist" :key="index">
 					<view class="cell-container" :style="item.openid==openid?'background-color:#b4f9c4b8':''">
 						<image mode="aspectFit" :src="item.avatar_url" @error="imageError"></image>
@@ -12,7 +12,7 @@
 				</cell>
 			</list>
 		</view>
-		<button type="warn" @click="cancel" class="cancelBtn" :disabled="disable">{{btn_text}}</button>
+		<button type="warn" @click="cancel" class="footer-button" :disabled="disable">{{btn_text}}</button>
 	</view>
 </template>
 <script>
@@ -25,13 +25,14 @@
 		data() {
 			return {
 				select_foodlist: [],
-				btn_text:"取消",
-				timer:null,
-				disable:false
+				btn_text: "取消",
+				timer: null,
+				disable: false,
+				offset: 0,
 			}
 		},
 		computed: {
-			...mapGetters(['openid', 'hasUser'])
+			...mapGetters(['openid'])
 		},
 		filters: {
 			get_date(val) {
@@ -46,14 +47,35 @@
 			})
 			this.disable = true
 			this.countdown(10)
-			this.get_select_food().then(res => {
-				this.select_foodlist = res
-				uni.hideLoading()
-				console.log(res)
+			this.select_foodlist = []
+			this.offset = 0
+			this.getData()
+		},
+		onReachBottom(){
+			this.offset += 15
+			this.getData()
+		},
+		onPullDownRefresh(){
+			uni.showLoading({
+				title: ''
 			})
+			this.select_foodlist = []
+			this.offset = 0
+			this.getData()
 		},
 		methods: {
 			...mapActions(['get_select_food', 'cancel_select']),
+			getData() {
+				this.get_select_food({
+					offset: this.offset
+				}).then(res => {
+					for (let item of res) {
+						this.select_foodlist.push(item)
+					}
+					uni.hideLoading()
+					uni.stopPullDownRefresh();
+				})
+			},
 			cancel() {
 				uni.showLoading({
 					title: ''
@@ -91,18 +113,22 @@
 					}
 					this.btn_text = `(${sec})秒后可取消`;
 				}, 1000);
-			},
+			}
 		}
 	}
 </script>
 
 <style>
+	.select-foodlist {
+		height: 85vh;
+	}
+
 	.cell-container {
 		width: 100%;
 		background: #FFFFFF;
-		height: 3rem;
+		height: 3.5rem;
 		display: flex;
-		line-height: 3rem;
+		line-height: 3.5rem;
 		border-bottom: #F1F1F1 solid .001rem;
 	}
 
@@ -112,18 +138,18 @@
 	}
 
 	.cell-container image {
-		width: 2.3rem;
-		height: 2.3rem;
+		width: 2.8rem;
+		height: 2.8rem;
 		background-color: #eeeeee;
 		margin: .3rem .3rem .3rem 1rem;
 	}
 
-	.cancelBtn {
+	.footer-button {
 		width: 90%;
-		position: absolute;
+		position: fixed;
 		left: 0;
 		right: 0;
-		bottom: 2em;
+		bottom: 2rem;
 		margin: auto;
 	}
 </style>

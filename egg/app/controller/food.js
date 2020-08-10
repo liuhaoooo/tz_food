@@ -35,12 +35,12 @@ class FoodController extends Controller {
   }
   /**
    * 获取用户选择的菜单
-   * { openid }
+   * { openid,offset }
    */
   async getSelectFood() {
     const { ctx, service } = this;
-    let { openid } = ctx.request.body
-    let data = await service.food.getSelectFood(openid)
+    let { openid,offset } = ctx.request.body
+    let data = await service.food.getSelectFood(offset,openid)
     ctx.status = 200;
     ctx.body = { success: true, data }
   }

@@ -24,14 +24,15 @@ class FoodService extends Service {
     }, ctx);
     return result
   }
-  async getSelectFood(openid = '') {
+  async getSelectFood(offset = '', openid = '') {
     const { app } = this;
     let where = openid ? `WHERE S.openid =` + app.mysql.escape(openid) : '';
+    let limit = offset ? ' LIMIT ' + app.mysql.escape(Number(offset)) + ',15' : '';
     let sql = `SELECT F.food_id,F.food_name,U.user_name,U.is_select,U.avatar_url,S.time,S.id,S.openid
               FROM select_food_list AS S 
               INNER JOIN food_list AS F ON (F.food_id = S.food_id) 
               INNER JOIN user AS U 
-              ON (U.openid = S.openid)`+ where;
+              ON (U.openid = S.openid)`+ where + limit;
     let result = await app.mysql.query(sql)
     return result
   }
@@ -44,10 +45,10 @@ class FoodService extends Service {
     let result = await app.mysql.query(sql)
     return result
   }
-  async cancelSelect(openid){
+  async cancelSelect(openid) {
     const { app, ctx } = this;
     const result = await app.mysql.beginTransactionScope(async conn => {
-      await conn.delete('select_food_list', {openid});
+      await conn.delete('select_food_list', { openid });
       await conn.update('user', { is_select: 0 }, { where: { openid } });
       return true;
     }, ctx);
