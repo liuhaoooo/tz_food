@@ -11,12 +11,10 @@ function Home() {
         <Router>
             <Layout style={{height:'100vh'}}>
                 <Sider breakpoint="lg" collapsedWidth="0" style={{background:'#ffffff'}}>
-                    <div className="logo">
-                        <img src={require("../assets/images/logo.png")}/>
-                    </div>
+                    <div style={{background:'#62bfff',width:200,height:50}}/>
                     <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<UserOutlined/>}><Link to="/">统计</Link></Menu.Item>
-                        <Menu.Item key="2" icon={<VideoCameraOutlined/>}><Link to="/administration">管睆</Link></Menu.Item>
+                        <Menu.Item key="2" icon={<VideoCameraOutlined/>}><Link to="/administration">管理</Link></Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout>

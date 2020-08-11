@@ -11,7 +11,7 @@ function Home() {
         <Router>
             <Layout style={{height:'100vh'}}>
                 <Sider breakpoint="lg" collapsedWidth="0" style={{background:'#ffffff'}}>
-                    <div className="logo">
+                    <div style={{width:150,height:80}}>
                         <img src={require("../assets/images/logo.png")}/>
                     </div>
                     <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
