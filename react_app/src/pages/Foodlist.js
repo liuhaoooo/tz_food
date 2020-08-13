@@ -103,7 +103,7 @@ function Lists() {
     return (
         <div style={{ width: '100vw' }}>
             <Spin tip="" spinning={showLoading}>
-                <Table columns={columns} dataSource={datas()} onChange={handleChange} size="small" pagination={{ pageSize: 8 }}/>
+                <Table columns={columns} dataSource={datas()} onChange={handleChange} size="small" pagination={{ pageSize: 11 }}/>
             </Spin>
             <Button onClick={clearAll}>清除过滤</Button>
         </div>

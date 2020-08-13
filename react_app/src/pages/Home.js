@@ -16,12 +16,12 @@ function Home() {
                     </div>
                     <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<UserOutlined/>}><Link to="/">统计</Link></Menu.Item>
-                        <Menu.Item key="2" icon={<VideoCameraOutlined/>}><Link to="/administration">管睆</Link></Menu.Item>
+                        <Menu.Item key="2" icon={<VideoCameraOutlined/>}><Link to="/administration">管理</Link></Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout>
                     <Content style={{ margin: '24px 16px 0' }}>
-                        <Header style={{ padding: 0,background:'#62bfff'}}/>
+                        <Header style={{ padding: 0,background:'#ff8c90'}}/>
                         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                             <Route path="/" exact component={Foodlist}></Route>
                             <Route path="/administration" component={Administration}></Route>
