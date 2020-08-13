@@ -23,10 +23,12 @@
 	margin: .3rem .3rem .3rem 1rem;
 }
 .footer-button {
-	width: 90%;
+	width: 140rpx;
+	height: 140rpx;
+	line-height: 140rpx;
+	border-radius: 50%;
 	position: fixed;
-	left: 0;
-	right: 0;
+	right: 30rpx;
 	bottom: 2rem;
 	margin: auto;
 }

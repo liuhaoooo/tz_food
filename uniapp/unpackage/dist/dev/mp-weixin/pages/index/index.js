@@ -95,6 +95,12 @@ __webpack_require__.r(__webpack_exports__);
 var components = {
   uniPopup: function() {
     return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 36))
+  },
+  uniGrid: function() {
+    return __webpack_require__.e(/*! import() | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! @/components/uni-grid/uni-grid.vue */ 45))
+  },
+  uniGridItem: function() {
+    return __webpack_require__.e(/*! import() | components/uni-grid-item/uni-grid-item */ "components/uni-grid-item/uni-grid-item").then(__webpack_require__.bind(null, /*! @/components/uni-grid-item/uni-grid-item.vue */ 52))
   }
 }
 var render = function() {
@@ -176,80 +182,72 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 36));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 45));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 52));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
-
-
+var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 36));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 59));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 66));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGrid = function uniGrid() {__webpack_require__.e(/*! require.ensure | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid/uni-grid.vue */ 45));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGridItem = function uniGridItem() {__webpack_require__.e(/*! require.ensure | components/uni-grid-item/uni-grid-item */ "components/uni-grid-item/uni-grid-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid-item/uni-grid-item.vue */ 52));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
     uniPopup: uniPopup,
     uniPopupMessage: uniPopupMessage,
-    uniPopupDialog: uniPopupDialog },
+    uniPopupDialog: uniPopupDialog,
+    uniGrid: uniGrid,
+    uniGridItem: uniGridItem },
 
   data: function data() {
     return {
-      userName: '',
+      userName: "",
       foodList: [],
       current: 0,
-      food_id: '1',
-      text: '',
-      avatarUrl: '' };
+      food_id: "1",
+      text: "",
+      avatarUrl: "" };
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['openid', 'hasUser'])),
+  (0, _vuex.mapGetters)(["openid", "hasUser"])),
 
   onLoad: function onLoad() {var _this2 = this;
-    this.get_auth();
     this.getFoodlist();
     this.get_openid().then(function () {
-      if (_this2.hasUser.is_select == 1) {//判断用户是否已选菜
+      if (_this2.hasUser.is_select == 1) {
+        //判断用户是否已选菜
         uni.reLaunch({
-          url: '/pages/selectList/index' });
+          url: "/pages/selectList/index" });
 
       }
     });
   },
   methods: _objectSpread({},
-  (0, _vuex.mapActions)(['set_user', 'get_openid', 'get_foodlist', 'select_food']), {
+  (0, _vuex.mapActions)(["set_user", "get_openid", "get_foodlist", "select_food"]), {
     //获取权限
-    get_auth: function get_auth() {
-      var _this = this;
-      uni.getUserInfo({
-        provider: 'weixin',
-        success: function success(res) {
-          _this.avatarUrl = res.userInfo.avatarUrl;
-        },
-        fail: function fail(err) {
-          _this.$refs.dialogAuth.open();
-        } });
+    bindGetUserInfo: function bindGetUserInfo(e) {var _this3 = this;
+      if (e.target.errMsg === "getUserInfo:ok") {
+        var _this = this;
+        uni.getUserInfo({
+          provider: "weixin",
+          success: function success(res) {
+            _this.avatarUrl = res.userInfo.avatarUrl;
+            _this3.click_submit();
+          } });
 
-    },
-    //是否授权回调
-    bindGetUserInfo: function bindGetUserInfo(e) {
-      if (e.target.errMsg === 'getUserInfo:ok') {
-        this.get_auth();
-        this.$refs.dialogAuth.close();
       } else {
         uni.showToast({
-          title: '需要授权',
-          icon: 'none',
+          title: "需要授权",
+          icon: "none",
           duration: 1000 });
 
       }
-
     },
     //获取菜单
-    getFoodlist: function getFoodlist() {var _this3 = this;
+    getFoodlist: function getFoodlist() {var _this4 = this;
       uni.showLoading({
-        title: '' });
+        title: "" });
 
       var data = {
-        busId: '1' };
+        busId: "1" };
 
       this.get_foodlist(data).then(function (res) {
-        _this3.foodList = res;
+        _this4.foodList = res;
         uni.hideLoading();
       });
     },
@@ -264,15 +262,15 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
       }
     },
     //设置姓名
-    setUser: function setUser(done, val) {var _this4 = this;
+    setUser: function setUser(done, val) {var _this5 = this;
       uni.showLoading({
-        title: '设置中' });
+        title: "设置中" });
 
       this.userName = val;
       if (!val) {
         uni.showToast({
-          title: '姓名不能为空',
-          icon: 'none',
+          title: "姓名不能为空",
+          icon: "none",
           duration: 1000 });
 
         return;
@@ -284,7 +282,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
 
       this.set_user(data).then(function (res) {
         uni.hideLoading();
-        _this4.submit();
+        _this5.submit();
         done();
       });
     },
@@ -304,7 +302,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
     //提交数据
     submit: function submit() {
       uni.showLoading({
-        title: '' });
+        title: "" });
 
       var data = {
         text: this.text,
@@ -314,11 +312,11 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
       this.select_food(data).then(function (res) {
         uni.hideLoading();
         uni.showToast({
-          title: '选择成功',
+          title: "选择成功",
           duration: 1000 });
 
         uni.reLaunch({
-          url: '/pages/selectList/index' });
+          url: "/pages/selectList/index" });
 
       });
     } }) };exports.default = _default;

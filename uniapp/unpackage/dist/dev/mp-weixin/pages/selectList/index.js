@@ -191,9 +191,6 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _createForOfIteratorHel
 
   onLoad: function onLoad() {
     clearInterval(this.timer);
-    uni.showLoading({
-      title: '' });
-
     this.disable = true;
     this.countdown(10);
     this.select_foodlist = [];
@@ -205,9 +202,6 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _createForOfIteratorHel
     this.getData();
   },
   onPullDownRefresh: function onPullDownRefresh() {
-    uni.showLoading({
-      title: '' });
-
     this.select_foodlist = [];
     this.offset = 0;
     this.getData();
@@ -221,7 +215,6 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _createForOfIteratorHel
         res),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
             _this.select_foodlist.push(item);
           }} catch (err) {_iterator.e(err);} finally {_iterator.f();}
-        uni.hideLoading();
         uni.stopPullDownRefresh();
       });
     },
@@ -249,7 +242,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _createForOfIteratorHel
     //倒计时
     countdown: function countdown(sec) {var _this2 = this;
       this.timer = setInterval(function () {
-        _this2.btn_text = "(".concat(sec, ")\u79D2\u540E\u53EF\u53D6\u6D88");
+        _this2.btn_text = sec;
         sec--;
         if (sec == "00") {
           _this2.btn_text = "取消";
@@ -260,7 +253,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _createForOfIteratorHel
         if (sec < 10) {
           sec = "0" + sec;
         }
-        _this2.btn_text = "(".concat(sec, ")\u79D2\u540E\u53EF\u53D6\u6D88");
+        _this2.btn_text = sec;
       }, 1000);
     } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

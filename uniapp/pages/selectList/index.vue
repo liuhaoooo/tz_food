@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="select-foodlist">
-			<list style="height: 85vh;">
+			<list>
 				<cell v-for="(item,index) in select_foodlist" :key="index">
 					<view class="cell-container" :style="item.openid==openid?'background-color:#b4f9c4b8':''">
 						<image mode="aspectFit" :src="item.avatar_url" @error="imageError"></image>
@@ -42,9 +42,6 @@
 		},
 		onLoad() {
 			clearInterval(this.timer);
-			uni.showLoading({
-				title: ''
-			})
 			this.disable = true
 			this.countdown(10)
 			this.select_foodlist = []
@@ -56,9 +53,6 @@
 			this.getData()
 		},
 		onPullDownRefresh(){
-			uni.showLoading({
-				title: ''
-			})
 			this.select_foodlist = []
 			this.offset = 0
 			this.getData()
@@ -72,7 +66,6 @@
 					for (let item of res) {
 						this.select_foodlist.push(item)
 					}
-					uni.hideLoading()
 					uni.stopPullDownRefresh();
 				})
 			},
@@ -100,7 +93,7 @@
 			//倒计时
 			countdown(sec) {
 				this.timer = setInterval(() => {
-					this.btn_text = `(${sec})秒后可取消`;
+					this.btn_text = sec;
 					sec--;
 					if (sec == "00") {
 						this.btn_text = "取消";
@@ -111,7 +104,7 @@
 					if (sec < 10) {
 						sec = "0" + sec;
 					}
-					this.btn_text = `(${sec})秒后可取消`;
+					this.btn_text = sec;
 				}, 1000);
 			}
 		}
@@ -145,10 +138,12 @@
 	}
 
 	.footer-button {
-		width: 90%;
+		width: 140rpx;
+		height: 140rpx;
+		line-height: 140rpx;
+		border-radius: 50%;
 		position: fixed;
-		left: 0;
-		right: 0;
+		right: 30rpx;
 		bottom: 2rem;
 		margin: auto;
 	}
