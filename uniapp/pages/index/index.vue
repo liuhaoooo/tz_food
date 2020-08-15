@@ -1,31 +1,29 @@
 <template>
-  <view class="main_index">
+  <view>
+    <uni-popup ref="dialogInput" type="dialog" maskClick="false">
+      <uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser"></uni-popup-dialog>
+    </uni-popup>
+    <view class="headerinfo">
+      <img src="../../static/images/heardinfo.png" alt />
+    </view>
+
     <view class="foodList-content">
-      <uni-popup ref="dialogInput" type="dialog" maskClick="false">
-        <uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser"></uni-popup-dialog>
-      </uni-popup>
-      <!-- <h2>主菜类（{{foodList[0].bus_name}})</h2> -->
-      <scroll-view scroll-y="true" style="height: 90vh;">
-        <radio-group @change="radioChange">
-          <uni-grid :column="2" :showBorder="true">
-            <uni-grid-item v-for="(item, index) in foodList" :key="item.food_id">
-              <label class="grid-item-label">
-                <view class="grid-item-view">
-                  <radio :value="item.food_id" :checked="index === current" />
-                  <view style="margin-left: 2em;height: 6rem;">{{item.food_name}}</view>
-                </view>
-              </label>
-            </uni-grid-item>
-          </uni-grid>
-        </radio-group>
-      </scroll-view>
-      <!-- <h2>副菜类</h2> -->
-      <!-- <h2>备注</h2>
-			<template>
-				<view class="container">
-					<editor @input="editor_input" class="ql-container" placeholder="添加备注..." v-model="text"></editor>
-				</view>
-      </template>-->
+      <view>
+        <!--<scroll-view scroll-y="true">
+          <radio-group @change="radioChange">
+            <label class="grid-item-label" v-for="(item, index) in foodList" :key="item.food_id">
+              <view class="grid-item-view">
+                <radio :value="item.food_id" :checked="index === current" />
+                <view style="margin-left: 2em;height: 4rem;">{{item.food_name}}</view>
+              </view>
+            </label>
+          </radio-group>
+        </scroll-view>-->
+      </view>
+    </view>
+
+    <view class="footer">
+      <view>已选：</view>
       <button
         open-type="getUserInfo"
         type="primary"
@@ -37,6 +35,7 @@
 </template>
 
 <script>
+import uniGoodsNav from "@/components/uni-goods-nav/uni-goods-nav.vue";
 import uniPopup from "@/components/uni-popup/uni-popup.vue";
 import uniPopupMessage from "@/components/uni-popup/uni-popup-message.vue";
 import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
@@ -45,6 +44,7 @@ import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue";
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   components: {
+    uniGoodsNav,
     uniPopup,
     uniPopupMessage,
     uniPopupDialog,
@@ -57,7 +57,6 @@ export default {
       foodList: [],
       current: 0,
       food_id: "1",
-      text: "",
       avatarUrl: ""
     };
   },
@@ -144,10 +143,6 @@ export default {
         done();
       });
     },
-    //备注输入框
-    editor_input(e) {
-      this.text = e.target.text;
-    },
     //点击提交按钮（做判断）
     click_submit() {
       if (!this.hasUser) {
@@ -163,7 +158,6 @@ export default {
         title: ""
       });
       let data = {
-        text: this.text,
         food_id: this.food_id,
         openid: this.openid
       };
@@ -183,32 +177,47 @@ export default {
 </script>
 
 <style>
-.main_index {
+/**header */
+.headerinfo {
+  height: 300rpx;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+.headerinfo img {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
-
+/**content */
 .foodList-content {
   width: 100%;
-  margin: auto;
   position: absolute;
-  left: 0;
-  right: 0;
-  overflow: hidden;
+  top: 300rpx;
+  bottom: 120rpx;
 }
-
-.submit_button {
+/**footer */
+.footer {
   position: fixed;
-  width: 90%;
-  left: 0;
+  background: #f1f1f18f;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  padding-top: 10rpx;
+  padding-bottom: 16rpx;
+}
+.footer>view{
+  width: 55%;
+  height: 80rpx;
+  line-height: 80rpx;
+  position: absolute;
+  left: 5%;
+}
+.submit_button {
+  position: absolute;
+  width: 30%;
+  left: 60%;
   right: 0;
   margin: auto;
-}
-.grid-item-label {
-  height: 90%;
-  width: 90%;
-  margin: 10rpx;
+  border-radius: 40rpx
 }
 </style>

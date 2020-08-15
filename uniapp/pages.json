@@ -1,18 +1,24 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/auth/index",
+			"style": {
+				"navigationBarTitleText": "需要验证码进入小程序"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "点菜"
+				"navigationBarTitleText": "首页"
 			}
-		}
-	    ,{
+		},
+		{
             "path" : "pages/selectList/index",
             "style" : {
 				"navigationBarTitleText": "列表",
 				"enablePullDownRefresh": true
 			}
-        }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

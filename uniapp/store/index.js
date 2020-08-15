@@ -10,10 +10,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
+		isAuth:false,
 		openid: "",
 		hasUser: null
 	},
 	getters: {
+		isAuth(state){
+			return state.isAuth
+		},
 		openid(state) {
 			return state.openid
 		},
@@ -22,6 +26,9 @@ const store = new Vuex.Store({
 		}
 	},
 	mutations: {
+		SET_AUTH(state, data){
+			state.isAuth = data
+		},
 		SET_OPENID(state, data) {
 			state.openid = data
 			try {

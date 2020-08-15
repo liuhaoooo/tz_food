@@ -1,28 +1,223 @@
 
-.main_index {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**header */
+.headerinfo {
+  height: 300rpx;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+.headerinfo ._img {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
+/**content */
 .foodList-content {
   width: 100%;
-  margin: auto;
   position: absolute;
-  left: 0;
-  right: 0;
-  overflow: hidden;
+  top: 300rpx;
+  bottom: 120rpx;
+}
+/**footer */
+.footer {
+  position: fixed;
+  background: #f1f1f18f;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  padding-top: 10rpx;
+  padding-bottom: 16rpx;
+}
+.footer>view{
+  width: 55%;
+  height: 80rpx;
+  line-height: 80rpx;
+  position: absolute;
+  left: 5%;
 }
 .submit_button {
-  position: fixed;
-  width: 90%;
-  left: 0;
+  position: absolute;
+  width: 30%;
+  left: 60%;
   right: 0;
   margin: auto;
-}
-.grid-item-label {
-  height: 90%;
-  width: 90%;
-  margin: 10rpx;
+  border-radius: 40rpx
 }
 

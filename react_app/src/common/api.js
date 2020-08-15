@@ -17,3 +17,13 @@ export function getTotal() {
         method: 'post'
     })
 }
+/**
+ * 获取食物
+ */
+export function getFood(data){
+    return axiosRequest.request({
+        url: 'getFoodList',
+        method: 'post',
+        data
+    })
+}

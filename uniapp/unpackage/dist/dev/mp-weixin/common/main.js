@@ -92,10 +92,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   onLoad: function onLoad() {
-
   },
   onHide: function onHide() {
-    console.log('Hide');
   } };exports.default = _default;
 
 /***/ })
