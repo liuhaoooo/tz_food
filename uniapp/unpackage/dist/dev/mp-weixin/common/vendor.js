@@ -2577,17 +2577,6 @@ _uniRequest.default;exports.default = _default;
 
 /***/ }),
 
-/***/ 113:
-/*!*********************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/static/images/heardinfo.png ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/static/images/heardinfo.png";
-
-/***/ }),
-
 /***/ 12:
 /*!**********************************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/node_modules/_uni-request@1.0.2@uni-request/index.js ***!
@@ -2604,7 +2593,7 @@ _request.default;exports.default = _default;
 
 /***/ }),
 
-/***/ 126:
+/***/ 123:
 /*!***********************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-icons/icons.js ***!
   \***********************************************************************/
@@ -2872,6 +2861,17 @@ Request = /*#__PURE__*/function () {
 
 
 Request;exports.default = _default;
+
+/***/ }),
+
+/***/ 148:
+/*!***************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/static/images/tmp.png ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/static/images/tmp.png";
 
 /***/ }),
 
@@ -9215,6 +9215,17 @@ internalMixin(Vue);
 
 /***/ }),
 
+/***/ 24:
+/*!*********************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/static/images/heardinfo.png ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/static/images/heardinfo.png";
+
+/***/ }),
+
 /***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -9257,7 +9268,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 47:
+/***/ 58:
 /*!***********************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
   \***********************************************************************/
@@ -9265,7 +9276,7 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 48));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 59));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 // 定义 type 类型:弹出类型：top/bottom/center
 var config = {
   // 顶部弹出
@@ -9292,7 +9303,7 @@ var config = {
 
 /***/ }),
 
-/***/ 48:
+/***/ 59:
 /*!*************************************************************************!*\
   !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
   \*************************************************************************/

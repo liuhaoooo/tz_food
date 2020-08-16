@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/auth/index",
     "pages/index/index",
-    "pages/selectList/index"
+    "pages/selectList/index",
+    "pages/auth/index",
+    "pages/select/index"
   ],
   "subPackages": [],
   "window": {
