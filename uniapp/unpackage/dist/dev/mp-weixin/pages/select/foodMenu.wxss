@@ -1,0 +1,292 @@
+
+._div,
+scroll-view,
+swiper {
+	box-sizing: border-box;
+}
+.wuc-tab {
+    white-space: nowrap;
+}
+.wuc-tab-item {
+    height: 90rpx;
+    display: inline-block;
+    line-height: 90rpx;
+    margin: 0 10rpx;
+    padding: 0 20rpx;
+}
+.wuc-tab-item.cur {
+    border-bottom: 4rpx solid;
+}
+.wuc-tab.fixed {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1024;
+	box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.1);
+}
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.text-center {
+    text-align: center;
+}
+.flex-sub {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+            flex: 1;
+}
+.text-blue{
+  color:#0081ff;
+}
+.text-white{
+  color:#ffffff;
+}
+.bg-white{
+    background-color: #ffffff;
+}
+.bg-blue{
+    background-color: #0081ff;
+}
+.text-orange{
+  color: #f37b1d
+}
+.text-xl {
+	font-size: 36rpx;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  padding-top: 10rpx;
+  padding-bottom: 16rpx;
+}
+.footer > view {
+  width: 55%;
+  height: 80rpx;
+  line-height: 80rpx;
+  position: absolute;
+  left: 5%;
+}
+.submit_button {
+  position: absolute;
+  width: 30%;
+  left: 60%;
+  right: 0;
+  margin: auto;
+  border-radius: 40rpx;
+}
+/** 菜单*/
+.content_right {
+  height: 100vh;
+  background: white;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.content_left {
+  width: 20.99999999%;
+  background: rgb(255, 255, 255);
+}
+.leibie {
+  text-align: center;
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  color: rgb(119, 119, 119);
+  background: rgb(255, 255, 255);
+  font-size: 30rpx;
+}
+.span {
+  color: rgb(189, 189, 189);
+  font-size: 14px;
+  margin-left: 28rpx;
+}
+

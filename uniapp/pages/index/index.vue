@@ -7,18 +7,17 @@
     <view class="map"></view>
 
     <view class="foodList-content">
-      <scroll-view scroll-y="true" class="scroll-Y" style="height: 58vh;">
-        <uni-card
+      <scroll-view scroll-y="true" class="scroll-Y" :style="'height:'+(device_info.windowHeight-290)+'px'">
+        <view @tap="clickStore" v-for="item in 10" :key="item">
+          <uni-card
           title="商家名称"
           mode="style"
           :is-shadow="true"
           thumbnail="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
           extra="商家描述"
           note="点击进店"
-          v-for="item in 10"
-          :key="item"
-          @click="clickStore"
         ></uni-card>
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -32,8 +31,14 @@ export default {
   data() {
     return {};
   },
-  onLoad() {},
+  onLoad() {
+    this.get_device_info()
+  },
+  computed: {
+    ...mapGetters(["device_info"])
+  },
   methods: {
+    ...mapActions(["get_device_info"]),
     clickStore() {
       uni.navigateTo({
         url: "/pages/select/index"

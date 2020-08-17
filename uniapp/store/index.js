@@ -10,12 +10,16 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		isAuth:false,
+		isAuth: false,
 		openid: "",
-		hasUser: null
+		hasUser: null,
+		device_info: {}
 	},
 	getters: {
-		isAuth(state){
+		device_info(state) {
+			return state.device_info
+		},
+		isAuth(state) {
 			return state.isAuth
 		},
 		openid(state) {
@@ -23,23 +27,44 @@ const store = new Vuex.Store({
 		},
 		hasUser(state) {
 			return state.hasUser
-		}
+		},
 	},
 	mutations: {
-		SET_AUTH(state, data){
+		SET_INFO(state, data) {
+			state.device_info = data
+		},
+		SET_AUTH(state, data) {
 			state.isAuth = data
 		},
 		SET_OPENID(state, data) {
 			state.openid = data
 			try {
 				uni.setStorageSync('openid', data);
-			} catch (e) {}
+			} catch (e) { }
 		},
 		HAS_USER(state, data) {
 			state.hasUser = data
 		}
 	},
 	actions: {
+		//获取手机信息
+		get_device_info(state, data) {
+			uni.getSystemInfo({
+				success: (res) => {
+					let info = {
+						model: res.model,
+						pixelRatio: res.pixelRatio,
+						windowWidth: res.windowWidth,
+						windowHeight: res.windowHeight,
+						language: res.language,
+						version: res.version,
+						platform: res.platform
+					}
+					console.log(info)
+					state.commit('SET_INFO', info)
+				}
+			});
+		},
 		//获取用户openid
 		get_openid(state, data) {
 			return new Promise((resolve, reject) => {
@@ -79,7 +104,7 @@ const store = new Vuex.Store({
 			})
 		},
 		//获取菜单列表
-		get_foodlist(state, data){
+		get_foodlist(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
 					url: interfaces.GET_FOODLIST,
@@ -91,7 +116,7 @@ const store = new Vuex.Store({
 			})
 		},
 		//获取已选择菜单列表
-		get_select_food(state, data){
+		get_select_food(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
 					url: interfaces.GET_SELECT_FOOD,
@@ -103,7 +128,7 @@ const store = new Vuex.Store({
 			})
 		},
 		//选择食物
-		select_food(state, data){
+		select_food(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
 					url: interfaces.SELECT_FOOD,
@@ -115,7 +140,7 @@ const store = new Vuex.Store({
 			})
 		},
 		//取消已选择的食物
-		cancel_select(state, data){
+		cancel_select(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
 					url: interfaces.CANCEL_SELECT,
