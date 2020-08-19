@@ -4,38 +4,65 @@
     <uni-popup ref="dialogInput" type="dialog" maskClick="false">
       <uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser"></uni-popup-dialog>
     </uni-popup>
+    <uni-popup ref="popupBottom" type="bottom">
+      <view class="popup_bottom_content"></view>
+    </uni-popup>
     <!--content-->
     <view>
       <view style="display:flex;">
         <!-- 左边 -->
-        <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'">
-          <div>
-            <div class="leibie" v-for="(item,index) in 30" :key="index" @tap="tapLeftList(index)">{{item}}</div>
-          </div>
+        <scroll-view
+          class="content_left"
+          scroll-y="true"
+          :style="'height:'+(device_info.windowHeight-250)+'px'"
+        >
+          <view>
+            <view
+              class="leibie"
+              v-for="(item,index) in categoryList"
+              :key="index"
+              @tap="tapLeftList(index)"
+              :style="list_index==index?'background: #f1f1f1;':''"
+            >{{item}}</view>
+          </view>
         </scroll-view>
 
         <!-- 右边 -->
-        <scroll-view class="content_right" scroll-y="true">
-          <div>
-            <span class="span">{{index}}</span>
-          </div>
-        </scroll-view>
+        <view class="content_right">
+          <view
+            v-if="foodList.length==0"
+            style="text-align: center;margin-top:100rpx;color:#b1b1b1"
+          >暂无数据</view>
+          <scroll-view
+            scroll-y="true"
+            :style="'height:'+(device_info.windowHeight-250)+'px'"
+            v-else
+          >
+            <radio-group @change="radioChange">
+              <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
+                <img :src="item.food_image||'../../static/images/default_food.png'" alt />
+                <view>{{item.food_name}}</view>
+                <radio :value="item.food_id" :checked="index === current" />
+              </view>
+            </radio-group>
+          </scroll-view>
+        </view>
       </view>
       <!--footer-->
       <view class="footer">
-        <view>已选：</view>
-        <button
-          open-type="getUserInfo"
-          type="primary"
-          @getuserinfo="bindGetUserInfo"
-          class="submit_button"
-        >提交</button>
+        <view>
+          <uni-icons type="shop" size="34" color="#f37b1d" @tap="toHome"></uni-icons>
+          <uni-icons type="cart-filled" size="34" color="#f37b1d" @tap="openBottom"></uni-icons>
+        </view>
+        <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button">提交</button>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+import uniIcons from "@/components/uni-icons/uni-icons.vue";
+import uniGoodsNav from "@/components/uni-goods-nav/uni-goods-nav.vue";
 import uniPopup from "@/components/uni-popup/uni-popup.vue";
 import uniPopupMessage from "@/components/uni-popup/uni-popup-message.vue";
 import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
@@ -45,6 +72,8 @@ import WucTab from "@/components/wuc-tab/wuc-tab.vue";
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   components: {
+    uniIcons,
+    uniGoodsNav,
     uniPopup,
     uniPopupMessage,
     uniPopupDialog,
@@ -58,25 +87,29 @@ export default {
       current: 0,
       food_id: "1",
       avatarUrl: "",
-      index:0
+      list_index: 0,
+      current: 0,
+      categoryList: ["主菜", "配菜", "饮料"]
     };
   },
   computed: {
-    ...mapGetters(["openid", "hasUser","device_info"])
+    ...mapGetters(["openid", "hasUser", "device_info"])
   },
-  onLoad() {
+  mounted() {
     this.getFoodlist();
     this.get_openid().then(() => {
       if (this.hasUser.is_select == 1) {
-        //判断用户是否已选菜
-        uni.reLaunch({
-          url: "/pages/selectList/index"
-        });
       }
     });
   },
   methods: {
     ...mapActions(["set_user", "get_openid", "get_foodlist", "select_food"]),
+    //回到首页
+    toHome() {
+      uni.navigateBack({
+        delta: 1
+      });
+    },
     //获取权限
     bindGetUserInfo(e) {
       if (e.target.errMsg === "getUserInfo:ok") {
@@ -98,15 +131,12 @@ export default {
     },
     //获取菜单
     getFoodlist() {
-      uni.showLoading({
-        title: ""
-      });
       let data = {
         busId: "1"
       };
       this.get_foodlist(data).then(res => {
+        console.log(res);
         this.foodList = res;
-        uni.hideLoading();
       });
     },
     //选择菜单触发
@@ -153,8 +183,12 @@ export default {
         this.submit();
       }
     },
-    tapLeftList(index){
-      this.index = index
+    tapLeftList(index) {
+      this.list_index = index;
+    },
+    //打开底部弹窗
+    openBottom() {
+      this.$refs.popupBottom.open();
     },
     //提交数据
     submit() {
@@ -176,44 +210,32 @@ export default {
         });
       });
     }
+  },
+  watch: {
+    list_index() {
+      switch (this.list_index) {
+        case 0:
+          this.getFoodlist();
+          break;
+        case 1:
+        case 2:
+          this.foodList = [];
+          break;
+      }
+    }
   }
 };
 </script>
 
 <style>
-/**footer */
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 100rpx;
-  padding-top: 10rpx;
-  padding-bottom: 16rpx;
-}
-.footer > view {
-  width: 55%;
-  height: 80rpx;
-  line-height: 80rpx;
-  position: absolute;
-  left: 5%;
-}
-.submit_button {
-  position: absolute;
-  width: 30%;
-  left: 60%;
-  right: 0;
-  margin: auto;
-  border-radius: 40rpx;
-}
 /** 菜单*/
 .content_right {
-  height: 100vh;
-  background: white;
+  background: #f1f1f1;
   flex: 1;
 }
 .content_left {
   width: 20.99999999%;
-  background: rgb(255, 255, 255);
+  background: #ffffff;
 }
 .leibie {
   text-align: center;
@@ -221,13 +243,71 @@ export default {
   height: 90rpx;
   line-height: 90rpx;
   color: rgb(119, 119, 119);
-  background: rgb(255, 255, 255);
+  background: #ffffff;
   font-size: 30rpx;
 }
 .span {
   color: rgb(189, 189, 189);
   font-size: 14px;
   margin-left: 28rpx;
+}
+.right_content_list {
+  display: flex;
+  height: 140rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-top: 10rpx;
+  margin-bottom: 30rpx;
+  border-radius: 12rpx;
+  background: #ffffff;
+}
+.right_content_list > img {
+  width: 140rpx;
+  height: 140rpx;
+}
+.right_content_list > view {
+  flex: 1;
+  text-align: center;
+  line-height: 140rpx;
+}
+.right_content_list > radio {
+  margin-top: 46rpx;
+}
+/**底部弹窗 */
+.popup_bottom_content {
+  height: 400rpx;
+  background: #ffffff;
+}
+/**footer */
+.footer {
+  position: fixed;
+  bottom: 0rpx;
+  display: flex;
+  width: 100%;
+  height: 110rpx;
+  padding-top: 10rpx;
+  padding-bottom: 30rpx;
+  background: #ffffff;
+}
+.footer > view {
+  width: 20%;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-left: 8rpx;
+  margin-right: 8rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.submit_button {
+  flex: 1;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 50rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  background: #f37b1d;
+  color: #ffffff;
 }
 </style>
 

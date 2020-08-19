@@ -60,7 +60,7 @@ const store = new Vuex.Store({
 						version: res.version,
 						platform: res.platform
 					}
-					console.log(info)
+					console.log(res)
 					state.commit('SET_INFO', info)
 				}
 			});

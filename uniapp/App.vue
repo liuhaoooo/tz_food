@@ -1,7 +1,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  onLoad() {
+  mounted() {
 	  this.get_device_info()
   },
   methods: {
