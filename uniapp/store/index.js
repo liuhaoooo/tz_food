@@ -71,6 +71,7 @@ const store = new Vuex.Store({
 				uni.login({
 					success: res => {
 						if (res.code) {
+							console.log(res.code)
 							let data = {
 								appid,
 								secret,

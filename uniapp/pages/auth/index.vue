@@ -34,7 +34,7 @@ export default {
     clickInput(val) {
       this.password = val;
       if (val.length == 6) {
-        if (val == "111111") {
+        if (val == "000000") {
           uni.reLaunch({
             url: "/pages/index/index"
           });

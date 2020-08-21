@@ -97,10 +97,9 @@ export default {
   },
   mounted() {
     this.getFoodlist();
-    this.get_openid().then(() => {
-      if (this.hasUser.is_select == 1) {
-      }
-    });
+    if (this.hasUser.is_select == 1) {
+      
+    }
   },
   methods: {
     ...mapActions(["set_user", "get_openid", "get_foodlist", "select_food"]),

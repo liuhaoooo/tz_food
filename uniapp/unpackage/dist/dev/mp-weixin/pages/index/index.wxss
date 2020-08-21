@@ -94,6 +94,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**header */
 .headerinfo {
   height: 240rpx;
@@ -120,6 +143,12 @@
   background: #ffffff;
   padding-left: 20rpx;
   padding-right: 20rpx;
+}
+.map > view > view {
+  padding-right: 40rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /**content */
 .foodList-content {

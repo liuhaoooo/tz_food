@@ -6,7 +6,7 @@
     <view class="map">
       <view>
         <uni-icons type="loop" size="20" color="#f37b1d"></uni-icons>
-        <view style="flex:1;color:#999;margin-left:10rpx">当前位置：广州南沙区</view>
+        <view style="flex:1;color:#999;margin-left:10rpx">当前位置：{{addressName}}</view>
         <uni-icons type="forward" size="20" color="#f37b1d" @click="selectLocation"></uni-icons>
       </view>
       <map
@@ -24,14 +24,11 @@
         :style="'height:'+(device_info.windowHeight-280)+'px'"
       >
         <view @tap="clickStore" v-for="item in 10" :key="item">
-          <!--<uni-card
+          <subCard
             title="商家名称"
-            mode="style"
-            :is-shadow="true"
-            thumbnail="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
-            extra="商家描述"
-          ></uni-card>-->
-          <subCard title="商家名称" text="商家描述" url="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"></subCard>
+            text="商家描述"
+            url="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
+          ></subCard>
         </view>
       </scroll-view>
     </view>
@@ -41,16 +38,42 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import uniCard from "@/components/uni-card/uni-card.vue";
+import amap from "../../sdk/amap-wx.js";
 import subCard from "./subCard";
 export default {
-  components: { uniCard,subCard },
+  components: { uniCard, subCard },
   data() {
     return {
       latitude: 22.794449,
-      longitude: 113.546099
+      longitude: 113.546099,
+      amapPlugin: null,
+      addressName: ""
     };
   },
-  onLoad() {
+  mounted() {
+    this.amapPlugin = new amap.AMapWX({
+      key: "061ee9bee2b44c57c2448216d1a99776"
+    });
+    this.amapPlugin.getRegeo({
+      success: data => {
+        this.addressName = data[0].name;
+        console.log(this.addressName)
+      }
+    });
+    // uni.getLocation({
+    //   type: "gcj02",
+    //   success: function(res) {
+    //     const latitude = res.latitude;
+    //     const longitude = res.longitude;
+    //     uni.openLocation({
+    //       latitude: latitude,
+    //       longitude: longitude,
+    //       success: function(res) {
+    //         console.log(res);
+    //       }
+    //     });
+    //   }
+    // });
     uni.getLocation({
       type: "wgs84",
       success: res => {
@@ -118,6 +141,12 @@ export default {
   background: #ffffff;
   padding-left: 20rpx;
   padding-right: 20rpx;
+}
+.map > view > view {
+  padding-right: 40rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /**content */
 .foodList-content {
