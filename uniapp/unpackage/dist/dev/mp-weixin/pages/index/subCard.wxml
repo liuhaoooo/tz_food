@@ -1,1 +1,0 @@
-<view class="card_main"><view class="card_top" style="{{('background-image: url('+url+')')}}"><view>{{title}}</view></view><view class="card_bottom">{{''+text+''}}</view></view>

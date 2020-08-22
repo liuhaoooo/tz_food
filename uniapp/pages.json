@@ -26,11 +26,6 @@
 			}
 		}
 	],
-	"permission": {
-		"scope.userLocation": {
-			"desc": "你的位置信息将用于小程序获取商家位置"
-		}
-	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

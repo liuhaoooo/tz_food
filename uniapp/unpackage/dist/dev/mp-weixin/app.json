@@ -12,6 +12,10 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap94.json"
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序获取商家位置"
+    }
+  },
+  "usingComponents": {}
 }

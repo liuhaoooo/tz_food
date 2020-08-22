@@ -5,9 +5,9 @@
     <!--map-->
     <view class="map">
       <view>
-        <uni-icons type="loop" size="20" color="#f37b1d"></uni-icons>
+        <uni-icons type="loop" size="20" color="#f37b1d" @tap="refreshLocation"></uni-icons>
         <view style="flex:1;color:#999;margin-left:10rpx">当前位置：{{addressName}}</view>
-        <uni-icons type="forward" size="20" color="#f37b1d" @click="selectLocation"></uni-icons>
+        <uni-icons type="forward" size="20" color="#f37b1d" @tap="selectLocation"></uni-icons>
       </view>
       <map
         style="width: 100%; height: 200rpx;"
@@ -18,19 +18,15 @@
     </view>
     <!--商家-->
     <view class="foodList-content">
-      <scroll-view
-        scroll-y="true"
-        class="scroll-Y"
-        :style="'height:'+(device_info.windowHeight-280)+'px'"
-      >
+      <list>
         <view @tap="clickStore" v-for="item in 10" :key="item">
           <subCard
             title="商家名称"
             text="商家描述"
-            url="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg"
+            url="../../static/images/tmp_sub.jpg"
           ></subCard>
         </view>
-      </scroll-view>
+      </list>
     </view>
   </view>
 </template>
@@ -51,34 +47,14 @@ export default {
     };
   },
   mounted() {
+    this.refreshLocation()
     this.amapPlugin = new amap.AMapWX({
       key: "061ee9bee2b44c57c2448216d1a99776"
     });
     this.amapPlugin.getRegeo({
       success: data => {
         this.addressName = data[0].name;
-        console.log(this.addressName)
-      }
-    });
-    // uni.getLocation({
-    //   type: "gcj02",
-    //   success: function(res) {
-    //     const latitude = res.latitude;
-    //     const longitude = res.longitude;
-    //     uni.openLocation({
-    //       latitude: latitude,
-    //       longitude: longitude,
-    //       success: function(res) {
-    //         console.log(res);
-    //       }
-    //     });
-    //   }
-    // });
-    uni.getLocation({
-      type: "wgs84",
-      success: res => {
-        this.longitude = res.longitude;
-        this.latitude = res.latitude;
+        console.log(data[0].regeocodeData.addressComponent.city)
       }
     });
   },
@@ -102,6 +78,16 @@ export default {
         url: "/pages/select/index"
       });
     },
+    refreshLocation(){
+      uni.getLocation({
+      type: "wgs84",
+      success: res => {
+        console.log("sad")
+        this.longitude = res.longitude;
+        this.latitude = res.latitude;
+      }
+    });
+    },
     selectLocation() {
       uni.chooseLocation({
         success: function(res) {
@@ -119,6 +105,8 @@ export default {
 <style>
 /**header */
 .headerinfo {
+  background: #ffffff;
+  z-index: 2;
   height: 240rpx;
   position: fixed;
   width: 100%;
@@ -128,12 +116,14 @@ export default {
 }
 /**map */
 .map {
+  z-index: 2;
+  background: #ffffff;
   position: fixed;
   top: 240rpx;
   width: 100%;
-  height: 240rpx;
-  margin-top: 10rpx;
-  margin-bottom: 10rpx;
+  height: 260rpx;
+  padding-bottom: 10rpx;
+  padding-top: 10rpx;
 }
 .map > view {
   height: 50rpx;
@@ -150,11 +140,12 @@ export default {
 }
 /**content */
 .foodList-content {
+  z-index: 1;
   position: absolute;
   top: 510rpx;
   width: 100%;
 }
-.list-item {
+/* .list-item {
   height: 140rpx;
   margin-bottom: 20rpx;
   margin-top: 20rpx;
@@ -164,5 +155,5 @@ export default {
   height: 140rpx;
   width: 160rpx;
   border-radius: 10rpx;
-}
+} */
 </style>

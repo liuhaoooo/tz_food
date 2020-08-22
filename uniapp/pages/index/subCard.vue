@@ -52,8 +52,8 @@ export default {
         color: #666
     }
     .card_top>view{
-        padding-left: 14rpx;
         height: 60rpx;
+        text-align: center;
         width: 100%;
         position: absolute;
         bottom: 0;
