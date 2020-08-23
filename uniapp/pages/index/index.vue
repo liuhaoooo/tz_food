@@ -1,12 +1,15 @@
 <template>
   <view>
+    <uni-popup ref="popup" type="dialog" maskClick="false">
+      <uni-popup-dialog mode="base" title="需要地理位置授权才能获取商家" @confirm="toGetAuth"></uni-popup-dialog>
+    </uni-popup>
     <!--header-->
     <view class="headerinfo"></view>
     <!--map-->
     <view class="map">
       <view>
         <uni-icons type="loop" size="20" color="#f37b1d" @tap="refreshLocation"></uni-icons>
-        <view style="flex:1;color:#999;margin-left:10rpx">当前位置：{{addressName}}</view>
+        <view style="flex:1;color:#999;margin-left:10rpx"  @tap="selectLocation">当前位置：{{addressName}}</view>
         <uni-icons type="forward" size="20" color="#f37b1d" @tap="selectLocation"></uni-icons>
       </view>
       <map
@@ -20,11 +23,7 @@
     <view class="foodList-content">
       <list>
         <view @tap="clickStore" v-for="item in 10" :key="item">
-          <subCard
-            title="商家名称"
-            text="商家描述"
-            url="../../static/images/tmp_sub.jpg"
-          ></subCard>
+          <subCard title="商家名称" text="商家描述" url="../../static/images/tmp_sub.jpg"></subCard>
         </view>
       </list>
     </view>
@@ -32,12 +31,22 @@
 </template>
 
 <script>
+import uniPopup from "@/components/uni-popup/uni-popup.vue";
+import uniPopupMessage from "@/components/uni-popup/uni-popup-message.vue";
+import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
 import { mapActions, mapState, mapGetters } from "vuex";
 import uniCard from "@/components/uni-card/uni-card.vue";
 import amap from "../../sdk/amap-wx.js";
 import subCard from "./subCard";
+import { amapKey } from "../../config/config";
 export default {
-  components: { uniCard, subCard },
+  components: {
+    uniCard,
+    subCard,
+    uniPopup,
+    uniPopupMessage,
+    uniPopupDialog
+  },
   data() {
     return {
       latitude: 22.794449,
@@ -46,47 +55,74 @@ export default {
       addressName: ""
     };
   },
+  onShow(){
+    this.get_openid()
+  },
   mounted() {
-    this.refreshLocation()
-    this.amapPlugin = new amap.AMapWX({
-      key: "061ee9bee2b44c57c2448216d1a99776"
-    });
-    this.amapPlugin.getRegeo({
-      success: data => {
-        this.addressName = data[0].name;
-        console.log(data[0].regeocodeData.addressComponent.city)
-      }
-    });
+    this.getAuth();
   },
   computed: {
-    ...mapGetters(["device_info"]),
+    ...mapGetters(["device_info","hasUser"]),
     markers() {
       let marker = Object.assign({}, marker, {
-        latitude: this.latitude.toFixed(8),
-        longitude: this.longitude.toFixed(8),
+        latitude: this.latitude,
+        longitude: this.longitude,
         width: 30,
         height: 30,
-        iconPath: "../../static/images/pos_icon.png"
+        iconPath: this.hasUser?this.hasUser.avatar_url:"../../static/images/pos_icon.png",
+        callout:this.hasUser?{display:"ALWAYS",content:this.hasUser.user_name,color:"#666",fontSize:16}:{}
       });
       let markers = [marker];
       return markers;
     }
   },
   methods: {
+    ...mapActions(["get_openid"]),
+    toGetAuth() {
+      this.getAuth();
+      uni.openSetting({
+        success: res => {
+          if (res.authSetting["scope.userLocation"]) {
+            this.$refs.popup.close();
+            this.refreshLocation();
+          } else {
+          }
+        }
+      });
+    },
+    getAuth() {
+      uni.authorize({
+        scope: "scope.userLocation",
+        success: () => {
+          this.refreshLocation();
+        },
+        fail: () => {
+          this.$refs.popup.open();
+        }
+      });
+    },
+    refreshLocation() {
+      uni.getLocation({
+        type: "wgs84",
+        success: res => {
+          this.longitude = res.longitude;
+          this.latitude = res.latitude;
+        }
+      });
+      this.amapPlugin = new amap.AMapWX({
+        key: amapKey
+      });
+      this.amapPlugin.getRegeo({
+        success: data => {
+          this.addressName = data[0].name;
+          console.log(data[0].regeocodeData.addressComponent.city);
+        }
+      });
+    },
     clickStore() {
       uni.navigateTo({
         url: "/pages/select/index"
       });
-    },
-    refreshLocation(){
-      uni.getLocation({
-      type: "wgs84",
-      success: res => {
-        console.log("sad")
-        this.longitude = res.longitude;
-        this.latitude = res.latitude;
-      }
-    });
     },
     selectLocation() {
       uni.chooseLocation({

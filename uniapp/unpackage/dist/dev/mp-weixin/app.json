@@ -17,5 +17,6 @@
       "desc": "你的位置信息将用于小程序获取商家位置"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap47.json"
 }

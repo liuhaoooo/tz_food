@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "需要验证码进入小程序",
+  "usingComponents": {
+    "password-input": "/components/password-input/password-input",
+    "number-keyboard": "/components/number-keyboard/number-keyboard"
+  }
+}

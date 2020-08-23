@@ -1,0 +1,36 @@
+
+.card_main{
+    position: relative;
+    height:350rpx;
+    border-radius: 18rpx;
+    border: 1rpx solid #ccc;
+    margin-top: 10rpx;
+    margin-bottom: 30rpx;
+    margin-left: 4rpx;
+    margin-right: 4rpx;
+    box-shadow: 0px 1px 2px #00000033;
+}
+.card_main>.card_top{
+    height: 280rpx;
+    background-size: cover;
+    position: relative;
+}
+.card_main>.card_bottom{
+    height: 70rpx;
+    font-size: 30rpx;
+    line-height: 70rpx;
+    padding-left: 14rpx;
+    color: #666
+}
+.card_top>view{
+    height: 60rpx;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background: #575757a6;
+    color:#f3f3f3;
+    font-size: 30rpx;
+    line-height: 60rpx
+}
+

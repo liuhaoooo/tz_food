@@ -80,12 +80,21 @@ const store = new Vuex.Store({
 							uniRequest({
 								url: interfaces.GET_OPENID,
 								data,
-								method: 'post',
+								method: 'POST',
 							}).then(data => {
+								console.log(data)
 								state.commit('SET_OPENID', data.openid)
 								state.commit('HAS_USER', data.hasUser)
 								data.success ? resolve(data) : reject()
 							}).catch(err => reject(err))
+
+							// uniRequest({
+							// 	url: `http://192.168.3.68:8083/food/getopenid`,
+							// 	data:{code:res.code},
+							// 	method: 'GET',
+							// }).then(data => {
+							// 	console.log(data)
+							// }).catch(err => reject(err))
 						}
 					},
 					fail: err => reject(err)
@@ -98,7 +107,7 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.SET_USER,
 					data,
-					method: 'post',
+					method: 'POST',
 				}).then(res => {
 					res.success ? resolve(res) : reject()
 				}).catch(err => reject(err))
@@ -110,7 +119,7 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.GET_FOODLIST,
 					data,
-					method: 'post',
+					method: 'POST',
 				}).then(res => {
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
@@ -122,7 +131,7 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.GET_SELECT_FOOD,
 					data,
-					method: 'post',
+					method: 'POST',
 				}).then(res => {
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
@@ -134,7 +143,7 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.SELECT_FOOD,
 					data,
-					method: 'post',
+					method: 'POST',
 				}).then(res => {
 					res.success ? resolve(res.data) : reject()
 				}).catch(err => reject(err))
@@ -146,7 +155,7 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.CANCEL_SELECT,
 					data,
-					method: 'post',
+					method: 'POST',
 				}).then(res => {
 					res.success ? resolve(res.success) : reject()
 				}).catch(err => reject(err))

@@ -7,6 +7,7 @@ class UserService extends Service {
     async getopenid(url) {
         const { ctx } = this;
         let result = await ctx.curl(url, { dataType: 'json' });
+        console.log(result)
         if (result.status == 200) {
             return result.data.openid;
         } else {

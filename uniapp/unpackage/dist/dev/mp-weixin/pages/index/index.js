@@ -93,6 +93,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  uniPopup: function() {
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 109))
+  },
   uniIcons: function() {
     return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 68))
   }
@@ -170,14 +173,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
 var _vuex = __webpack_require__(/*! vuex */ 8);
 
-var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../sdk/amap-wx.js */ 34));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniCard = function uniCard() {__webpack_require__.e(/*! require.ensure | components/uni-card/uni-card */ "components/uni-card/uni-card").then((function () {return resolve(__webpack_require__(/*! @/components/uni-card/uni-card.vue */ 76));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var subCard = function subCard() {__webpack_require__.e(/*! require.ensure | pages/index/subCard */ "pages/index/subCard").then((function () {return resolve(__webpack_require__(/*! ./subCard */ 83));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../sdk/amap-wx.js */ 34));
 
+var _config = __webpack_require__(/*! ../../config/config */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 109));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 125));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 132));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniCard = function uniCard() {__webpack_require__.e(/*! require.ensure | components/uni-card/uni-card */ "components/uni-card/uni-card").then((function () {return resolve(__webpack_require__(/*! @/components/uni-card/uni-card.vue */ 76));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var subCard = function subCard() {__webpack_require__.e(/*! require.ensure | pages/index/subCard */ "pages/index/subCard").then((function () {return resolve(__webpack_require__(/*! ./subCard */ 83));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
-  components: { uniCard: uniCard, subCard: subCard },
+  components: {
+    uniCard: uniCard,
+    subCard: subCard,
+    uniPopup: uniPopup,
+    uniPopupMessage: uniPopupMessage,
+    uniPopupDialog: uniPopupDialog },
+
   data: function data() {
     return {
       latitude: 22.794449,
@@ -186,53 +194,70 @@ var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../sdk/amap-wx.j
       addressName: "" };
 
   },
-  mounted: function mounted() {var _this = this;
-    this.amapPlugin = new _amapWx.default.AMapWX({
-      key: "061ee9bee2b44c57c2448216d1a99776" });
-
-    this.amapPlugin.getRegeo({
-      success: function success(data) {
-        _this.addressName = data[0].name;
-        console.log(_this.addressName);
-      } });
-
-    // uni.getLocation({
-    //   type: "gcj02",
-    //   success: function(res) {
-    //     const latitude = res.latitude;
-    //     const longitude = res.longitude;
-    //     uni.openLocation({
-    //       latitude: latitude,
-    //       longitude: longitude,
-    //       success: function(res) {
-    //         console.log(res);
-    //       }
-    //     });
-    //   }
-    // });
-    uni.getLocation({
-      type: "wgs84",
-      success: function success(res) {
-        _this.longitude = res.longitude;
-        _this.latitude = res.latitude;
-      } });
-
+  onShow: function onShow() {
+    this.get_openid();
+  },
+  mounted: function mounted() {
+    this.getAuth();
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(["device_info"]), {
+  (0, _vuex.mapGetters)(["device_info", "hasUser"]), {
     markers: function markers() {
       var marker = Object.assign({}, marker, {
-        latitude: this.latitude.toFixed(8),
-        longitude: this.longitude.toFixed(8),
+        latitude: this.latitude,
+        longitude: this.longitude,
         width: 30,
         height: 30,
-        iconPath: "../../static/images/pos_icon.png" });
+        iconPath: this.hasUser ? this.hasUser.avatar_url : "../../static/images/pos_icon.png",
+        callout: this.hasUser ? { display: "ALWAYS", content: this.hasUser.user_name, color: "#666", fontSize: 16 } : {} });
 
       var markers = [marker];
       return markers;
     } }),
 
-  methods: {
+  methods: _objectSpread({},
+  (0, _vuex.mapActions)(["get_openid"]), {
+    toGetAuth: function toGetAuth() {var _this = this;
+      this.getAuth();
+      uni.openSetting({
+        success: function success(res) {
+          if (res.authSetting["scope.userLocation"]) {
+            _this.$refs.popup.close();
+            _this.refreshLocation();
+          } else {
+          }
+        } });
+
+    },
+    getAuth: function getAuth() {var _this2 = this;
+      uni.authorize({
+        scope: "scope.userLocation",
+        success: function success() {
+          _this2.refreshLocation();
+        },
+        fail: function fail() {
+          _this2.$refs.popup.open();
+        } });
+
+    },
+    refreshLocation: function refreshLocation() {var _this3 = this;
+      uni.getLocation({
+        type: "wgs84",
+        success: function success(res) {
+          _this3.longitude = res.longitude;
+          _this3.latitude = res.latitude;
+        } });
+
+      this.amapPlugin = new _amapWx.default.AMapWX({
+        key: _config.amapKey });
+
+      this.amapPlugin.getRegeo({
+        success: function success(data) {
+          _this3.addressName = data[0].name;
+          console.log(data[0].regeocodeData.addressComponent.city);
+        } });
+
+    },
     clickStore: function clickStore() {
       uni.navigateTo({
         url: "/pages/select/index" });
@@ -247,7 +272,7 @@ var _amapWx = _interopRequireDefault(__webpack_require__(/*! ../../sdk/amap-wx.j
           console.log("经度：" + res.longitude);
         } });
 
-    } } };exports.default = _default;
+    } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
