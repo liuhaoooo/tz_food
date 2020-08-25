@@ -6,7 +6,6 @@ uniRequest.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlen
 // 请求拦截
 uniRequest.interceptors.request.use(
     request => {
-        console.log(request)
         return request;
     },
     err => {
@@ -18,6 +17,7 @@ uniRequest.interceptors.request.use(
 uniRequest.interceptors.response.use(response => {
     return Promise.resolve(response.data);
 }, error => {
+    console.log('请求失败');
     return Promise.reject(error);
 });
 

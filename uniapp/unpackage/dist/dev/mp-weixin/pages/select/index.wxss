@@ -61,22 +61,30 @@
 
 
 
+
+
+
+
+
+
+
+
 /**header */
 .headerinfo {
-  height: 260rpx;
-  position: fixed;
-  width: 100%;
-  top: 0;
+    height: 260rpx;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 .headerinfo ._img {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 /**content */
 .foodList-content {
-  width: 100%;
-  position: fixed;
-  top: 270rpx;
-  bottom: 60rpx;
+    width: 100%;
+    position: fixed;
+    top: 270rpx;
+    bottom: 60rpx;
 }
 

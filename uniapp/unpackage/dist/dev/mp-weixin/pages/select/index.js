@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   wucTab: function() {
-    return __webpack_require__.e(/*! import() | components/wuc-tab/wuc-tab */ "components/wuc-tab/wuc-tab").then(__webpack_require__.bind(null, /*! @/components/wuc-tab/wuc-tab.vue */ 90))
+    return __webpack_require__.e(/*! import() | components/wuc-tab/wuc-tab */ "components/wuc-tab/wuc-tab").then(__webpack_require__.bind(null, /*! @/components/wuc-tab/wuc-tab.vue */ 113))
   }
 }
 var render = function() {
@@ -171,14 +171,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var WucTab = function WucTab() {__webpack_require__.e(/*! require.ensure | components/wuc-tab/wuc-tab */ "components/wuc-tab/wuc-tab").then((function () {return resolve(__webpack_require__(/*! @/components/wuc-tab/wuc-tab.vue */ 113));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foodMenu = function foodMenu() {__webpack_require__.e(/*! require.ensure | pages/select/foodMenu */ "pages/select/foodMenu").then((function () {return resolve(__webpack_require__(/*! ./foodMenu */ 120));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var evaluate = function evaluate() {__webpack_require__.e(/*! require.ensure | pages/select/evaluate */ "pages/select/evaluate").then((function () {return resolve(__webpack_require__(/*! ./evaluate */ 127));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
 
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var WucTab = function WucTab() {__webpack_require__.e(/*! require.ensure | components/wuc-tab/wuc-tab */ "components/wuc-tab/wuc-tab").then((function () {return resolve(__webpack_require__(/*! @/components/wuc-tab/wuc-tab.vue */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foodMenu = function foodMenu() {__webpack_require__.e(/*! require.ensure | pages/select/foodMenu */ "pages/select/foodMenu").then((function () {return resolve(__webpack_require__(/*! ./foodMenu */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var evaluate = function evaluate() {__webpack_require__.e(/*! require.ensure | pages/select/evaluate */ "pages/select/evaluate").then((function () {return resolve(__webpack_require__(/*! ./evaluate */ 104));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
     WucTab: WucTab,
@@ -190,18 +187,29 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function ownKeys(object, enumerab
 
   data: function data() {
     return {
+      busid: 0,
       TabCur: 0,
-      tabList: [{ name: "菜单" }, { name: "评价" }] };
+      tabList: [{
+        name: "菜单" },
+      {
+        name: "评价" }] };
+
 
   },
-  methods: {
+  onLoad: function onLoad(option) {
+    this.busid = option.id;
+  },
+  methods: _objectSpread({},
+  (0, _vuex.mapActions)(["set_user", "get_foodlist", "select_food"]), {
     tabChange: function tabChange(index) {
       this.TabCur = index;
     },
     swiperChange: function swiperChange(e) {var
-      current = e.target.current;
+
+      current =
+      e.target.current;
       this.TabCur = current;
-    } } };exports.default = _default;
+    } }) };exports.default = _default;
 
 /***/ }),
 

@@ -12,12 +12,16 @@ const store = new Vuex.Store({
 	state: {
 		isAuth: false,
 		openid: "",
-		hasUser: null,
-		device_info: {}
+		userData: {},
+		device_info: {},
+		location: ""
 	},
 	getters: {
 		device_info(state) {
 			return state.device_info
+		},
+		location(state) {
+			return state.location == "广州市" ? 0 : 1
 		},
 		isAuth(state) {
 			return state.isAuth
@@ -25,11 +29,14 @@ const store = new Vuex.Store({
 		openid(state) {
 			return state.openid
 		},
-		hasUser(state) {
-			return state.hasUser
+		userData(state) {
+			return state.userData
 		},
 	},
 	mutations: {
+		SET_LOCATION(state, data) {
+			state.location = data
+		},
 		SET_INFO(state, data) {
 			state.device_info = data
 		},
@@ -42,8 +49,8 @@ const store = new Vuex.Store({
 				uni.setStorageSync('openid', data);
 			} catch (e) { }
 		},
-		HAS_USER(state, data) {
-			state.hasUser = data
+		USER_DATA(state, data) {
+			state.userData = data
 		}
 	},
 	actions: {
@@ -60,7 +67,6 @@ const store = new Vuex.Store({
 						version: res.version,
 						platform: res.platform
 					}
-					console.log(res)
 					state.commit('SET_INFO', info)
 				}
 			});
@@ -71,30 +77,18 @@ const store = new Vuex.Store({
 				uni.login({
 					success: res => {
 						if (res.code) {
-							console.log(res.code)
 							let data = {
-								appid,
-								secret,
 								code: res.code
 							};
 							uniRequest({
 								url: interfaces.GET_OPENID,
 								data,
-								method: 'POST',
-							}).then(data => {
-								console.log(data)
-								state.commit('SET_OPENID', data.openid)
-								state.commit('HAS_USER', data.hasUser)
-								data.success ? resolve(data) : reject()
+								method: 'GET',
+							}).then(res => {
+								state.commit('SET_OPENID', res.data.openid)
+								state.commit('USER_DATA', res.data)
+								resolve(res.data)
 							}).catch(err => reject(err))
-
-							// uniRequest({
-							// 	url: `http://192.168.3.68:8083/food/getopenid`,
-							// 	data:{code:res.code},
-							// 	method: 'GET',
-							// }).then(data => {
-							// 	console.log(data)
-							// }).catch(err => reject(err))
 						}
 					},
 					fail: err => reject(err)
@@ -107,9 +101,21 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.SET_USER,
 					data,
-					method: 'POST',
+					method: 'GET',
 				}).then(res => {
-					res.success ? resolve(res) : reject()
+					resolve(res)
+				}).catch(err => reject(err))
+			})
+		},
+		//获取商家
+		get_buslist(state, data) {
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.GET_BUS,
+					data,
+					method: 'GET',
+				}).then(res => {
+					resolve(res.data)
 				}).catch(err => reject(err))
 			})
 		},
@@ -119,9 +125,21 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.GET_FOODLIST,
 					data,
-					method: 'POST',
+					method: 'GET',
 				}).then(res => {
-					res.success ? resolve(res.data) : reject()
+					resolve(res.data)
+				}).catch(err => reject(err))
+			})
+		},
+		//点餐
+		select_food(state, data) {
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.SELECT_FOOD,
+					data,
+					method: 'GET',
+				}).then(res => {
+					resolve(res.data)
 				}).catch(err => reject(err))
 			})
 		},
@@ -131,33 +149,21 @@ const store = new Vuex.Store({
 				uniRequest({
 					url: interfaces.GET_SELECT_FOOD,
 					data,
-					method: 'POST',
+					method: 'GET',
 				}).then(res => {
-					res.success ? resolve(res.data) : reject()
+					resolve(res.data)
 				}).catch(err => reject(err))
 			})
 		},
-		//选择食物
-		select_food(state, data) {
-			return new Promise((resolve, reject) => {
-				uniRequest({
-					url: interfaces.SELECT_FOOD,
-					data,
-					method: 'POST',
-				}).then(res => {
-					res.success ? resolve(res.data) : reject()
-				}).catch(err => reject(err))
-			})
-		},
-		//取消已选择的食物
+		//取消点餐
 		cancel_select(state, data) {
 			return new Promise((resolve, reject) => {
 				uniRequest({
 					url: interfaces.CANCEL_SELECT,
 					data,
-					method: 'POST',
+					method: 'GET',
 				}).then(res => {
-					res.success ? resolve(res.success) : reject()
+					resolve(res.data)
 				}).catch(err => reject(err))
 			})
 		}

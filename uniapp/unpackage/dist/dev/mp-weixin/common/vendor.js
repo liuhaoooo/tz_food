@@ -1613,12 +1613,16 @@ var store = new _vuex.default.Store({
   state: {
     isAuth: false,
     openid: "",
-    hasUser: null,
-    device_info: {} },
+    userData: {},
+    device_info: {},
+    location: "" },
 
   getters: {
     device_info: function device_info(state) {
       return state.device_info;
+    },
+    location: function location(state) {
+      return state.location == "广州市" ? 0 : 1;
     },
     isAuth: function isAuth(state) {
       return state.isAuth;
@@ -1626,11 +1630,14 @@ var store = new _vuex.default.Store({
     openid: function openid(state) {
       return state.openid;
     },
-    hasUser: function hasUser(state) {
-      return state.hasUser;
+    userData: function userData(state) {
+      return state.userData;
     } },
 
   mutations: {
+    SET_LOCATION: function SET_LOCATION(state, data) {
+      state.location = data;
+    },
     SET_INFO: function SET_INFO(state, data) {
       state.device_info = data;
     },
@@ -1643,8 +1650,8 @@ var store = new _vuex.default.Store({
         uni.setStorageSync('openid', data);
       } catch (e) {}
     },
-    HAS_USER: function HAS_USER(state, data) {
-      state.hasUser = data;
+    USER_DATA: function USER_DATA(state, data) {
+      state.userData = data;
     } },
 
   actions: {
@@ -1661,7 +1668,6 @@ var store = new _vuex.default.Store({
             version: res.version,
             platform: res.platform };
 
-          console.log(res);
           state.commit('SET_INFO', info);
         } });
 
@@ -1672,30 +1678,18 @@ var store = new _vuex.default.Store({
         uni.login({
           success: function success(res) {
             if (res.code) {
-              console.log(res.code);
               var _data = {
-                appid: _config.appid,
-                secret: _config.secret,
                 code: res.code };
 
               (0, _request.default)({
                 url: _config.interfaces.GET_OPENID,
                 data: _data,
-                method: 'POST' }).
-              then(function (data) {
-                console.log(data);
-                state.commit('SET_OPENID', data.openid);
-                state.commit('HAS_USER', data.hasUser);
-                data.success ? resolve(data) : reject();
+                method: 'GET' }).
+              then(function (res) {
+                state.commit('SET_OPENID', res.data.openid);
+                state.commit('USER_DATA', res.data);
+                resolve(res.data);
               }).catch(function (err) {return reject(err);});
-
-              // uniRequest({
-              // 	url: `http://192.168.3.68:8083/food/getopenid`,
-              // 	data:{code:res.code},
-              // 	method: 'GET',
-              // }).then(data => {
-              // 	console.log(data)
-              // }).catch(err => reject(err))
             }
           },
           fail: function fail(err) {return reject(err);} });
@@ -1708,9 +1702,21 @@ var store = new _vuex.default.Store({
         (0, _request.default)({
           url: _config.interfaces.SET_USER,
           data: data,
-          method: 'POST' }).
+          method: 'GET' }).
         then(function (res) {
-          res.success ? resolve(res) : reject();
+          resolve(res);
+        }).catch(function (err) {return reject(err);});
+      });
+    },
+    //获取商家
+    get_buslist: function get_buslist(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.GET_BUS,
+          data: data,
+          method: 'GET' }).
+        then(function (res) {
+          resolve(res.data);
         }).catch(function (err) {return reject(err);});
       });
     },
@@ -1720,9 +1726,21 @@ var store = new _vuex.default.Store({
         (0, _request.default)({
           url: _config.interfaces.GET_FOODLIST,
           data: data,
-          method: 'POST' }).
+          method: 'GET' }).
         then(function (res) {
-          res.success ? resolve(res.data) : reject();
+          resolve(res.data);
+        }).catch(function (err) {return reject(err);});
+      });
+    },
+    //点餐
+    select_food: function select_food(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.SELECT_FOOD,
+          data: data,
+          method: 'GET' }).
+        then(function (res) {
+          resolve(res.data);
         }).catch(function (err) {return reject(err);});
       });
     },
@@ -1732,33 +1750,21 @@ var store = new _vuex.default.Store({
         (0, _request.default)({
           url: _config.interfaces.GET_SELECT_FOOD,
           data: data,
-          method: 'POST' }).
+          method: 'GET' }).
         then(function (res) {
-          res.success ? resolve(res.data) : reject();
+          resolve(res.data);
         }).catch(function (err) {return reject(err);});
       });
     },
-    //选择食物
-    select_food: function select_food(state, data) {
-      return new Promise(function (resolve, reject) {
-        (0, _request.default)({
-          url: _config.interfaces.SELECT_FOOD,
-          data: data,
-          method: 'POST' }).
-        then(function (res) {
-          res.success ? resolve(res.data) : reject();
-        }).catch(function (err) {return reject(err);});
-      });
-    },
-    //取消已选择的食物
+    //取消点餐
     cancel_select: function cancel_select(state, data) {
       return new Promise(function (resolve, reject) {
         (0, _request.default)({
           url: _config.interfaces.CANCEL_SELECT,
           data: data,
-          method: 'POST' }).
+          method: 'GET' }).
         then(function (res) {
-          res.success ? resolve(res.success) : reject();
+          resolve(res.data);
         }).catch(function (err) {return reject(err);});
       });
     } } });var _default =
@@ -1786,7 +1792,6 @@ _uniRequest.default.defaults.headers.post['Content-Type'] = 'application/x-www-f
 // 请求拦截
 _uniRequest.default.interceptors.request.use(
 function (request) {
-  console.log(request);
   return request;
 },
 function (err) {
@@ -1798,77 +1803,12 @@ function (err) {
 _uniRequest.default.interceptors.response.use(function (response) {
   return Promise.resolve(response.data);
 }, function (error) {
+  console.log('请求失败');
   return Promise.reject(error);
 });var _default =
 
 
 _uniRequest.default;exports.default = _default;
-
-/***/ }),
-
-/***/ 114:
-/*!***********************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 115));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-// 定义 type 类型:弹出类型：top/bottom/center
-var config = {
-  // 顶部弹出
-  top: 'top',
-  // 底部弹出
-  bottom: 'bottom',
-  // 居中弹出
-  center: 'center',
-  // 消息提示
-  message: 'top',
-  // 对话框
-  dialog: 'center',
-  // 分享
-  share: 'bottom' };var _default =
-
-
-{
-  data: function data() {
-    return {
-      config: config };
-
-  },
-  mixins: [_message.default] };exports.default = _default;
-
-/***/ }),
-
-/***/ 115:
-/*!*************************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  created: function created() {
-    if (this.type === 'message') {
-      // 不显示遮罩
-      this.maskShow = false;
-      // 获取子组件对象
-      this.childrenMsg = null;
-    }
-  },
-  methods: {
-    customOpen: function customOpen() {
-      if (this.childrenMsg) {
-        this.childrenMsg.open();
-      }
-    },
-    customClose: function customClose() {
-      if (this.childrenMsg) {
-        this.childrenMsg.close();
-      }
-    } } };exports.default = _default;
 
 /***/ }),
 
@@ -2306,16 +2246,24 @@ defaults;exports.default = _default;
 var appid = "wx555f1a207ea3e072";
 var amapKey = "061ee9bee2b44c57c2448216d1a99776";
 var secret = "97a6c883303a59ffb45b8f28da571409";
-var baseURL = 'http://liuhaooo.top:6003/api/';
+// const baseURL = 'http://liuhaooo.top:6003/api/'
+var baseURL = 'http://192.168.3.68:8081/api/';
 // const baseURL = 'http://127.0.0.1:8848/api/'
 var interfaces = {
+  // GET_OPENID:'getopenid',//获取用户openid
+  // SET_USER:'setUser',//设置用户
+  // GET_FOODLIST:'getFoodList',//获取菜单
+  // SELECT_FOOD:'selectFood',
+  // GET_SELECT_FOOD:'getSelectFood',
+  // CANCEL_SELECT:'cancelSelect',
   GET_OPENID: 'getopenid', //获取用户openid
-  SET_USER: 'setUser', //设置用户
-  GET_FOODLIST: 'getFoodList', //获取菜单
-  SELECT_FOOD: 'selectFood',
-  GET_SELECT_FOOD: 'getSelectFood',
-  CANCEL_SELECT: 'cancelSelect' };
-
+  SET_USER: 'saveuser', //设置用户
+  GET_BUS: 'getbuslist', //商家列表查询
+  GET_FOODLIST: 'getfoodlist', //获取菜单
+  SELECT_FOOD: 'order', //点餐
+  GET_SELECT_FOOD: 'getorderlist', //获取已选菜单
+  CANCEL_SELECT: 'cancel' //取消点餐
+};
 module.exports = {
   interfaces: interfaces,
   appid: appid,
@@ -8428,143 +8376,67 @@ module.exports = "/static/images/tmp.png";
 
 /***/ 73:
 /*!***********************************************************************!*\
-  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-icons/icons.js ***!
+  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/popup.js ***!
   \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _message = _interopRequireDefault(__webpack_require__(/*! ./message.js */ 74));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+// 定义 type 类型:弹出类型：top/bottom/center
+var config = {
+  // 顶部弹出
+  top: 'top',
+  // 底部弹出
+  bottom: 'bottom',
+  // 居中弹出
+  center: 'center',
+  // 消息提示
+  message: 'top',
+  // 对话框
+  dialog: 'center',
+  // 分享
+  share: 'bottom' };var _default =
+
+
+{
+  data: function data() {
+    return {
+      config: config };
+
+  },
+  mixins: [_message.default] };exports.default = _default;
+
+/***/ }),
+
+/***/ 74:
+/*!*************************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-popup/message.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
-  "pulldown": "\uE588",
-  "refreshempty": "\uE461",
-  "back": "\uE471",
-  "forward": "\uE470",
-  "more": "\uE507",
-  "more-filled": "\uE537",
-  "scan": "\uE612",
-  "qq": "\uE264",
-  "weibo": "\uE260",
-  "weixin": "\uE261",
-  "pengyouquan": "\uE262",
-  "loop": "\uE565",
-  "refresh": "\uE407",
-  "refresh-filled": "\uE437",
-  "arrowthindown": "\uE585",
-  "arrowthinleft": "\uE586",
-  "arrowthinright": "\uE587",
-  "arrowthinup": "\uE584",
-  "undo-filled": "\uE7D6",
-  "undo": "\uE406",
-  "redo": "\uE405",
-  "redo-filled": "\uE7D9",
-  "bars": "\uE563",
-  "chatboxes": "\uE203",
-  "camera": "\uE301",
-  "chatboxes-filled": "\uE233",
-  "camera-filled": "\uE7EF",
-  "cart-filled": "\uE7F4",
-  "cart": "\uE7F5",
-  "checkbox-filled": "\uE442",
-  "checkbox": "\uE7FA",
-  "arrowleft": "\uE582",
-  "arrowdown": "\uE581",
-  "arrowright": "\uE583",
-  "smallcircle-filled": "\uE801",
-  "arrowup": "\uE580",
-  "circle": "\uE411",
-  "eye-filled": "\uE568",
-  "eye-slash-filled": "\uE822",
-  "eye-slash": "\uE823",
-  "eye": "\uE824",
-  "flag-filled": "\uE825",
-  "flag": "\uE508",
-  "gear-filled": "\uE532",
-  "reload": "\uE462",
-  "gear": "\uE502",
-  "hand-thumbsdown-filled": "\uE83B",
-  "hand-thumbsdown": "\uE83C",
-  "hand-thumbsup-filled": "\uE83D",
-  "heart-filled": "\uE83E",
-  "hand-thumbsup": "\uE83F",
-  "heart": "\uE840",
-  "home": "\uE500",
-  "info": "\uE504",
-  "home-filled": "\uE530",
-  "info-filled": "\uE534",
-  "circle-filled": "\uE441",
-  "chat-filled": "\uE847",
-  "chat": "\uE263",
-  "mail-open-filled": "\uE84D",
-  "email-filled": "\uE231",
-  "mail-open": "\uE84E",
-  "email": "\uE201",
-  "checkmarkempty": "\uE472",
-  "list": "\uE562",
-  "locked-filled": "\uE856",
-  "locked": "\uE506",
-  "map-filled": "\uE85C",
-  "map-pin": "\uE85E",
-  "map-pin-ellipse": "\uE864",
-  "map": "\uE364",
-  "minus-filled": "\uE440",
-  "mic-filled": "\uE332",
-  "minus": "\uE410",
-  "micoff": "\uE360",
-  "mic": "\uE302",
-  "clear": "\uE434",
-  "smallcircle": "\uE868",
-  "close": "\uE404",
-  "closeempty": "\uE460",
-  "paperclip": "\uE567",
-  "paperplane": "\uE503",
-  "paperplane-filled": "\uE86E",
-  "person-filled": "\uE131",
-  "contact-filled": "\uE130",
-  "person": "\uE101",
-  "contact": "\uE100",
-  "images-filled": "\uE87A",
-  "phone": "\uE200",
-  "images": "\uE87B",
-  "image": "\uE363",
-  "image-filled": "\uE877",
-  "location-filled": "\uE333",
-  "location": "\uE303",
-  "plus-filled": "\uE439",
-  "plus": "\uE409",
-  "plusempty": "\uE468",
-  "help-filled": "\uE535",
-  "help": "\uE505",
-  "navigate-filled": "\uE884",
-  "navigate": "\uE501",
-  "mic-slash-filled": "\uE892",
-  "search": "\uE466",
-  "settings": "\uE560",
-  "sound": "\uE590",
-  "sound-filled": "\uE8A1",
-  "spinner-cycle": "\uE465",
-  "download-filled": "\uE8A4",
-  "personadd-filled": "\uE132",
-  "videocam-filled": "\uE8AF",
-  "personadd": "\uE102",
-  "upload": "\uE402",
-  "upload-filled": "\uE8B1",
-  "starhalf": "\uE463",
-  "star-filled": "\uE438",
-  "star": "\uE408",
-  "trash": "\uE401",
-  "phone-filled": "\uE230",
-  "compose": "\uE400",
-  "videocam": "\uE300",
-  "trash-filled": "\uE8DC",
-  "download": "\uE403",
-  "chatbubble-filled": "\uE232",
-  "chatbubble": "\uE202",
-  "cloud-download": "\uE8E4",
-  "cloud-upload-filled": "\uE8E5",
-  "cloud-upload": "\uE8E6",
-  "cloud-download-filled": "\uE8E9",
-  "headphones": "\uE8BF",
-  "shop": "\uE609" };exports.default = _default;
+  created: function created() {
+    if (this.type === 'message') {
+      // 不显示遮罩
+      this.maskShow = false;
+      // 获取子组件对象
+      this.childrenMsg = null;
+    }
+  },
+  methods: {
+    customOpen: function customOpen() {
+      if (this.childrenMsg) {
+        this.childrenMsg.open();
+      }
+    },
+    customClose: function customClose() {
+      if (this.childrenMsg) {
+        this.childrenMsg.close();
+      }
+    } } };exports.default = _default;
 
 /***/ }),
 
@@ -9516,6 +9388,148 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
+
+/***/ }),
+
+/***/ 82:
+/*!***********************************************************************!*\
+  !*** C:/Users/1/Desktop/tz_food/uniapp/components/uni-icons/icons.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  "pulldown": "\uE588",
+  "refreshempty": "\uE461",
+  "back": "\uE471",
+  "forward": "\uE470",
+  "more": "\uE507",
+  "more-filled": "\uE537",
+  "scan": "\uE612",
+  "qq": "\uE264",
+  "weibo": "\uE260",
+  "weixin": "\uE261",
+  "pengyouquan": "\uE262",
+  "loop": "\uE565",
+  "refresh": "\uE407",
+  "refresh-filled": "\uE437",
+  "arrowthindown": "\uE585",
+  "arrowthinleft": "\uE586",
+  "arrowthinright": "\uE587",
+  "arrowthinup": "\uE584",
+  "undo-filled": "\uE7D6",
+  "undo": "\uE406",
+  "redo": "\uE405",
+  "redo-filled": "\uE7D9",
+  "bars": "\uE563",
+  "chatboxes": "\uE203",
+  "camera": "\uE301",
+  "chatboxes-filled": "\uE233",
+  "camera-filled": "\uE7EF",
+  "cart-filled": "\uE7F4",
+  "cart": "\uE7F5",
+  "checkbox-filled": "\uE442",
+  "checkbox": "\uE7FA",
+  "arrowleft": "\uE582",
+  "arrowdown": "\uE581",
+  "arrowright": "\uE583",
+  "smallcircle-filled": "\uE801",
+  "arrowup": "\uE580",
+  "circle": "\uE411",
+  "eye-filled": "\uE568",
+  "eye-slash-filled": "\uE822",
+  "eye-slash": "\uE823",
+  "eye": "\uE824",
+  "flag-filled": "\uE825",
+  "flag": "\uE508",
+  "gear-filled": "\uE532",
+  "reload": "\uE462",
+  "gear": "\uE502",
+  "hand-thumbsdown-filled": "\uE83B",
+  "hand-thumbsdown": "\uE83C",
+  "hand-thumbsup-filled": "\uE83D",
+  "heart-filled": "\uE83E",
+  "hand-thumbsup": "\uE83F",
+  "heart": "\uE840",
+  "home": "\uE500",
+  "info": "\uE504",
+  "home-filled": "\uE530",
+  "info-filled": "\uE534",
+  "circle-filled": "\uE441",
+  "chat-filled": "\uE847",
+  "chat": "\uE263",
+  "mail-open-filled": "\uE84D",
+  "email-filled": "\uE231",
+  "mail-open": "\uE84E",
+  "email": "\uE201",
+  "checkmarkempty": "\uE472",
+  "list": "\uE562",
+  "locked-filled": "\uE856",
+  "locked": "\uE506",
+  "map-filled": "\uE85C",
+  "map-pin": "\uE85E",
+  "map-pin-ellipse": "\uE864",
+  "map": "\uE364",
+  "minus-filled": "\uE440",
+  "mic-filled": "\uE332",
+  "minus": "\uE410",
+  "micoff": "\uE360",
+  "mic": "\uE302",
+  "clear": "\uE434",
+  "smallcircle": "\uE868",
+  "close": "\uE404",
+  "closeempty": "\uE460",
+  "paperclip": "\uE567",
+  "paperplane": "\uE503",
+  "paperplane-filled": "\uE86E",
+  "person-filled": "\uE131",
+  "contact-filled": "\uE130",
+  "person": "\uE101",
+  "contact": "\uE100",
+  "images-filled": "\uE87A",
+  "phone": "\uE200",
+  "images": "\uE87B",
+  "image": "\uE363",
+  "image-filled": "\uE877",
+  "location-filled": "\uE333",
+  "location": "\uE303",
+  "plus-filled": "\uE439",
+  "plus": "\uE409",
+  "plusempty": "\uE468",
+  "help-filled": "\uE535",
+  "help": "\uE505",
+  "navigate-filled": "\uE884",
+  "navigate": "\uE501",
+  "mic-slash-filled": "\uE892",
+  "search": "\uE466",
+  "settings": "\uE560",
+  "sound": "\uE590",
+  "sound-filled": "\uE8A1",
+  "spinner-cycle": "\uE465",
+  "download-filled": "\uE8A4",
+  "personadd-filled": "\uE132",
+  "videocam-filled": "\uE8AF",
+  "personadd": "\uE102",
+  "upload": "\uE402",
+  "upload-filled": "\uE8B1",
+  "starhalf": "\uE463",
+  "star-filled": "\uE438",
+  "star": "\uE408",
+  "trash": "\uE401",
+  "phone-filled": "\uE230",
+  "compose": "\uE400",
+  "videocam": "\uE300",
+  "trash-filled": "\uE8DC",
+  "download": "\uE403",
+  "chatbubble-filled": "\uE232",
+  "chatbubble": "\uE202",
+  "cloud-download": "\uE8E4",
+  "cloud-upload-filled": "\uE8E5",
+  "cloud-upload": "\uE8E6",
+  "cloud-download-filled": "\uE8E9",
+  "headphones": "\uE8BF",
+  "shop": "\uE609" };exports.default = _default;
 
 /***/ }),
 
