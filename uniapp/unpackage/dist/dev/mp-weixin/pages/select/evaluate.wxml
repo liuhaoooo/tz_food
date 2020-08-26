@@ -1,1 +1,1 @@
-<view>暂无评价</view>
+<view><xw-empty vue-id="fdb4f2fa-1" isShow="{{true}}" text="暂无数据" textColor="#777777" bind:__l="__l"></xw-empty></view>

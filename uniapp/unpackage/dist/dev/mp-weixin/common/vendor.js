@@ -760,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1686,6 +1686,7 @@ var store = new _vuex.default.Store({
                 data: _data,
                 method: 'GET' }).
               then(function (res) {
+                console.log(res.data);
                 state.commit('SET_OPENID', res.data.openid);
                 state.commit('USER_DATA', res.data);
                 resolve(res.data);
@@ -1740,6 +1741,14 @@ var store = new _vuex.default.Store({
           data: data,
           method: 'GET' }).
         then(function (res) {
+          if (res.code == -2) {
+            uni.showToast({
+              title: "你已经点过餐了",
+              icon: "none",
+              duration: 1000 });
+
+            reject();
+          }
           resolve(res.data);
         }).catch(function (err) {return reject(err);});
       });
@@ -1764,7 +1773,7 @@ var store = new _vuex.default.Store({
           data: data,
           method: 'GET' }).
         then(function (res) {
-          resolve(res.data);
+          res.code == 0 && resolve(res);
         }).catch(function (err) {return reject(err);});
       });
     } } });var _default =
@@ -1784,7 +1793,7 @@ store;exports.default = _default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniRequest = _interopRequireDefault(__webpack_require__(/*! uni-request */ 12));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniRequest = _interopRequireDefault(__webpack_require__(/*! uni-request */ 12));
 var _config = __webpack_require__(/*! ../config/config */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 _uniRequest.default.defaults.baseURL = _config.baseURL;
@@ -1795,7 +1804,11 @@ function (request) {
   return request;
 },
 function (err) {
-  console.log('请求失败');
+  uni.showToast({
+    title: "请求失败",
+    icon: "none",
+    duration: 1000 });
+
   return Promise.reject(err);
 });
 
@@ -1803,12 +1816,17 @@ function (err) {
 _uniRequest.default.interceptors.response.use(function (response) {
   return Promise.resolve(response.data);
 }, function (error) {
-  console.log('请求失败');
+  uni.showToast({
+    title: "请求失败",
+    icon: "none",
+    duration: 1000 });
+
   return Promise.reject(error);
 });var _default =
 
 
 _uniRequest.default;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -2247,7 +2265,8 @@ var appid = "wx555f1a207ea3e072";
 var amapKey = "061ee9bee2b44c57c2448216d1a99776";
 var secret = "97a6c883303a59ffb45b8f28da571409";
 // const baseURL = 'http://liuhaooo.top:6003/api/'
-var baseURL = 'http://192.168.3.68:8081/api/';
+// const baseURL = 'http://test.wifi.gztozed.com:8081/api'
+var baseURL = 'https://tzeat.cwmpd.com:8443/api/';
 // const baseURL = 'http://127.0.0.1:8848/api/'
 var interfaces = {
   // GET_OPENID:'getopenid',//获取用户openid
@@ -7797,7 +7816,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7818,14 +7837,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7910,7 +7929,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));

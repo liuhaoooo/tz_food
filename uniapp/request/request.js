@@ -9,7 +9,11 @@ uniRequest.interceptors.request.use(
         return request;
     },
     err => {
-        console.log('请求失败');
+        uni.showToast({
+            title: "请求失败",
+            icon: "none",
+            duration: 1000
+        });
         return Promise.reject(err);
     });
 
@@ -17,7 +21,11 @@ uniRequest.interceptors.request.use(
 uniRequest.interceptors.response.use(response => {
     return Promise.resolve(response.data);
 }, error => {
-    console.log('请求失败');
+    uni.showToast({
+        title: "请求失败",
+        icon: "none",
+        duration: 1000
+    });
     return Promise.reject(error);
 });
 

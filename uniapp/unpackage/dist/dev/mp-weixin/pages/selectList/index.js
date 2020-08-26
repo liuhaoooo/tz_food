@@ -193,7 +193,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _createForOfIteratorHelp
   onLoad: function onLoad() {
     clearInterval(this.timer);
     this.disable = true;
-    this.countdown(10);
+    this.countdown(5);
     this.select_foodlist = [];
     this.offset = 0;
     this.getData();
@@ -210,12 +210,10 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _createForOfIteratorHelp
   methods: _objectSpread({},
   (0, _vuex.mapActions)(['get_select_food', 'cancel_select']), {
     getData: function getData() {var _this = this;
-      console.log(this.location);
       this.get_select_food({
         id: "",
         area: this.location }).
-      then(function (res) {
-        console.log(res);var _iterator = _createForOfIteratorHelper(
+      then(function (res) {var _iterator = _createForOfIteratorHelper(
         res),_step;try {for (_iterator.s(); !(_step = _iterator.n()).done;) {var item = _step.value;
             _this.select_foodlist.push(item);
           }} catch (err) {_iterator.e(err);} finally {_iterator.f();}

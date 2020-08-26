@@ -74,7 +74,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  xwEmpty: function() {
+    return __webpack_require__.e(/*! import() | components/xw-empty/xw-empty */ "components/xw-empty/xw-empty").then(__webpack_require__.bind(null, /*! @/components/xw-empty/xw-empty.vue */ 178))
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -109,12 +113,20 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/1/Desktop/tz_food/uniapp/pages/select/evaluate.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-//
-//
-//
-//
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var xwEmpty = function xwEmpty() {__webpack_require__.e(/*! require.ensure | components/xw-empty/xw-empty */ "components/xw-empty/xw-empty").then((function () {return resolve(__webpack_require__(/*! @/components/xw-empty/xw-empty */ 178));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+{
+  components: {
+    xwEmpty: xwEmpty } };exports.default = _default;
 
 /***/ })
 

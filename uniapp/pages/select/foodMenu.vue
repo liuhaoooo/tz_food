@@ -4,8 +4,13 @@
     <uni-popup ref="dialogInput" type="dialog" maskClick="false">
         <uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser"></uni-popup-dialog>
     </uni-popup>
+    <uni-popup ref="message" type="dialog">
+        <uni-popup-dialog mode="base" type="info" title="确定要取消重新选择吗" @confirm="cancelSelect"></uni-popup-dialog>
+    </uni-popup>
     <uni-popup ref="popupBottom" type="bottom">
-        <view class="popup_bottom_content"></view>
+        <view class="popup_bottom_content">
+            <span>{{selectedFood.food_name}}</span>
+        </view>
     </uni-popup>
     <!--content-->
     <view>
@@ -19,12 +24,14 @@
 
             <!-- 右边 -->
             <view class="content_right">
-                <view v-if="foodList.length==0" style="text-align: center;margin-top:100rpx;color:#b1b1b1">暂无数据</view>
+                <xw-empty v-if="foodList.length==0" :isShow="true" text="暂无数据" textColor="#777777"></xw-empty>
                 <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'" v-else>
                     <radio-group @change="radioChange">
                         <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
                             <img :src="item.food_image||'../../static/images/default_food.png'" alt />
-                            <view>{{item.food_name}}</view>
+                            <view>
+                                <view class="food_name">{{item.food_name}}</view>
+                            </view>
                             <radio :value="item.food_id" :checked="index === current" />
                         </view>
                     </radio-group>
@@ -37,7 +44,8 @@
                 <uni-icons type="shop" size="34" color="#f37b1d" @tap="toHome"></uni-icons>
                 <uni-icons type="cart-filled" size="34" color="#f37b1d" @tap="openBottom"></uni-icons>
             </view>
-            <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button">提交</button>
+            <button v-if="selectedFood==null" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button">提交</button>
+            <button v-else @tap="$refs.message.open()" class="submit_button">取消</button>
         </view>
     </view>
 </view>
@@ -52,6 +60,7 @@ import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
 import uniGrid from "@/components/uni-grid/uni-grid.vue";
 import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue";
 import WucTab from "@/components/wuc-tab/wuc-tab.vue";
+import xwEmpty from "@/components/xw-empty/xw-empty";
 import {
     mapActions,
     mapState,
@@ -65,22 +74,24 @@ export default {
         uniPopupMessage,
         uniPopupDialog,
         uniGrid,
-        uniGridItem
+        uniGridItem,
+        xwEmpty
     },
     data() {
         return {
             userName: "",
             current: 0,
-            food_id: "1",
+            food_id: "",
             avatarUrl: "",
             list_index: 0,
             current: 0,
             foodList: [],
+            selectedFood: {},
             categoryList: ["主菜", "配菜", "饮料"]
         };
     },
     computed: {
-        ...mapGetters(["openid", "userData", "device_info"])
+        ...mapGetters(["openid", "userData", "device_info", "location"])
     },
     props: {
         busid: {
@@ -88,14 +99,35 @@ export default {
         }
     },
     mounted() {
-        this.getFoodlist()
+        this.getFoodlist();
+        this.getSelectFood();
     },
     methods: {
-        ...mapActions(["set_user", "select_food", "get_foodlist"]),
+        ...mapActions([
+            "get_openid",
+            "set_user",
+            "select_food",
+            "get_foodlist",
+            "get_select_food",
+            "cancel_select"
+        ]),
         //回到首页
         toHome() {
             uni.navigateBack({
                 delta: 1
+            });
+        },
+        //取消菜单
+        cancelSelect() {
+            this.$refs.message.close();
+            this.cancel_select({
+                id: this.selectedFood.id
+            }).then(res => {
+                this.selectedFood = null;
+                uni.showToast({
+                    title: "取消成功",
+                    duration: 1000
+                });
             });
         },
         //获取菜单
@@ -103,8 +135,18 @@ export default {
             this.get_foodlist({
                 busid: this.busid
             }).then(res => {
-                console.log(res);
                 this.foodList = res;
+                this.food_id = this.foodList[0].food_id;
+            });
+        },
+        //获取点餐详情
+        getSelectFood() {
+            this.get_select_food({
+                id: this.openid,
+                area: this.location
+            }).then(res => {
+                console.log(res);
+                this.selectedFood = res;
             });
         },
         //获取权限
@@ -163,6 +205,7 @@ export default {
         },
         //点击提交按钮（做判断）
         click_submit() {
+            console.log(this.userData);
             if (this.userData.id == null) {
                 this.$refs.dialogInput.open();
                 return;
@@ -193,9 +236,8 @@ export default {
                     title: "选择成功",
                     duration: 1000
                 });
-                uni.reLaunch({
-                    url: "/pages/selectList/index"
-                });
+                this.get_openid();
+                this.getSelectFood();
             });
         }
     },
@@ -223,7 +265,7 @@ export default {
 }
 
 .content_left {
-    width: 20.99999999%;
+    width: 15%;
     background: #ffffff;
 }
 
@@ -261,8 +303,16 @@ export default {
 
 .right_content_list>view {
     flex: 1;
+}
+
+.food_name {
+    margin-top: 30rpx;
+    width: 90%;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
     text-align: center;
-    line-height: 140rpx;
+
 }
 
 .right_content_list>radio {

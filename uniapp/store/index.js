@@ -85,6 +85,7 @@ const store = new Vuex.Store({
 								data,
 								method: 'GET',
 							}).then(res => {
+								console.log(res.data)
 								state.commit('SET_OPENID', res.data.openid)
 								state.commit('USER_DATA', res.data)
 								resolve(res.data)
@@ -139,6 +140,14 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					if (res.code == -2) {
+						uni.showToast({
+							title: "你已经点过餐了",
+							icon: "none",
+							duration: 1000
+						});
+						reject()
+					}
 					resolve(res.data)
 				}).catch(err => reject(err))
 			})
@@ -163,7 +172,7 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
-					resolve(res.data)
+					res.code == 0 && resolve(res)
 				}).catch(err => reject(err))
 			})
 		}

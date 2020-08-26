@@ -1,7 +1,7 @@
 <template>
 <view>
     <uni-popup ref="popup" type="dialog" maskClick="false">
-        <uni-popup-dialog mode="base" title="需要地理位置授权才能获取商家" @confirm="toGetAuth"></uni-popup-dialog>
+        <uni-popup-dialog mode="base" title="需要地理位置授权才能获取商家" type="warn" @confirm="toGetAuth"></uni-popup-dialog>
     </uni-popup>
     <!--header-->
     <view class="headerinfo"></view>

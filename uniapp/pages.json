@@ -3,7 +3,7 @@
 		{
 			"path": "pages/auth/index",
 			"style": {
-				"navigationBarTitleText": "需要验证码进入小程序"
+				"navigationBarTitleText": "输入本次订餐验证码"
 			}
 		},
 		{

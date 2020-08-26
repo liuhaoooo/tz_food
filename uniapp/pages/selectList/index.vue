@@ -44,7 +44,7 @@ export default {
     onLoad() {
         clearInterval(this.timer);
         this.disable = true
-        this.countdown(10)
+        this.countdown(5)
         this.select_foodlist = []
         this.offset = 0
         this.getData()
@@ -61,12 +61,10 @@ export default {
     methods: {
         ...mapActions(['get_select_food', 'cancel_select']),
         getData() {
-            console.log(this.location)
             this.get_select_food({
                 id: "",
                 area: this.location
             }).then(res => {
-                console.log(res)
                 for (let item of res) {
                     this.select_foodlist.push(item)
                 }

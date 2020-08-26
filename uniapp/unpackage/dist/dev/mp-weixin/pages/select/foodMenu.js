@@ -298,6 +298,9 @@ var components = {
   uniPopup: function() {
     return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 68))
   },
+  xwEmpty: function() {
+    return __webpack_require__.e(/*! import() | components/xw-empty/xw-empty */ "components/xw-empty/xw-empty").then(__webpack_require__.bind(null, /*! @/components/xw-empty/xw-empty.vue */ 178))
+  },
   uniIcons: function() {
     return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 77))
   }
@@ -306,6 +309,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      return _vm.$refs.message.open()
+    }
+  }
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -392,8 +400,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
 var _wucTab = _interopRequireDefault(__webpack_require__(/*! @/components/wuc-tab/wuc-tab.vue */ 113));
-var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGoodsNav = function uniGoodsNav() {__webpack_require__.e(/*! require.ensure | components/uni-goods-nav/uni-goods-nav */ "components/uni-goods-nav/uni-goods-nav").then((function () {return resolve(__webpack_require__(/*! @/components/uni-goods-nav/uni-goods-nav.vue */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 68));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGrid = function uniGrid() {__webpack_require__.e(/*! require.ensure | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid/uni-grid.vue */ 146));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGridItem = function uniGridItem() {__webpack_require__.e(/*! require.ensure | components/uni-grid-item/uni-grid-item */ "components/uni-grid-item/uni-grid-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid-item/uni-grid-item.vue */ 153));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniIcons = function uniIcons() {Promise.all(/*! require.ensure | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-icons/uni-icons.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGoodsNav = function uniGoodsNav() {__webpack_require__.e(/*! require.ensure | components/uni-goods-nav/uni-goods-nav */ "components/uni-goods-nav/uni-goods-nav").then((function () {return resolve(__webpack_require__(/*! @/components/uni-goods-nav/uni-goods-nav.vue */ 139));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopup = function uniPopup() {Promise.all(/*! require.ensure | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup.vue */ 68));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupMessage = function uniPopupMessage() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-message */ "components/uni-popup/uni-popup-message").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-message.vue */ 85));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniPopupDialog = function uniPopupDialog() {__webpack_require__.e(/*! require.ensure | components/uni-popup/uni-popup-dialog */ "components/uni-popup/uni-popup-dialog").then((function () {return resolve(__webpack_require__(/*! @/components/uni-popup/uni-popup-dialog.vue */ 92));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGrid = function uniGrid() {__webpack_require__.e(/*! require.ensure | components/uni-grid/uni-grid */ "components/uni-grid/uni-grid").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid/uni-grid.vue */ 146));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniGridItem = function uniGridItem() {__webpack_require__.e(/*! require.ensure | components/uni-grid-item/uni-grid-item */ "components/uni-grid-item/uni-grid-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-grid-item/uni-grid-item.vue */ 153));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var xwEmpty = function xwEmpty() {__webpack_require__.e(/*! require.ensure | components/xw-empty/xw-empty */ "components/xw-empty/xw-empty").then((function () {return resolve(__webpack_require__(/*! @/components/xw-empty/xw-empty */ 178));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -406,22 +423,24 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
     uniPopupMessage: uniPopupMessage,
     uniPopupDialog: uniPopupDialog,
     uniGrid: uniGrid,
-    uniGridItem: uniGridItem },
+    uniGridItem: uniGridItem,
+    xwEmpty: xwEmpty },
 
   data: function data() {var _ref;
     return _ref = {
       userName: "",
       current: 0,
-      food_id: "1",
+      food_id: "",
       avatarUrl: "",
       list_index: 0 }, _defineProperty(_ref, "current",
     0), _defineProperty(_ref, "foodList",
-    []), _defineProperty(_ref, "categoryList",
+    []), _defineProperty(_ref, "selectedFood",
+    {}), _defineProperty(_ref, "categoryList",
     ["主菜", "配菜", "饮料"]), _ref;
 
   },
   computed: _objectSpread({},
-  (0, _vuex.mapGetters)(["openid", "userData", "device_info"])),
+  (0, _vuex.mapGetters)(["openid", "userData", "device_info", "location"])),
 
   props: {
     busid: {
@@ -430,33 +449,64 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
   mounted: function mounted() {
     this.getFoodlist();
+    this.getSelectFood();
   },
   methods: _objectSpread({},
-  (0, _vuex.mapActions)(["set_user", "select_food", "get_foodlist"]), {
+  (0, _vuex.mapActions)([
+  "get_openid",
+  "set_user",
+  "select_food",
+  "get_foodlist",
+  "get_select_food",
+  "cancel_select"]), {
+
     //回到首页
     toHome: function toHome() {
       uni.navigateBack({
         delta: 1 });
 
     },
+    //取消菜单
+    cancelSelect: function cancelSelect() {var _this2 = this;
+      this.$refs.message.close();
+      this.cancel_select({
+        id: this.selectedFood.id }).
+      then(function (res) {
+        _this2.selectedFood = null;
+        uni.showToast({
+          title: "取消成功",
+          duration: 1000 });
+
+      });
+    },
     //获取菜单
-    getFoodlist: function getFoodlist() {var _this2 = this;
+    getFoodlist: function getFoodlist() {var _this3 = this;
       this.get_foodlist({
         busid: this.busid }).
       then(function (res) {
+        _this3.foodList = res;
+        _this3.food_id = _this3.foodList[0].food_id;
+      });
+    },
+    //获取点餐详情
+    getSelectFood: function getSelectFood() {var _this4 = this;
+      this.get_select_food({
+        id: this.openid,
+        area: this.location }).
+      then(function (res) {
         console.log(res);
-        _this2.foodList = res;
+        _this4.selectedFood = res;
       });
     },
     //获取权限
-    bindGetUserInfo: function bindGetUserInfo(e) {var _this3 = this;
+    bindGetUserInfo: function bindGetUserInfo(e) {var _this5 = this;
       if (e.target.errMsg === "getUserInfo:ok") {
         var _this = this;
         uni.getUserInfo({
           provider: "weixin",
           success: function success(res) {
             _this.avatarUrl = res.userInfo.avatarUrl;
-            _this3.click_submit();
+            _this5.click_submit();
           } });
 
       } else {
@@ -478,7 +528,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
       }
     },
     //设置姓名
-    setUser: function setUser(done, val) {var _this4 = this;
+    setUser: function setUser(done, val) {var _this6 = this;
       uni.showLoading({
         title: "设置中" });
 
@@ -498,12 +548,13 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
 
       this.set_user(data).then(function (res) {
         uni.hideLoading();
-        _this4.submit();
+        _this6.submit();
         done();
       });
     },
     //点击提交按钮（做判断）
     click_submit: function click_submit() {
+      console.log(this.userData);
       if (this.userData.id == null) {
         this.$refs.dialogInput.open();
         return;
@@ -519,7 +570,7 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
       this.$refs.popupBottom.open();
     },
     //提交数据
-    submit: function submit() {
+    submit: function submit() {var _this7 = this;
       uni.showLoading({
         title: "" });
 
@@ -534,9 +585,8 @@ var _vuex = __webpack_require__(/*! vuex */ 8);function _interopRequireDefault(o
           title: "选择成功",
           duration: 1000 });
 
-        uni.reLaunch({
-          url: "/pages/selectList/index" });
-
+        _this7.get_openid();
+        _this7.getSelectFood();
       });
     } }),
 

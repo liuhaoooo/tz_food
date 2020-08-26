@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "需要验证码进入小程序",
+  "navigationBarTitleText": "输入本次订餐验证码",
   "usingComponents": {
     "password-input": "/components/password-input/password-input",
     "number-keyboard": "/components/number-keyboard/number-keyboard"
