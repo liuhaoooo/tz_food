@@ -63,18 +63,13 @@
 
 
 
-
-
-
-
-
-
 /**header */
 .headerinfo {
     height: 260rpx;
     position: fixed;
     width: 100%;
     top: 0;
+    background-size: cover;
 }
 .headerinfo ._img {
     width: 100%;

@@ -6,6 +6,8 @@
     "uni-card": "/components/uni-card/uni-card",
     "sub-card": "/pages/index/subCard",
     "uni-popup-message": "/components/uni-popup/uni-popup-message",
-    "uni-popup-dialog": "/components/uni-popup/uni-popup-dialog"
+    "uni-popup-dialog": "/components/uni-popup/uni-popup-dialog",
+    "carousel": "/components/vear-carousel/vear-carousel",
+    "bw-swiper": "/wxcomponents/bw-swiper/bw-swiper"
   }
 }

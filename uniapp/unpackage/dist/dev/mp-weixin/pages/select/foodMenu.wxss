@@ -316,6 +316,38 @@ swiper {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /** 菜单*/
 .content_right {
     background: #f1f1f1;
@@ -381,7 +413,7 @@ swiper {
 /**footer */
 .footer {
     position: fixed;
-    bottom: 0rpx;
+    bottom: 0;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -418,5 +450,14 @@ swiper {
     margin-right: 20rpx;
     background: #f37b1d;
     color: #ffffff;
+}
+/**dialog */
+.dialogInput {
+    padding-left: 80rpx;
+    padding-right: 80rpx;
+}
+.dialogInput input {
+    margin-top: 20rpx;
+    margin-bottom: 20rpx
 }
 

@@ -148,6 +148,14 @@ const store = new Vuex.Store({
 						});
 						reject()
 					}
+					if(res.code==-3){
+						uni.showToast({
+							title: "非点餐时间",
+							icon: "none",
+							duration: 1000
+						});
+						reject()
+					}
 					resolve(res.data)
 				}).catch(err => reject(err))
 			})
@@ -172,6 +180,14 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					if(res.code==-3){
+						uni.showToast({
+							title: "非点餐时间不能取消",
+							icon: "none",
+							duration: 1000
+						});
+						reject()
+					}
 					res.code == 0 && resolve(res)
 				}).catch(err => reject(err))
 			})

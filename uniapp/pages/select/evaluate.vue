@@ -1,17 +1,13 @@
 <template>
 <view>
-    <xw-empty :isShow="true" text="暂无数据" textColor="#777777"></xw-empty>
+    <van-empty description="暂无评价" />
 </view>
 </template>
 
 <script>
-import xwEmpty from '@/components/xw-empty/xw-empty';
 export default {
-    components: {
-        xwEmpty
-    }
 
-}
+};
 </script>
 
 <style>

@@ -1,12 +1,17 @@
 <template>
 <view>
     <!--popup-->
-    <uni-popup ref="dialogInput" type="dialog" maskClick="false">
-        <uni-popup-dialog mode="input" title="输入姓名" placeholder="请输入姓名" @confirm="setUser"></uni-popup-dialog>
-    </uni-popup>
+    <van-dialog use-slot title="首次点餐设置姓名" :show="showDialogInput" show-cancel-button @confirm="setUser" @close="showDialogInput=false">
+        <view class="dialogInput">
+            <input class="uni-input" maxlength="10" placeholder="请输入所在部门" v-model="userName" />
+            <input class="uni-input" maxlength="10" placeholder="请输入用姓名" v-model="department" />
+        </view>
+    </van-dialog>
+
     <uni-popup ref="message" type="dialog">
         <uni-popup-dialog mode="base" type="info" title="确定要取消重新选择吗" @confirm="cancelSelect"></uni-popup-dialog>
     </uni-popup>
+
     <uni-popup ref="popupBottom" type="bottom">
         <view class="popup_bottom_content">
             <span>{{selectedFood.food_name}}</span>
@@ -24,18 +29,23 @@
 
             <!-- 右边 -->
             <view class="content_right">
-                <xw-empty v-if="foodList.length==0" :isShow="true" text="暂无数据" textColor="#777777"></xw-empty>
-                <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'" v-else>
-                    <radio-group @change="radioChange">
-                        <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
-                            <img :src="item.food_image||'../../static/images/default_food.png'" alt />
-                            <view>
-                                <view class="food_name">{{item.food_name}}</view>
+                <view v-if="getDataLoading">
+                    <van-loading color="#ffffff" size="32rpx"><span style="color:#ffffff">提交中...</span></van-loading>
+                </view>
+                <view v-else>
+                    <van-empty description="暂无数据" v-if="foodList.length==0"><button type="default" size="mini">刷新试试</button></van-empty>
+                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'" v-else>
+                        <radio-group @change="radioChange">
+                            <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
+                                <img :src="item.food_image||'../../static/images/default_food.png'" alt />
+                                <view>
+                                    <view class="food_name">{{item.food_name}}</view>
+                                </view>
+                                <radio :value="item.food_id" :checked="index === current" />
                             </view>
-                            <radio :value="item.food_id" :checked="index === current" />
-                        </view>
-                    </radio-group>
-                </scroll-view>
+                        </radio-group>
+                    </scroll-view>
+                </view>
             </view>
         </view>
         <!--footer-->
@@ -44,14 +54,17 @@
                 <uni-icons type="shop" size="34" color="#f37b1d" @tap="toHome"></uni-icons>
                 <uni-icons type="cart-filled" size="34" color="#f37b1d" @tap="openBottom"></uni-icons>
             </view>
-            <button v-if="selectedFood==null" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button">提交</button>
-            <button v-else @tap="$refs.message.open()" class="submit_button">取消</button>
+            <button v-if="selectedFood==null" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button" :loading="Loading" :disabled="!food_id" :style="!food_id?'background:#f19e5f':''">提交</button>
+            <button v-else @tap="cancelSelect" class="submit_button" type="warn" :loading="Loading">取消</button>
         </view>
     </view>
 </view>
 </template>
 
 <script>
+import Notify from '@vant/weapp/dist/notify/notify';
+import Dialog from '@vant/weapp/dist/dialog/dialog';
+
 import uniIcons from "@/components/uni-icons/uni-icons.vue";
 import uniGoodsNav from "@/components/uni-goods-nav/uni-goods-nav.vue";
 import uniPopup from "@/components/uni-popup/uni-popup.vue";
@@ -60,7 +73,6 @@ import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
 import uniGrid from "@/components/uni-grid/uni-grid.vue";
 import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue";
 import WucTab from "@/components/wuc-tab/wuc-tab.vue";
-import xwEmpty from "@/components/xw-empty/xw-empty";
 import {
     mapActions,
     mapState,
@@ -75,11 +87,14 @@ export default {
         uniPopupDialog,
         uniGrid,
         uniGridItem,
-        xwEmpty
     },
     data() {
         return {
+            showDialogInput: false,
+            Loading: false,
+            getDataLoading: false,
             userName: "",
+            department: "",
             current: 0,
             food_id: "",
             avatarUrl: "",
@@ -119,24 +134,41 @@ export default {
         },
         //取消菜单
         cancelSelect() {
-            this.$refs.message.close();
-            this.cancel_select({
-                id: this.selectedFood.id
-            }).then(res => {
-                this.selectedFood = null;
-                uni.showToast({
-                    title: "取消成功",
-                    duration: 1000
+            Dialog.alert({
+                message: '是否要取消点餐',
+                asyncClose: true,
+                showCancelButton: true
+            }).then(() => {
+                this.Loading = true
+                this.cancel_select({
+                    id: this.selectedFood.id
+                }).then(res => {
+                    this.selectedFood = null;
+                    Notify({
+                        type: 'warning',
+                        message: '取消成功'
+                    });
+                    Dialog.close();
+                    this.Loading = false
+                }).catch(() => {
+                    Dialog.close();
+                    this.Loading = false
                 });
             });
         },
         //获取菜单
         getFoodlist() {
+            this.getDataLoading = true
             this.get_foodlist({
                 busid: this.busid
             }).then(res => {
                 this.foodList = res;
-                this.food_id = this.foodList[0].food_id;
+                if (this.foodList.length > 0) {
+                    this.food_id = this.foodList[0].food_id;
+                }
+                this.getDataLoading = false
+            }).catch(() => {
+                this.getDataLoading = false
             });
         },
         //获取点餐详情
@@ -145,7 +177,6 @@ export default {
                 id: this.openid,
                 area: this.location
             }).then(res => {
-                console.log(res);
                 this.selectedFood = res;
             });
         },
@@ -161,10 +192,9 @@ export default {
                     }
                 });
             } else {
-                uni.showToast({
-                    title: "需要授权",
-                    icon: "none",
-                    duration: 1000
+                Notify({
+                    type: 'warning',
+                    message: '需要授权'
                 });
             }
         },
@@ -179,35 +209,36 @@ export default {
             }
         },
         //设置姓名
-        setUser(done, val) {
-            uni.showLoading({
-                title: "设置中"
-            });
-            this.userName = val;
-            if (!val) {
-                uni.showToast({
-                    title: "姓名不能为空",
-                    icon: "none",
-                    duration: 1000
+        setUser() {
+            if (!this.userName) {
+                Notify({
+                    type: 'warning',
+                    message: '姓名不能为空'
+                });
+                return;
+            }
+            if (!this.department) {
+                Notify({
+                    type: 'warning',
+                    message: '所在部门不能为空'
                 });
                 return;
             }
             let data = {
-                username: val,
+                username: this.userName,
+                // department: this.department,
                 openid: this.openid,
-                img: this.avatarUrl
+                img: this.avatarUrl,
             };
             this.set_user(data).then(res => {
-                uni.hideLoading();
                 this.submit();
-                done();
+                Dialog.close()
             });
         },
         //点击提交按钮（做判断）
         click_submit() {
-            console.log(this.userData);
             if (this.userData.id == null) {
-                this.$refs.dialogInput.open();
+                this.showDialogInput = true
                 return;
             } else {
                 this.submit();
@@ -222,9 +253,7 @@ export default {
         },
         //提交数据
         submit() {
-            uni.showLoading({
-                title: ""
-            });
+            this.Loading = true
             let data = {
                 foodid: this.food_id,
                 openid: this.openid,
@@ -232,12 +261,15 @@ export default {
             };
             this.select_food(data).then(res => {
                 uni.hideLoading();
-                uni.showToast({
-                    title: "选择成功",
-                    duration: 1000
+                Notify({
+                    type: 'success',
+                    message: '订餐成功'
                 });
+                this.Loading = false
                 this.get_openid();
                 this.getSelectFood();
+            }).catch(() => {
+                this.Loading = false
             });
         }
     },
@@ -328,7 +360,7 @@ export default {
 /**footer */
 .footer {
     position: fixed;
-    bottom: 0rpx;
+    bottom: 0;
     display: flex;
     width: 100%;
     height: 110rpx;
@@ -357,5 +389,16 @@ export default {
     margin-right: 20rpx;
     background: #f37b1d;
     color: #ffffff;
+}
+
+/**dialog */
+.dialogInput {
+    padding-left: 80rpx;
+    padding-right: 80rpx;
+}
+
+.dialogInput input {
+    margin-top: 20rpx;
+    margin-bottom: 20rpx
 }
 </style>

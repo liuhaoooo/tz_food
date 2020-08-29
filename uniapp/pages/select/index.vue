@@ -1,27 +1,27 @@
 <template>
 <view>
+    <van-notify id="van-notify" />
+    <van-dialog id="van-dialog" />
     <!--header-->
-    <view class="headerinfo">
-        <img src="../../static/images/tmp.png" alt />
-    </view>
+    <view class="headerinfo" :style="'background-image: url('+bus_img+')'"></view>
     <!--content-->
     <view class="foodList-content">
         <view>
-            <wuc-tab :tab-list="tabList" :tabCur="TabCur" @change="tabChange" textFlex tab-class="text-center text-black bg-white" select-class="text-orange"></wuc-tab>
-            <swiper :current="TabCur" duration="300" @change="swiperChange" :style="'height:'+(device_info.windowHeight-180)+'px'">
-                <swiper-item>
+            <van-tabs swipeable :style="'height:'+(device_info.windowHeight-180)+'px'" color="#f37b1d">
+                <van-tab title="菜单">
                     <foodMenu :busid="busid"></foodMenu>
-                </swiper-item>
-                <swiper-item>
+                </van-tab>
+                <van-tab title="评价">
                     <evaluate></evaluate>
-                </swiper-item>
-            </swiper>
+                </van-tab>
+            </van-tabs>
         </view>
     </view>
 </view>
 </template>
 
 <script>
+import Notify from '@vant/weapp/dist/notify/notify';
 import WucTab from "@/components/wuc-tab/wuc-tab.vue";
 import foodMenu from "./foodMenu";
 import evaluate from "./evaluate";
@@ -42,22 +42,16 @@ export default {
     data() {
         return {
             busid: 0,
+            bus_img: "",
             TabCur: 0,
-            tabList: [{
-                name: "菜单"
-            }, {
-                name: "评价"
-            }]
         };
     },
     onLoad: function (option) {
         this.busid = option.id
+        this.bus_img = option.image
     },
     methods: {
         ...mapActions(["set_user", "get_foodlist", "select_food"]),
-        tabChange(index) {
-            this.TabCur = index;
-        },
         swiperChange(e) {
             let {
                 current
@@ -75,6 +69,7 @@ export default {
     position: fixed;
     width: 100%;
     top: 0;
+    background-size: cover;
 }
 
 .headerinfo img {
