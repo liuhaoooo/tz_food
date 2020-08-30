@@ -1,15 +1,17 @@
 {
 	"pages": [
+		
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#02c8c7"
+			}
+		},
 		{
 			"path": "pages/auth/index",
 			"style": {
 				"navigationBarTitleText": "输入本次订餐验证码"
-			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首页"
 			}
 		},
 		{
@@ -39,7 +41,10 @@
 			"van-tab": "/wxcomponents/vant/dist/tab/index",
 			"van-tabs": "/wxcomponents/vant/dist/tabs/index",
 			"van-dialog": "/wxcomponents/vant/dist/dialog/index",
-			"van-field": "/wxcomponents/vant/dist/field/index"
+			"van-field": "/wxcomponents/vant/dist/field/index",
+			"van-goods-action": "/wxcomponents/vant/dist/goods-action/index",
+			"van-goods-action-icon": "/wxcomponents/vant/dist/goods-action-icon/index",
+			"van-goods-action-button": "/wxcomponents/vant/dist/goods-action-button/index"
 		  }
 	},
 	"condition": {

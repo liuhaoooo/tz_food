@@ -1,8 +1,6 @@
 <template>
 <view>
-    <uni-popup ref="popup" type="dialog" maskClick="false">
-        <uni-popup-dialog mode="base" title="需要地理位置授权才能获取商家" type="warn" @confirm="toGetAuth"></uni-popup-dialog>
-    </uni-popup>
+    <van-dialog id="van-dialog" />
     <!--header-->
     <view class="headerinfo"></view>
     <!--map-->
@@ -28,9 +26,6 @@
                     </view>
                 </list>
                 <van-empty description="暂无数据" v-else><button type="default" size="mini">刷新试试</button></van-empty>
-                <!--<carousel :img-list="imgList" url-key="url" @selected="selectedBanner" />-->
-                <!--<bw-img-upload style="width:100%"></bw-img-upload>
-                <bw-swiper :swiperList="busData" style="width:100%" imageKey="bus_image" :swiperType="true" :indicatorDots="false"></bw-swiper>-->
             </view>
 
         </view>
@@ -40,17 +35,12 @@
 </template>
 
 <script>
-import carousel from '@/components/vear-carousel/vear-carousel'
-import bwSwiper from '@/wxcomponents/bw-swiper/bw-swiper.vue'
-import uniPopup from "@/components/uni-popup/uni-popup.vue";
-import uniPopupMessage from "@/components/uni-popup/uni-popup-message.vue";
-import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
+import Dialog from '@vant/weapp/dist/dialog/dialog';
 import {
     mapActions,
     mapState,
     mapGetters
 } from "vuex";
-import uniCard from "@/components/uni-card/uni-card.vue";
 import amap from "../../sdk/amap-wx.js";
 import subCard from "./subCard";
 import {
@@ -58,13 +48,7 @@ import {
 } from "../../config/config";
 export default {
     components: {
-        uniCard,
-        subCard,
-        uniPopup,
-        uniPopupMessage,
-        uniPopupDialog,
-        carousel,
-        bwSwiper
+        subCard
     },
     data() {
         return {
@@ -74,16 +58,6 @@ export default {
             amapPlugin: null,
             addressName: "",
             busData: {},
-            busData1: [{
-                bus_image: 'https://img9.51tietu.net/pic/2019-091200/vgkpidei2tjvgkpidei2tj.jpg',
-                id: 1
-            }, {
-                bus_image: 'https://img9.51tietu.net/pic/2019-091200/euzekmi5m23euzekmi5m23.jpg',
-                id: 2
-            }, {
-                bus_image: 'https://img9.51tietu.net/pic/2019-091200/143tt0ta4sr143tt0ta4sr.jpg',
-                id: 3
-            }]
         };
     },
     onShow() {
@@ -109,23 +83,18 @@ export default {
                     fontSize: 18
                 } : {}
             });
-            let markers = [marker];
-            return markers;
+            return [marker];
         }
     },
     methods: {
         ...mapActions(["get_openid", "get_buslist"]),
-        //点击轮播
-        selectedBanner(item, index) {
-            console.log('🥒', item, index)
-        },
         //跳转页面选择权限
         toGetAuth() {
             this.getAuth();
             uni.openSetting({
                 success: res => {
                     if (res.authSetting["scope.userLocation"]) {
-                        this.$refs.popup.close();
+                        Dialog.close()
                         this.refreshLocation();
                     } else {}
                 }
@@ -137,10 +106,15 @@ export default {
                 scope: "scope.userLocation",
                 success: () => {
                     this.refreshLocation();
+                    Dialog.close()
                 },
                 fail: () => {
                     this.getDataLoading = false
-                    this.$refs.popup.open();
+                    Dialog.alert({
+                        message: '需要地理位置授权才能获取商家'
+                    }).then(() => {
+                        this.toGetAuth()
+                    })
                 }
             });
         },

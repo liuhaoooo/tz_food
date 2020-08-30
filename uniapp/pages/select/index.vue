@@ -7,7 +7,7 @@
     <!--content-->
     <view class="foodList-content">
         <view>
-            <van-tabs swipeable :style="'height:'+(device_info.windowHeight-180)+'px'" color="#f37b1d">
+            <van-tabs swipeable color="#f37b1d">
                 <van-tab title="菜单">
                     <foodMenu :busid="busid"></foodMenu>
                 </van-tab>
@@ -22,7 +22,6 @@
 
 <script>
 import Notify from '@vant/weapp/dist/notify/notify';
-import WucTab from "@/components/wuc-tab/wuc-tab.vue";
 import foodMenu from "./foodMenu";
 import evaluate from "./evaluate";
 import {
@@ -32,7 +31,6 @@ import {
 } from "vuex";
 export default {
     components: {
-        WucTab,
         foodMenu,
         evaluate
     },
@@ -82,6 +80,5 @@ export default {
     width: 100%;
     position: fixed;
     top: 270rpx;
-    bottom: 60rpx;
 }
 </style>

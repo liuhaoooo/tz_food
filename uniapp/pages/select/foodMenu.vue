@@ -3,25 +3,26 @@
     <!--popup-->
     <van-dialog use-slot title="首次点餐设置姓名" :show="showDialogInput" show-cancel-button @confirm="setUser" @close="showDialogInput=false">
         <view class="dialogInput">
-            <input class="uni-input" maxlength="10" placeholder="请输入所在部门" v-model="userName" />
-            <input class="uni-input" maxlength="10" placeholder="请输入用姓名" v-model="department" />
+            <input class="uni-input" maxlength="10" placeholder="请输入用姓名" v-model="userName" />
+            <input class="uni-input" maxlength="10" placeholder="请输入所在部门" v-model="department" />
         </view>
     </van-dialog>
 
-    <uni-popup ref="message" type="dialog">
-        <uni-popup-dialog mode="base" type="info" title="确定要取消重新选择吗" @confirm="cancelSelect"></uni-popup-dialog>
-    </uni-popup>
-
-    <uni-popup ref="popupBottom" type="bottom">
-        <view class="popup_bottom_content">
+    <van-popup :show="showBottomPopup" position="bottom" custom-style="height: 20%;" @close="showBottomPopup=false">
+        <van-empty description="你还未选择" v-if="selectedFood==null" />
+        <view class="popup_bottom_content" v-else>
             <span>{{selectedFood.food_name}}</span>
         </view>
-    </uni-popup>
+    </van-popup>
+
+    <van-popup :show="showLeftPopup" position="left" custom-style="width: 80%;height:100%" @close="showLeftPopup=false">
+        <van-empty description="暂无数据" />
+    </van-popup>
     <!--content-->
     <view>
         <view style="display:flex;">
             <!-- 左边 -->
-            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'">
+            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-230)+'px'">
                 <view>
                     <view class="leibie" v-for="(item,index) in categoryList" :key="index" @tap="tapLeftList(index)" :style="list_index==index?'background: #f1f1f1;':''">{{item}}</view>
                 </view>
@@ -34,7 +35,7 @@
                 </view>
                 <view v-else>
                     <van-empty description="暂无数据" v-if="foodList.length==0"><button type="default" size="mini">刷新试试</button></van-empty>
-                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'" v-else>
+                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-230)+'px'" v-else>
                         <radio-group @change="radioChange">
                             <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
                                 <img :src="item.food_image||'../../static/images/default_food.png'" alt />
@@ -48,51 +49,35 @@
                 </view>
             </view>
         </view>
-        <!--footer-->
-        <view class="footer">
-            <view>
-                <uni-icons type="shop" size="34" color="#f37b1d" @tap="toHome"></uni-icons>
-                <uni-icons type="cart-filled" size="34" color="#f37b1d" @tap="openBottom"></uni-icons>
-            </view>
-            <button v-if="selectedFood==null" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="submit_button" :loading="Loading" :disabled="!food_id" :style="!food_id?'background:#f19e5f':''">提交</button>
-            <button v-else @tap="cancelSelect" class="submit_button" type="warn" :loading="Loading">取消</button>
-        </view>
     </view>
+    <!--footer-->
+    <van-goods-action>
+        <van-goods-action-icon icon="shop-o" text="商家" @tap="toHome" />
+        <van-goods-action-icon icon="friends-o" text="其他人" @tap="showLeftPopup=true" />
+        <van-goods-action-icon icon="cart-o" text="自己" :info="selectedFood==null?'':'已选'" @tap="showBottomPopup=true" />
+        <van-goods-action-button text="提交" type="warning" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" v-if="selectedFood==null" :disabled="!food_id" :loading="Loading" />
+        <van-goods-action-button text="取消选择" v-else @tap="cancelSelect" />
+    </van-goods-action>
 </view>
 </template>
 
 <script>
 import Notify from '@vant/weapp/dist/notify/notify';
 import Dialog from '@vant/weapp/dist/dialog/dialog';
-
-import uniIcons from "@/components/uni-icons/uni-icons.vue";
-import uniGoodsNav from "@/components/uni-goods-nav/uni-goods-nav.vue";
-import uniPopup from "@/components/uni-popup/uni-popup.vue";
-import uniPopupMessage from "@/components/uni-popup/uni-popup-message.vue";
-import uniPopupDialog from "@/components/uni-popup/uni-popup-dialog.vue";
-import uniGrid from "@/components/uni-grid/uni-grid.vue";
-import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue";
-import WucTab from "@/components/wuc-tab/wuc-tab.vue";
 import {
     mapActions,
     mapState,
     mapGetters
 } from "vuex";
 export default {
-    components: {
-        uniIcons,
-        uniGoodsNav,
-        uniPopup,
-        uniPopupMessage,
-        uniPopupDialog,
-        uniGrid,
-        uniGridItem,
-    },
     data() {
         return {
             showDialogInput: false,
             Loading: false,
             getDataLoading: false,
+            showBottomPopup: false,
+            showLeftPopup: false,
+
             userName: "",
             department: "",
             current: 0,
@@ -247,10 +232,6 @@ export default {
         tapLeftList(index) {
             this.list_index = index;
         },
-        //打开底部弹窗
-        openBottom() {
-            this.$refs.popupBottom.open();
-        },
         //提交数据
         submit() {
             this.Loading = true
@@ -353,42 +334,7 @@ export default {
 
 /**底部弹窗 */
 .popup_bottom_content {
-    height: 400rpx;
     background: #ffffff;
-}
-
-/**footer */
-.footer {
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    width: 100%;
-    height: 110rpx;
-    padding-top: 10rpx;
-    padding-bottom: 30rpx;
-    background: #ffffff;
-}
-
-.footer>view {
-    width: 20%;
-    height: 80rpx;
-    line-height: 80rpx;
-    margin-left: 8rpx;
-    margin-right: 8rpx;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.submit_button {
-    flex: 1;
-    height: 72rpx;
-    line-height: 72rpx;
-    border-radius: 50rpx;
-    margin-left: 20rpx;
-    margin-right: 20rpx;
-    background: #f37b1d;
-    color: #ffffff;
 }
 
 /**dialog */

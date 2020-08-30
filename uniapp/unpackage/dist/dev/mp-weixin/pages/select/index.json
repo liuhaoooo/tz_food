@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "点菜",
   "usingComponents": {
-    "wuc-tab": "/components/wuc-tab/wuc-tab",
     "food-menu": "/pages/select/foodMenu",
     "evaluate": "/pages/select/evaluate"
   }

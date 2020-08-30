@@ -1,12 +1,4 @@
 {
-  "component": true,
-  "usingComponents": {
-    "uni-popup": "/components/uni-popup/uni-popup",
-    "uni-icons": "/components/uni-icons/uni-icons",
-    "uni-goods-nav": "/components/uni-goods-nav/uni-goods-nav",
-    "uni-popup-message": "/components/uni-popup/uni-popup-message",
-    "uni-popup-dialog": "/components/uni-popup/uni-popup-dialog",
-    "uni-grid": "/components/uni-grid/uni-grid",
-    "uni-grid-item": "/components/uni-grid-item/uni-grid-item"
-  }
+  "usingComponents": {},
+  "component": true
 }

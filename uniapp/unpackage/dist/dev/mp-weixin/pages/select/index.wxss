@@ -61,8 +61,6 @@
 
 
 
-
-
 /**header */
 .headerinfo {
     height: 260rpx;
@@ -80,6 +78,5 @@
     width: 100%;
     position: fixed;
     top: 270rpx;
-    bottom: 60rpx;
 }
 
