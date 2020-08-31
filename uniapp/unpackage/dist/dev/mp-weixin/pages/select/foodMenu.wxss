@@ -271,6 +271,11 @@
 
 
 
+
+
+
+
+
 /** 菜单*/
 .content_right {
     background: #f1f1f1;
@@ -300,7 +305,7 @@
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
-    height: 140rpx;
+    height: 170rpx;
     margin-left: 20rpx;
     margin-right: 20rpx;
     margin-top: 10rpx;
@@ -309,8 +314,8 @@
     background: #ffffff;
 }
 .right_content_list>._img {
-    width: 140rpx;
-    height: 140rpx;
+    width: 170rpx;
+    height: 170rpx;
 }
 .right_content_list>view {
     -webkit-box-flex: 1;

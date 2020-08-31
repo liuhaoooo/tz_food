@@ -1,13 +1,5 @@
 {
 	"pages": [
-		
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#02c8c7"
-			}
-		},
 		{
 			"path": "pages/auth/index",
 			"style": {
@@ -15,10 +7,10 @@
 			}
 		},
 		{
-			"path": "pages/selectList/index",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "列表",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#02c8c7"
 			}
 		},
 		{
@@ -44,7 +36,11 @@
 			"van-field": "/wxcomponents/vant/dist/field/index",
 			"van-goods-action": "/wxcomponents/vant/dist/goods-action/index",
 			"van-goods-action-icon": "/wxcomponents/vant/dist/goods-action-icon/index",
-			"van-goods-action-button": "/wxcomponents/vant/dist/goods-action-button/index"
+			"van-goods-action-button": "/wxcomponents/vant/dist/goods-action-button/index",
+			"van-index-bar": "/wxcomponents/vant/dist/index-bar/index",
+			"van-index-anchor": "/wxcomponents/vant/dist/index-anchor/index",
+			"van-tag": "/wxcomponents/vant/dist/tag/index",
+			"van-image": "/wxcomponents/vant/dist/image/index"
 		  }
 	},
 	"condition": {

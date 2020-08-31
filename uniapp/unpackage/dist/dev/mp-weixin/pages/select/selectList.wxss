@@ -1,7 +1,5 @@
 
-.select-foodlist {
-    height: 85vh;
-}
+.select-foodlist {}
 .cell-container {
     width: 100%;
     background: #FFFFFF;
@@ -11,6 +9,7 @@
     display: flex;
     line-height: 3.5rem;
     border-bottom: #F1F1F1 solid .001rem;
+    font-size: 26rpx
 }
 .cell-container text {
     margin-left: .4rem;
@@ -21,15 +20,5 @@
     height: 2.8rem;
     background-color: #eeeeee;
     margin: .3rem .3rem .3rem 1rem;
-}
-.footer-button {
-    width: 140rpx;
-    height: 140rpx;
-    line-height: 140rpx;
-    border-radius: 50%;
-    position: fixed;
-    right: 30rpx;
-    bottom: 2rem;
-    margin: auto;
 }
 

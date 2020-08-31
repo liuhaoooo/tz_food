@@ -215,6 +215,6 @@ export default {
 
 .loading-page {
     text-align: center;
-    margin-top: 300rpx
+    margin-top: 250rpx
 }
 </style>

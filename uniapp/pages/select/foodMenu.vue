@@ -15,14 +15,14 @@
         </view>
     </van-popup>
 
-    <van-popup :show="showLeftPopup" position="left" custom-style="width: 80%;height:100%" @close="showLeftPopup=false">
-        <van-empty description="暂无数据" />
+    <van-popup :show="showLeftPopup" position="left" custom-style="width: 90%;height:100%" @close="showLeftPopup=false">
+        <selectList />
     </van-popup>
     <!--content-->
     <view>
         <view style="display:flex;">
             <!-- 左边 -->
-            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-230)+'px'">
+            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-180)+'px'">
                 <view>
                     <view class="leibie" v-for="(item,index) in categoryList" :key="index" @tap="tapLeftList(index)" :style="list_index==index?'background: #f1f1f1;':''">{{item}}</view>
                 </view>
@@ -30,12 +30,12 @@
 
             <!-- 右边 -->
             <view class="content_right">
-                <view v-if="getDataLoading">
-                    <van-loading color="#ffffff" size="32rpx"><span style="color:#ffffff">提交中...</span></van-loading>
+                <view v-if="getDataLoading" style="text-align: center;margin-top: 300rpx">
+                    <van-loading color="#ffffff" size="32rpx"><span style="color:#ffffff">加载中...</span></van-loading>
                 </view>
                 <view v-else>
                     <van-empty description="暂无数据" v-if="foodList.length==0"><button type="default" size="mini">刷新试试</button></van-empty>
-                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-230)+'px'" v-else>
+                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-180)+'px'" v-else>
                         <radio-group @change="radioChange">
                             <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
                                 <img :src="item.food_image||'../../static/images/default_food.png'" alt />
@@ -51,7 +51,7 @@
         </view>
     </view>
     <!--footer-->
-    <van-goods-action>
+    <van-goods-action :safe-area-inset-bottom="false">
         <van-goods-action-icon icon="shop-o" text="商家" @tap="toHome" />
         <van-goods-action-icon icon="friends-o" text="其他人" @tap="showLeftPopup=true" />
         <van-goods-action-icon icon="cart-o" text="自己" :info="selectedFood==null?'':'已选'" @tap="showBottomPopup=true" />
@@ -64,12 +64,16 @@
 <script>
 import Notify from '@vant/weapp/dist/notify/notify';
 import Dialog from '@vant/weapp/dist/dialog/dialog';
+import selectList from './selectList'
 import {
     mapActions,
     mapState,
     mapGetters
 } from "vuex";
 export default {
+    components: {
+        selectList
+    },
     data() {
         return {
             showDialogInput: false,
@@ -119,7 +123,7 @@ export default {
         },
         //取消菜单
         cancelSelect() {
-            Dialog.alert({
+            Dialog.confirm({
                 message: '是否要取消点餐',
                 asyncClose: true,
                 showCancelButton: true
@@ -135,11 +139,11 @@ export default {
                     });
                     Dialog.close();
                     this.Loading = false
-                }).catch(() => {
-                    Dialog.close();
-                    this.Loading = false
-                });
-            });
+                })
+            }).catch(() => {
+                Dialog.close();
+                this.Loading = false
+            });;
         },
         //获取菜单
         getFoodlist() {
@@ -211,7 +215,7 @@ export default {
             }
             let data = {
                 username: this.userName,
-                // department: this.department,
+                department: this.department,
                 openid: this.openid,
                 img: this.avatarUrl,
             };
@@ -251,6 +255,7 @@ export default {
                 this.getSelectFood();
             }).catch(() => {
                 this.Loading = false
+                this.get_openid();
             });
         }
     },
@@ -300,7 +305,7 @@ export default {
 
 .right_content_list {
     display: flex;
-    height: 140rpx;
+    height: 170rpx;
     margin-left: 20rpx;
     margin-right: 20rpx;
     margin-top: 10rpx;
@@ -310,8 +315,8 @@ export default {
 }
 
 .right_content_list>img {
-    width: 140rpx;
-    height: 140rpx;
+    width: 170rpx;
+    height: 170rpx;
 }
 
 .right_content_list>view {

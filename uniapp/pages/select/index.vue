@@ -6,16 +6,15 @@
     <view class="headerinfo" :style="'background-image: url('+bus_img+')'"></view>
     <!--content-->
     <view class="foodList-content">
-        <view>
-            <van-tabs swipeable color="#f37b1d">
-                <van-tab title="菜单">
-                    <foodMenu :busid="busid"></foodMenu>
-                </van-tab>
-                <van-tab title="评价">
-                    <evaluate></evaluate>
-                </van-tab>
-            </van-tabs>
-        </view>
+        <!--<van-tabs color="#f37b1d">
+            <van-tab title="菜单">
+                <foodMenu :busid="busid"></foodMenu>
+            </van-tab>
+            <van-tab title="评价">
+                <evaluate></evaluate>
+            </van-tab>
+        </van-tabs>-->
+        <foodMenu :busid="busid"></foodMenu>
     </view>
 </view>
 </template>
@@ -32,7 +31,7 @@ import {
 export default {
     components: {
         foodMenu,
-        evaluate
+        evaluate,
     },
     computed: {
         ...mapGetters(["device_info"])
