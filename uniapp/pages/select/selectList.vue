@@ -28,6 +28,7 @@ export default {
     data() {
         return {
             select_foodlist: [],
+            loop: false
         }
     },
     computed: {
@@ -35,13 +36,13 @@ export default {
     },
     filters: {
         get_date(val) {
+            console.log(val)
             let date = new Date(val)
             return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }
     },
     mounted() {
         this.select_foodlist = []
-        this.getData()
     },
     methods: {
         ...mapActions(['get_select_food', 'cancel_select']),
@@ -50,8 +51,10 @@ export default {
                 id: "",
                 area: this.location
             }).then(res => {
-                console.log(res)
                 this.select_foodlist = res
+                this.loop && setTimeout(() => {
+                    this.getData()
+                }, 2000)
             })
         },
     }

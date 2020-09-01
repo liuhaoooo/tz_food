@@ -214,9 +214,9 @@ var _config = __webpack_require__(/*! ../../config/config */ 23);function _inter
         this.userData.avatar_url : "../../static/images/pos_icon.png",
         callout: this.userData.id != null ? {
           display: "ALWAYS",
-          content: this.userData.user_name,
+          content: "".concat(this.userData.department, "\uFF1A").concat(this.userData.user_name),
           color: "#666",
-          fontSize: 18 } :
+          fontSize: 16 } :
         {} });
 
       return [marker];

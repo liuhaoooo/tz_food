@@ -1,7 +1,7 @@
 <template>
 <view>
     <!--popup-->
-    <van-dialog use-slot title="首次点餐设置姓名" :show="showDialogInput" show-cancel-button @confirm="setUser" @close="showDialogInput=false">
+    <van-dialog use-slot title="首次点餐设置姓名" :show="showDialogInput" show-cancel-button @confirm="setUser" @close="showDialogInput = false">
         <view class="dialogInput">
             <input class="uni-input" maxlength="10" placeholder="请输入用姓名" v-model="userName" />
             <input class="uni-input" maxlength="10" placeholder="请输入所在部门" v-model="department" />
@@ -15,14 +15,14 @@
         </view>
     </van-popup>
 
-    <van-popup :show="showLeftPopup" position="left" custom-style="width: 90%;height:100%" @close="showLeftPopup=false">
-        <selectList />
+    <van-popup :show="showLeftPopup" position="left" custom-style="width: 90%;height:100%" @close="close_left">
+        <selectList ref="selectList" />
     </van-popup>
     <!--content-->
     <view>
         <view style="display:flex;">
             <!-- 左边 -->
-            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-180)+'px'">
+            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-200)+'px'">
                 <view>
                     <view class="leibie" v-for="(item,index) in categoryList" :key="index" @tap="tapLeftList(index)" :style="list_index==index?'background: #f1f1f1;':''">{{item}}</view>
                 </view>
@@ -35,7 +35,7 @@
                 </view>
                 <view v-else>
                     <van-empty description="暂无数据" v-if="foodList.length==0"><button type="default" size="mini">刷新试试</button></van-empty>
-                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-180)+'px'" v-else>
+                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-200)+'px'" v-else>
                         <radio-group @change="radioChange">
                             <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
                                 <img :src="item.food_image||'../../static/images/default_food.png'" alt />
@@ -53,7 +53,7 @@
     <!--footer-->
     <van-goods-action :safe-area-inset-bottom="false">
         <van-goods-action-icon icon="shop-o" text="商家" @tap="toHome" />
-        <van-goods-action-icon icon="friends-o" text="其他人" @tap="showLeftPopup=true" />
+        <van-goods-action-icon icon="friends-o" text="其他人" @tap="show_left" />
         <van-goods-action-icon icon="cart-o" text="自己" :info="selectedFood==null?'':'已选'" @tap="showBottomPopup=true" />
         <van-goods-action-button text="提交" type="warning" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" v-if="selectedFood==null" :disabled="!food_id" :loading="Loading" />
         <van-goods-action-button text="取消选择" v-else @tap="cancelSelect" />
@@ -103,6 +103,7 @@ export default {
         }
     },
     mounted() {
+        clearInterval(this.$loopGetData)
         this.getFoodlist();
         this.getSelectFood();
     },
@@ -115,6 +116,16 @@ export default {
             "get_select_food",
             "cancel_select"
         ]),
+        //点击查看其他人
+        show_left() {
+            this.$refs.selectList.getData()
+            this.$refs.selectList.loop = true
+            this.showLeftPopup = true
+        },
+        close_left() {
+            this.$refs.selectList.loop = false
+            this.showLeftPopup = false
+        },
         //回到首页
         toHome() {
             uni.navigateBack({
@@ -137,6 +148,9 @@ export default {
                         type: 'warning',
                         message: '取消成功'
                     });
+                    Dialog.close();
+                    this.Loading = false
+                }).catch(() => {
                     Dialog.close();
                     this.Loading = false
                 })

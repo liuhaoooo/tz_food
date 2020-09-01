@@ -91,14 +91,6 @@ var render = function() {
     }
 
     _vm.e2 = function($event) {
-      _vm.showLeftPopup = false
-    }
-
-    _vm.e3 = function($event) {
-      _vm.showLeftPopup = true
-    }
-
-    _vm.e4 = function($event) {
       _vm.showBottomPopup = true
     }
   }
@@ -240,6 +232,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
 
 
   mounted: function mounted() {
+    clearInterval(this.$loopGetData);
     this.getFoodlist();
     this.getSelectFood();
   },
@@ -252,6 +245,16 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
   "get_select_food",
   "cancel_select"]), {
 
+    //点击查看其他人
+    show_left: function show_left() {
+      this.$refs.selectList.getData();
+      this.$refs.selectList.loop = true;
+      this.showLeftPopup = true;
+    },
+    close_left: function close_left() {
+      this.$refs.selectList.loop = false;
+      this.showLeftPopup = false;
+    },
     //回到首页
     toHome: function toHome() {
       uni.navigateBack({
@@ -274,6 +277,9 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
             type: 'warning',
             message: '取消成功' });
 
+          _dialog.default.close();
+          _this2.Loading = false;
+        }).catch(function () {
           _dialog.default.close();
           _this2.Loading = false;
         });

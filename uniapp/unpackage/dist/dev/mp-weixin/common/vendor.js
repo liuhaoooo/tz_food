@@ -8815,10 +8815,32 @@ var store = new _vuex.default.Store({
     } },
 
   actions: {
+    //进入小程序验证
+    check_code: function check_code(state, data) {
+      return new Promise(function (resolve, reject) {
+        (0, _request.default)({
+          url: _config.interfaces.CHECK_CODE,
+          data: data,
+          method: 'GET' }).
+        then(function (res) {
+          if (res.data) {
+            resolve();
+          } else {
+            uni.showToast({
+              title: "验证码错误",
+              icon: "none",
+              duration: 1000 });
+
+            reject();
+          }
+        }).catch(function (err) {return reject(err);});
+      });
+    },
     //获取手机信息
     get_device_info: function get_device_info(state, data) {
       uni.getSystemInfo({
         success: function success(res) {
+          console.log(res);
           var info = {
             model: res.model,
             pixelRatio: res.pixelRatio,
@@ -8846,6 +8868,7 @@ var store = new _vuex.default.Store({
                 data: _data,
                 method: 'GET' }).
               then(function (res) {
+                console.log(res);
                 state.commit('SET_OPENID', res.data.openid);
                 state.commit('USER_DATA', res.data);
                 resolve(res.data);
@@ -9441,6 +9464,7 @@ var interfaces = {
   // SELECT_FOOD:'selectFood',
   // GET_SELECT_FOOD:'getSelectFood',
   // CANCEL_SELECT:'cancelSelect',
+  CHECK_CODE: 'code', //进入小程序验证
   GET_OPENID: 'getopenid', //获取用户openid
   SET_USER: 'saveuser', //设置用户
   GET_BUS: 'getbuslist', //商家列表查询

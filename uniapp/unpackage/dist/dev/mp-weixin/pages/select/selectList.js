@@ -160,7 +160,8 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
 {
   data: function data() {
     return {
-      select_foodlist: [] };
+      select_foodlist: [],
+      loop: false };
 
   },
   computed: _objectSpread({},
@@ -168,13 +169,13 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
 
   filters: {
     get_date: function get_date(val) {
+      console.log(val);
       var date = new Date(val);
       return "".concat(date.getHours(), ":").concat(date.getMinutes(), ":").concat(date.getSeconds());
     } },
 
   mounted: function mounted() {
     this.select_foodlist = [];
-    this.getData();
   },
   methods: _objectSpread({},
   (0, _vuex.mapActions)(['get_select_food', 'cancel_select']), {
@@ -183,8 +184,10 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function ownKeys(object, enumera
         id: "",
         area: this.location }).
       then(function (res) {
-        console.log(res);
         _this.select_foodlist = res;
+        _this.loop && setTimeout(function () {
+          _this.getData();
+        }, 2000);
       });
     } }) };exports.default = _default;
 

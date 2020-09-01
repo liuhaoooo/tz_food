@@ -3,6 +3,7 @@
     <van-notify id="van-notify" />
     <van-dialog id="van-dialog" />
     <!--header-->
+    <nav-bar type="transparent" fontColor="#ffffff">菜单</nav-bar>
     <view class="headerinfo" :style="'background-image: url('+bus_img+')'"></view>
     <!--content-->
     <view class="foodList-content">
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import navBar from "@/components/zhouWei-navBar";
 import Notify from '@vant/weapp/dist/notify/notify';
 import foodMenu from "./foodMenu";
 import evaluate from "./evaluate";
@@ -32,6 +34,7 @@ export default {
     components: {
         foodMenu,
         evaluate,
+        navBar
     },
     computed: {
         ...mapGetters(["device_info"])
@@ -62,22 +65,17 @@ export default {
 <style>
 /**header */
 .headerinfo {
-    height: 260rpx;
+    height: 430rpx;
     position: fixed;
     width: 100%;
     top: 0;
     background-size: cover;
 }
 
-.headerinfo img {
-    width: 100%;
-    height: 100%;
-}
-
 /**content */
 .foodList-content {
     width: 100%;
     position: fixed;
-    top: 270rpx;
+    top: 430rpx;
 }
 </style>

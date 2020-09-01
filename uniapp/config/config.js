@@ -12,6 +12,7 @@ const interfaces = {
 	// SELECT_FOOD:'selectFood',
 	// GET_SELECT_FOOD:'getSelectFood',
 	// CANCEL_SELECT:'cancelSelect',
+	CHECK_CODE:'code',//进入小程序验证
 	GET_OPENID:'getopenid',//获取用户openid
 	SET_USER:'saveuser',//设置用户
 	GET_BUS:'getbuslist',//商家列表查询

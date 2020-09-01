@@ -1,7 +1,9 @@
 {
   "navigationBarTitleText": "点菜",
+  "navigationStyle": "custom",
   "usingComponents": {
     "food-menu": "/pages/select/foodMenu",
-    "evaluate": "/pages/select/evaluate"
+    "evaluate": "/pages/select/evaluate",
+    "nav-bar": "/components/zhouWei-navBar/index"
   }
 }

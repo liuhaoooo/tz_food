@@ -54,10 +54,32 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
+		//进入小程序验证
+		check_code(state, data) {
+			return new Promise((resolve, reject) => {
+				uniRequest({
+					url: interfaces.CHECK_CODE,
+					data,
+					method: 'GET',
+				}).then(res => {
+					if (res.data) {
+						resolve()
+					} else {
+						uni.showToast({
+							title: "验证码错误",
+							icon: "none",
+							duration: 1000
+						});
+						reject()
+					}
+				}).catch(err => reject(err))
+			})
+		},
 		//获取手机信息
 		get_device_info(state, data) {
 			uni.getSystemInfo({
 				success: (res) => {
+					console.log(res)
 					let info = {
 						model: res.model,
 						pixelRatio: res.pixelRatio,
@@ -85,6 +107,7 @@ const store = new Vuex.Store({
 								data,
 								method: 'GET',
 							}).then(res => {
+								console.log(res)
 								state.commit('SET_OPENID', res.data.openid)
 								state.commit('USER_DATA', res.data)
 								resolve(res.data)
@@ -147,7 +170,7 @@ const store = new Vuex.Store({
 						});
 						reject()
 					}
-					if(res.code==-3){
+					if (res.code == -3) {
 						uni.showToast({
 							title: "非点餐时间",
 							icon: "none",
@@ -179,7 +202,7 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
-					if(res.code==-3){
+					if (res.code == -3) {
 						uni.showToast({
 							title: "非点餐时间不能取消",
 							icon: "none",

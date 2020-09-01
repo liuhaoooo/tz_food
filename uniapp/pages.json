@@ -16,7 +16,8 @@
 		{
 			"path": "pages/select/index",
 			"style": {
-				"navigationBarTitleText": "点菜"
+				"navigationBarTitleText": "点菜",
+				"navigationStyle":"custom"
 			}
 		}
 	],
