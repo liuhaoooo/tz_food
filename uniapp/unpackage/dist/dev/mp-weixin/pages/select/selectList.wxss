@@ -1,5 +1,65 @@
 
-.select-foodlist {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**.select-foodlist {} */
 .cell-container {
     width: 100%;
     background: #FFFFFF;
@@ -14,6 +74,9 @@
 .cell-container text {
     margin-left: .4rem;
     margin-right: .4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .cell-container image {
     width: 2.8rem;

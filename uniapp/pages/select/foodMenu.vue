@@ -11,7 +11,7 @@
     <van-popup :show="showBottomPopup" position="bottom" custom-style="height: 20%;" @close="showBottomPopup=false">
         <van-empty description="你还未选择" v-if="selectedFood==null" />
         <view class="popup_bottom_content" v-else>
-            <span>{{selectedFood.food_name}}</span>
+            <text>{{selectedFood.food_name}}</text>
         </view>
     </van-popup>
 
@@ -21,21 +21,16 @@
     <!--content-->
     <view>
         <view style="display:flex;">
-            <!-- 左边 -->
-            <scroll-view class="content_left" scroll-y="true" :style="'height:'+(device_info.windowHeight-200)+'px'">
-                <view>
-                    <view class="leibie" v-for="(item,index) in categoryList" :key="index" @tap="tapLeftList(index)" :style="list_index==index?'background: #f1f1f1;':''">{{item}}</view>
-                </view>
-            </scroll-view>
-
-            <!-- 右边 -->
+            <van-sidebar :active-key="list_index" @change="tapLeftList" :style="'height:'+(device_info.windowHeight-150)+'px;background: #f7f8fa;'">
+                <van-sidebar-item :title="item" v-for="(item,index) in categoryList" :key="index" />
+            </van-sidebar>
             <view class="content_right">
                 <view v-if="getDataLoading" style="text-align: center;margin-top: 300rpx">
                     <van-loading color="#ffffff" size="32rpx"><span style="color:#ffffff">加载中...</span></van-loading>
                 </view>
                 <view v-else>
                     <van-empty description="暂无数据" v-if="foodList.length==0"><button type="default" size="mini">刷新试试</button></van-empty>
-                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-200)+'px'" v-else>
+                    <scroll-view scroll-y="true" :style="'height:'+(device_info.windowHeight-250)+'px'" v-else>
                         <radio-group @change="radioChange">
                             <view class="right_content_list" v-for="(item,index) in foodList" :key="index">
                                 <img :src="item.food_image||'../../static/images/default_food.png'" alt />
@@ -62,9 +57,9 @@
 </template>
 
 <script>
-import Notify from '@vant/weapp/dist/notify/notify';
-import Dialog from '@vant/weapp/dist/dialog/dialog';
-import selectList from './selectList'
+import Notify from "@vant/weapp/dist/notify/notify";
+import Dialog from "@vant/weapp/dist/dialog/dialog";
+import selectList from "./selectList";
 import {
     mapActions,
     mapState,
@@ -88,7 +83,6 @@ export default {
             food_id: "",
             avatarUrl: "",
             list_index: 0,
-            current: 0,
             foodList: [],
             selectedFood: {},
             categoryList: ["主菜", "配菜", "饮料"]
@@ -103,7 +97,7 @@ export default {
         }
     },
     mounted() {
-        clearInterval(this.$loopGetData)
+        clearInterval(this.$loopGetData);
         this.getFoodlist();
         this.getSelectFood();
     },
@@ -118,13 +112,13 @@ export default {
         ]),
         //点击查看其他人
         show_left() {
-            this.$refs.selectList.getData()
-            this.$refs.selectList.loop = true
-            this.showLeftPopup = true
+            this.$refs.selectList.getData();
+            this.$refs.selectList.loop = true;
+            this.showLeftPopup = true;
         },
         close_left() {
-            this.$refs.selectList.loop = false
-            this.showLeftPopup = false
+            this.$refs.selectList.loop = false;
+            this.showLeftPopup = false;
         },
         //回到首页
         toHome() {
@@ -135,44 +129,50 @@ export default {
         //取消菜单
         cancelSelect() {
             Dialog.confirm({
-                message: '是否要取消点餐',
-                asyncClose: true,
-                showCancelButton: true
-            }).then(() => {
-                this.Loading = true
-                this.cancel_select({
-                    id: this.selectedFood.id
-                }).then(res => {
-                    this.selectedFood = null;
-                    Notify({
-                        type: 'warning',
-                        message: '取消成功'
-                    });
-                    Dialog.close();
-                    this.Loading = false
-                }).catch(() => {
-                    Dialog.close();
-                    this.Loading = false
+                    message: "是否要取消点餐",
+                    asyncClose: true,
+                    showCancelButton: true
                 })
-            }).catch(() => {
-                Dialog.close();
-                this.Loading = false
-            });;
+                .then(() => {
+                    this.Loading = true;
+                    this.cancel_select({
+                            id: this.selectedFood.id
+                        })
+                        .then(res => {
+                            this.selectedFood = null;
+                            Notify({
+                                type: "warning",
+                                message: "取消成功"
+                            });
+                            Dialog.close();
+                            this.Loading = false;
+                        })
+                        .catch(() => {
+                            Dialog.close();
+                            this.Loading = false;
+                        });
+                })
+                .catch(() => {
+                    Dialog.close();
+                    this.Loading = false;
+                });
         },
         //获取菜单
         getFoodlist() {
-            this.getDataLoading = true
+            this.getDataLoading = true;
             this.get_foodlist({
-                busid: this.busid
-            }).then(res => {
-                this.foodList = res;
-                if (this.foodList.length > 0) {
-                    this.food_id = this.foodList[0].food_id;
-                }
-                this.getDataLoading = false
-            }).catch(() => {
-                this.getDataLoading = false
-            });
+                    busid: this.busid
+                })
+                .then(res => {
+                    this.foodList = res;
+                    if (this.foodList.length > 0) {
+                        this.food_id = this.foodList[0].food_id;
+                    }
+                    this.getDataLoading = false;
+                })
+                .catch(() => {
+                    this.getDataLoading = false;
+                });
         },
         //获取点餐详情
         getSelectFood() {
@@ -196,8 +196,8 @@ export default {
                 });
             } else {
                 Notify({
-                    type: 'warning',
-                    message: '需要授权'
+                    type: "warning",
+                    message: "需要授权"
                 });
             }
         },
@@ -215,15 +215,15 @@ export default {
         setUser() {
             if (!this.userName) {
                 Notify({
-                    type: 'warning',
-                    message: '姓名不能为空'
+                    type: "warning",
+                    message: "姓名不能为空"
                 });
                 return;
             }
             if (!this.department) {
                 Notify({
-                    type: 'warning',
-                    message: '所在部门不能为空'
+                    type: "warning",
+                    message: "所在部门不能为空"
                 });
                 return;
             }
@@ -231,46 +231,49 @@ export default {
                 username: this.userName,
                 department: this.department,
                 openid: this.openid,
-                img: this.avatarUrl,
+                img: this.avatarUrl
             };
             this.set_user(data).then(res => {
                 this.submit();
-                Dialog.close()
+                Dialog.close();
             });
         },
         //点击提交按钮（做判断）
         click_submit() {
             if (this.userData.id == null) {
-                this.showDialogInput = true
+                this.showDialogInput = true;
                 return;
             } else {
                 this.submit();
             }
         },
-        tapLeftList(index) {
-            this.list_index = index;
+        tapLeftList(e) {
+            this.list_index = e.detail;
+            console.log(this.list_index)
         },
         //提交数据
         submit() {
-            this.Loading = true
+            this.Loading = true;
             let data = {
                 foodid: this.food_id,
                 openid: this.openid,
-                text: ""
+                text: "addorder"
             };
-            this.select_food(data).then(res => {
-                uni.hideLoading();
-                Notify({
-                    type: 'success',
-                    message: '订餐成功'
+            this.select_food(data)
+                .then(res => {
+                    uni.hideLoading();
+                    Notify({
+                        type: "success",
+                        message: "订餐成功"
+                    });
+                    this.Loading = false;
+                    this.get_openid();
+                    this.getSelectFood();
+                })
+                .catch(() => {
+                    this.Loading = false;
+                    this.get_openid();
                 });
-                this.Loading = false
-                this.get_openid();
-                this.getSelectFood();
-            }).catch(() => {
-                this.Loading = false
-                this.get_openid();
-            });
         }
     },
     watch: {
@@ -292,13 +295,7 @@ export default {
 <style>
 /** 菜单*/
 .content_right {
-    background: #f1f1f1;
     flex: 1;
-}
-
-.content_left {
-    width: 15%;
-    background: #ffffff;
 }
 
 .leibie {
@@ -315,6 +312,7 @@ export default {
     color: rgb(189, 189, 189);
     font-size: 14px;
     margin-left: 28rpx;
+    padding: 10rpx
 }
 
 .right_content_list {
@@ -344,7 +342,6 @@ export default {
     word-break: break-all;
     overflow: hidden;
     text-align: center;
-
 }
 
 .right_content_list>radio {
@@ -354,6 +351,7 @@ export default {
 /**底部弹窗 */
 .popup_bottom_content {
     background: #ffffff;
+    text-align: center;
 }
 
 /**dialog */
@@ -364,6 +362,6 @@ export default {
 
 .dialogInput input {
     margin-top: 20rpx;
-    margin-bottom: 20rpx
+    margin-bottom: 20rpx;
 }
 </style>

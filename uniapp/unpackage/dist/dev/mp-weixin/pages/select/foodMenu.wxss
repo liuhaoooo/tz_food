@@ -290,16 +290,14 @@
 
 
 
+
+
+
 /** 菜单*/
 .content_right {
-    background: #f1f1f1;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
             flex: 1;
-}
-.content_left {
-    width: 15%;
-    background: #ffffff;
 }
 .leibie {
     text-align: center;
@@ -314,6 +312,7 @@
     color: rgb(189, 189, 189);
     font-size: 14px;
     margin-left: 28rpx;
+    padding: 10rpx
 }
 .right_content_list {
     display: -webkit-box;
@@ -350,6 +349,7 @@
 /**底部弹窗 */
 .popup_bottom_content {
     background: #ffffff;
+    text-align: center;
 }
 /**dialog */
 .dialogInput {
@@ -358,6 +358,6 @@
 }
 .dialogInput input {
     margin-top: 20rpx;
-    margin-bottom: 20rpx
+    margin-bottom: 20rpx;
 }
 

@@ -65,7 +65,7 @@
 
 /**header */
 .headerinfo {
-    height: 430rpx;
+    height: 380rpx;
     position: fixed;
     width: 100%;
     top: 0;
@@ -75,6 +75,6 @@
 .foodList-content {
     width: 100%;
     position: fixed;
-    top: 430rpx;
+    top: 380rpx;
 }
 

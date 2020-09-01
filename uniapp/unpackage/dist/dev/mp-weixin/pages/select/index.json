@@ -1,6 +1,5 @@
 {
   "navigationBarTitleText": "点菜",
-  "navigationStyle": "custom",
   "usingComponents": {
     "food-menu": "/pages/select/foodMenu",
     "evaluate": "/pages/select/evaluate",

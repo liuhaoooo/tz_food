@@ -7,14 +7,12 @@
                 <view class="cell-container">
                     <van-image round :src="item.avatar_url" lazy-load />
                     <text style="width: 20%;">{{item.user_name}}</text>
-                    <text style="width: 40%;">{{item.food_name}}</text>
-                    <text>{{item.time | get_date}}</text>
-                    <van-tag type="primary" v-if="item.openid==openid">我</van-tag>
+                    <text style="width: 70%;">{{item.food_name}}</text>
+                    <van-tag type="primary" v-if="item.openid==openid" style="margin-right:10rpx">我</van-tag>
                 </view>
             </cell>
         </list>
     </view>
-
 </view>
 </template>
 
@@ -36,7 +34,6 @@ export default {
     },
     filters: {
         get_date(val) {
-            console.log(val)
             let date = new Date(val)
             return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }
@@ -62,7 +59,7 @@ export default {
 </script>
 
 <style>
-.select-foodlist {}
+/**.select-foodlist {} */
 
 .cell-container {
     width: 100%;
@@ -77,6 +74,9 @@ export default {
 .cell-container text {
     margin-left: .4rem;
     margin-right: .4rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .cell-container image {

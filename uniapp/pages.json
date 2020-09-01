@@ -16,8 +16,7 @@
 		{
 			"path": "pages/select/index",
 			"style": {
-				"navigationBarTitleText": "点菜",
-				"navigationStyle":"custom"
+				"navigationBarTitleText": "点菜"
 			}
 		}
 	],
@@ -41,7 +40,9 @@
 			"van-index-bar": "/wxcomponents/vant/dist/index-bar/index",
 			"van-index-anchor": "/wxcomponents/vant/dist/index-anchor/index",
 			"van-tag": "/wxcomponents/vant/dist/tag/index",
-			"van-image": "/wxcomponents/vant/dist/image/index"
+			"van-image": "/wxcomponents/vant/dist/image/index",
+			"van-sidebar": "/wxcomponents/vant/dist/sidebar/index",
+  			"van-sidebar-item": "/wxcomponents/vant/dist/sidebar-item/index"
 		  }
 	},
 	"condition": {

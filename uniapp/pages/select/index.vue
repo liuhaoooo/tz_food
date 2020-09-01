@@ -3,7 +3,7 @@
     <van-notify id="van-notify" />
     <van-dialog id="van-dialog" />
     <!--header-->
-    <nav-bar type="transparent" fontColor="#ffffff">菜单</nav-bar>
+
     <view class="headerinfo" :style="'background-image: url('+bus_img+')'"></view>
     <!--content-->
     <view class="foodList-content">
@@ -65,7 +65,7 @@ export default {
 <style>
 /**header */
 .headerinfo {
-    height: 430rpx;
+    height: 380rpx;
     position: fixed;
     width: 100%;
     top: 0;
@@ -76,6 +76,6 @@ export default {
 .foodList-content {
     width: 100%;
     position: fixed;
-    top: 430rpx;
+    top: 380rpx;
 }
 </style>
