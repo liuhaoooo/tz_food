@@ -249,7 +249,6 @@ export default {
         },
         tapLeftList(e) {
             this.list_index = e.detail;
-            console.log(this.list_index)
         },
         //提交数据
         submit() {
@@ -257,7 +256,7 @@ export default {
             let data = {
                 foodid: this.food_id,
                 openid: this.openid,
-                text: "addorder"
+                text: ""
             };
             this.select_food(data)
                 .then(res => {

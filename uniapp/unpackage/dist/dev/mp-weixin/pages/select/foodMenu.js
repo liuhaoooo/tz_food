@@ -378,7 +378,6 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
     },
     tapLeftList: function tapLeftList(e) {
       this.list_index = e.detail;
-      console.log(this.list_index);
     },
     //提交数据
     submit: function submit() {var _this7 = this;
@@ -386,7 +385,7 @@ var _vuex = __webpack_require__(/*! vuex */ 10);function _interopRequireDefault(
       var data = {
         foodid: this.food_id,
         openid: this.openid,
-        text: "addorder" };
+        text: "" };
 
       this.select_food(data).
       then(function (res) {
