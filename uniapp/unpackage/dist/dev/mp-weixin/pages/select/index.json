@@ -3,6 +3,7 @@
   "usingComponents": {
     "food-menu": "/pages/select/foodMenu",
     "evaluate": "/pages/select/evaluate",
-    "nav-bar": "/components/zhouWei-navBar/index"
+    "nav-bar": "/components/zhouWei-navBar/index",
+    "select-list": "/pages/select/selectList"
   }
 }

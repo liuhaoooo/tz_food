@@ -48,6 +48,7 @@ export default {
                 id: "",
                 area: this.location
             }).then(res => {
+                console.log(res)
                 this.select_foodlist = res
                 this.loop && setTimeout(() => {
                     this.getData()

@@ -27,7 +27,7 @@
                 </list>
                 <van-empty description="暂无数据" v-else><button type="default" size="mini">刷新试试</button></van-empty>
             </view>
-
+            <!-- <mySwiper></mySwiper> -->
         </view>
     </skeleton>
 
@@ -36,6 +36,7 @@
 
 <script>
 import Dialog from '@vant/weapp/dist/dialog/dialog';
+import mySwiper from './swiper'
 import {
     mapActions,
     mapState,
@@ -48,7 +49,8 @@ import {
 } from "../../config/config";
 export default {
     components: {
-        subCard
+        subCard,
+        mySwiper
     },
     data() {
         return {

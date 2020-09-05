@@ -1,13 +1,13 @@
 {
   "pages": [
-    "pages/auth/index",
     "pages/index/index",
-    "pages/select/index"
+    "pages/select/index",
+    "pages/auth/index"
   ],
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "tz-food",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
@@ -33,6 +33,8 @@
     "van-tag": "/wxcomponents/vant/dist/tag/index",
     "van-image": "/wxcomponents/vant/dist/image/index",
     "van-sidebar": "/wxcomponents/vant/dist/sidebar/index",
-    "van-sidebar-item": "/wxcomponents/vant/dist/sidebar-item/index"
-  }
+    "van-sidebar-item": "/wxcomponents/vant/dist/sidebar-item/index",
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap96.json"
 }

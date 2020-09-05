@@ -1,12 +1,6 @@
 {
 	"pages": [
 		{
-			"path": "pages/auth/index",
-			"style": {
-				"navigationBarTitleText": "输入本次订餐验证码"
-			}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -18,11 +12,17 @@
 			"style": {
 				"navigationBarTitleText": "点菜"
 			}
+		},
+		{
+			"path": "pages/auth/index",
+			"style": {
+				"navigationBarTitleText": "输入本次订餐验证码"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "tz-food",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
 		"usingComponents": {

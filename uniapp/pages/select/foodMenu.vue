@@ -15,11 +15,8 @@
         </view>
     </van-popup>
 
-    <van-popup :show="showLeftPopup" position="left" custom-style="width: 90%;height:100%" @close="close_left">
-        <selectList ref="selectList" />
-    </van-popup>
     <!--content-->
-    <view>
+    <!-- <view>
         <view style="display:flex;">
             <van-sidebar :active-key="list_index" @change="tapLeftList" :style="'height:'+(device_info.windowHeight-150)+'px;background: #f7f8fa;'">
                 <van-sidebar-item :title="item" v-for="(item,index) in categoryList" :key="index" />
@@ -44,38 +41,57 @@
                 </view>
             </view>
         </view>
-    </view>
+    </view> -->
+
     <!--footer-->
-    <van-goods-action :safe-area-inset-bottom="false">
+    <!-- <van-goods-action :safe-area-inset-bottom="false">
         <van-goods-action-icon icon="shop-o" text="商家" @tap="toHome" />
-        <van-goods-action-icon icon="friends-o" text="其他人" @tap="show_left" />
+        <van-goods-action-icon icon="friends-o" text="其他人" @tap="$emit('clickOther')" />
         <van-goods-action-icon icon="cart-o" text="自己" :info="selectedFood==null?'':'已选'" @tap="showBottomPopup=true" />
         <van-goods-action-button text="提交" type="warning" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" v-if="selectedFood==null" :disabled="!food_id" :loading="Loading" />
         <van-goods-action-button text="取消选择" v-else @tap="cancelSelect" />
-    </van-goods-action>
+    </van-goods-action> -->
+    <view class="cu-bar bg-white tabbar border shop">
+        <view class="action text-orange" @tap="toHome">
+            <view class="cuIcon-shop"></view> 商家
+        </view>
+        <view class="action text-orange" @tap="$emit('clickOther')">
+            <view class="cuIcon-friend"></view> 其他人
+        </view>
+        <view class="action text-orange" @tap="showBottomPopup=true">
+            <view class="cuIcon-cart">
+                <view class="cu-tag badge" v-show="selectedFood!=null">已选</view>
+            </view>
+            自己
+        </view>
+        <button class="bg-orange submit" style="border-radius:0" open-type="getUserInfo" @getuserinfo="bindGetUserInfo" v-if="selectedFood==null" :disabled="!food_id">
+            <text class="cuIcon-loading2 cuIconfont-spin" v-if="Loading"></text>
+            <span v-else>提交</span>
+        </button>
+        <button class="bg-red submit" style="border-radius:0" v-else @tap="cancelSelect">
+            <text class="cuIcon-loading2 cuIconfont-spin" v-if="Loading"></text>
+            <span v-else>取消</span>
+        </button>
+    </view>
+
 </view>
 </template>
 
 <script>
 import Notify from "@vant/weapp/dist/notify/notify";
 import Dialog from "@vant/weapp/dist/dialog/dialog";
-import selectList from "./selectList";
 import {
     mapActions,
     mapState,
     mapGetters
 } from "vuex";
 export default {
-    components: {
-        selectList
-    },
     data() {
         return {
             showDialogInput: false,
             Loading: false,
             getDataLoading: false,
             showBottomPopup: false,
-            showLeftPopup: false,
 
             userName: "",
             department: "",
@@ -85,7 +101,7 @@ export default {
             list_index: 0,
             foodList: [],
             selectedFood: {},
-            categoryList: ["主菜", "配菜", "饮料"]
+            categoryList: ["主菜", "配菜", "饮料"],
         };
     },
     computed: {
@@ -100,6 +116,15 @@ export default {
         clearInterval(this.$loopGetData);
         this.getFoodlist();
         this.getSelectFood();
+
+        let list = [{}];
+        for (let i = 0; i < 26; i++) {
+            list[i] = {};
+            list[i].name = String.fromCharCode(65 + i);
+            list[i].id = i;
+        }
+        this.list = list;
+        this.listCur = list[0];
     },
     methods: {
         ...mapActions([
@@ -110,16 +135,6 @@ export default {
             "get_select_food",
             "cancel_select"
         ]),
-        //点击查看其他人
-        show_left() {
-            this.$refs.selectList.getData();
-            this.$refs.selectList.loop = true;
-            this.showLeftPopup = true;
-        },
-        close_left() {
-            this.$refs.selectList.loop = false;
-            this.showLeftPopup = false;
-        },
         //回到首页
         toHome() {
             uni.navigateBack({
@@ -190,6 +205,7 @@ export default {
                 uni.getUserInfo({
                     provider: "weixin",
                     success: res => {
+                        console.log(res)
                         _this.avatarUrl = res.userInfo.avatarUrl;
                         this.click_submit();
                     }
@@ -292,6 +308,8 @@ export default {
 </script>
 
 <style>
+@import "./css/index.css";
+
 /** 菜单*/
 .content_right {
     flex: 1;
