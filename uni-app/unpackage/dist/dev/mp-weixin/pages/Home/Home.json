@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "navigationBarBackgroundColor": "#02c8c7",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "other": "/pages/Home/components/Other",
+    "subs": "/pages/Home/components/Sub",
+    "tzmap": "/pages/Home/components/Map",
+    "tzfood": "/pages/Home/components/Food",
+    "drag-button": "/pages/Home/components/FloatButton"
+  }
+}
