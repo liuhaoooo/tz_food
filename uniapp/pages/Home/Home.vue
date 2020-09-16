@@ -10,11 +10,12 @@
         <!-- main -->
         <view class="main">
             <!-- 轮播 -->
-            <swiper class="screen-swiper" :circular="true" :autoplay="true" interval="5000" duration="500">
+            <!-- <swiper class="screen-swiper" :circular="true" :autoplay="true" interval="5000" duration="500">
                 <swiper-item v-for="(item,index) in 4" :key="index">
                     <image :src="'https://ossweb-img.qq.com/images/lol/web201310/skin/big3900'+index+ '.jpg'" mode="aspectFill"></image>
                 </swiper-item>
-            </swiper>
+            </swiper> -->
+            <view class="headerinfo"></view>
             <!-- map -->
             <tzmap @getData="getData" />
             <!-- 展示 -->
@@ -27,7 +28,7 @@
                     <text class="cuIcon-cart"></text>
                     <view class='cu-tag badge'>已选</view>
                 </button>
-                <button @click="showModal">
+                <button @click="showfriendModal">
                     <text class="cuIcon-friend"></text>
                 </button>
                 <button @click="showModal1">
@@ -84,18 +85,21 @@ export default {
             "set_user",
             "get_foodlist",
         ]),
-        showModal() {
+        showfriendModal() {
             this.isShowModal = true
+            this.$refs.other.loop = true
+            this.$refs.other.getData()
         },
         hideModal() {
             this.isShowModal = false
+            this.$refs.other.loop = false
         },
         showModal1() {
             this.modalName = true
         },
         getData() {
             this.get_foodlist({
-                busid: 1
+                busid: 2
             }).then(res => {
                 this.foodList = res
             })
@@ -110,15 +114,27 @@ export default {
 .button-content {
     display: flex;
     flex-direction: column;
-    width: 150rpx
+    width: 150rpx;
+    background: rgba(88, 88, 88, 0.418);
+    border-radius: 20rpx
 }
 
 .button-content>button {
-    width: 100rpx;
+    width: 100%;
     height: 100rpx;
-    border-radius: 50%;
     font-size: 40rpx;
-    background: rgba(255, 146, 74, 0.671);
-    color: #ffffff
+    background: #ffffff00;
+    color: #ffffff;
+    border: none;
+    outline: none
+}
+
+.headerinfo {
+    background: #ffffff;
+    z-index: 2;
+    height: 380rpx;
+    width: 100%;
+    background-image: url("../../static/images/heardinfo.png");
+    background-size: cover;
 }
 </style>

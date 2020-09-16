@@ -44,7 +44,7 @@ export default {
                 width: 40,
                 height: 40,
                 iconPath: this.userData.id != null ?
-                    this.userData.avatar_url : "../../static/images/pos_icon.png",
+                    this.userData.avatar_url : "../../../static/images/pos_icon.png",
                 callout: this.userData.id != null ? {
                     display: "ALWAYS",
                     content: `${this.userData.department}：${this.userData.user_name}`,

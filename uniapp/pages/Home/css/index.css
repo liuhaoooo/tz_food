@@ -3,7 +3,12 @@ page {
     width: 100vw;
     overflow: hidden;
 }
-
+view {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    -o-text-overflow: ellipsis;
+    white-space:nowrap;
+}
 .DrawerPage {
     position: fixed;
     width: 100vw;

@@ -16,4 +16,10 @@ export default {
 <style>
 @import "colorui/main.css";
 @import "colorui/icon.css";
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: transparent;
+}
 </style>

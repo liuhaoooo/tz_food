@@ -8,14 +8,11 @@
     <view class="VerticalBox">
         <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 710upx)" :scroll-into-view="'main-'+mainCur">
             <view v-if="!loading">
-                <view class="cu-list menu-avatar" v-if="foodList.length!=0">
-                    <view class="cu-item" v-for="(item,index) in foodList" :key="index">
-                        <view class="cu-avatar lg" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.jpg)'}]"></view>
-                        <view class="content">
+                <view class="cu-list menu-avatar" v-show="foodList.length!=0">
+                    <view class="cu-item" style="height: 180rpx" v-for="(item,index) in foodList" :key="index">
+                        <view class="cu-avatar xl" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.jpg)'}]"></view>
+                        <view class="content margin-left">
                             <view class="text-grey">{{item.food_name}}</view>
-                            <!-- <view class="text-gray text-sm">
-                                <text class="cuIcon-infofill text-red  margin-right-xs"></text>副菜
-                            </view> -->
                         </view>
                     </view>
                 </view>
@@ -61,6 +58,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>

@@ -51,7 +51,7 @@ export default {
             this.offsetWidth = data.width / 2;
             this.offsetHeight = data.height / 2;
             this.left = this.windowWidth - this.width + this.edge;
-            this.top = this.windowHeight - this.height - this.edge;
+            this.top = this.windowHeight - this.height + this.edge;
         }).exec();
     },
     methods: {
@@ -72,7 +72,7 @@ export default {
             // #ifdef H5
             clientY += this.height;
             // #endif
-            let edgeBottom = this.windowHeight - this.height - this.edge;
+            let edgeBottom = this.windowHeight - this.height + this.edge;
             // 上下触及边界
             if (clientY < this.edge) {
                 this.top = this.edge;
@@ -85,7 +85,6 @@ export default {
         touchend(e) {
             if (this.isDock) {
                 let edgeRigth = this.windowWidth - this.width + this.edge;
-
                 if (this.left < this.windowWidth / 2 - this.offsetWidth) {
                     this.left = this.edge;
                 } else {

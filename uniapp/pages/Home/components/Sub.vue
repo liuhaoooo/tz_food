@@ -1,6 +1,6 @@
 <template>
 <view class="sub-main">
-    <button>按钮</button>
+
 </view>
 </template>
 
