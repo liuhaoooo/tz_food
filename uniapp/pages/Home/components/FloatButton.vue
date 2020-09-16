@@ -36,25 +36,21 @@ export default {
     },
     mounted() {
         const sys = uni.getSystemInfoSync();
-
         this.windowWidth = sys.windowWidth;
         this.windowHeight = sys.windowHeight;
-
         // #ifdef APP-PLUS
         this.existTabBar && (this.windowHeight -= 50);
         // #endif
         if (sys.windowTop) {
             this.windowHeight += sys.windowTop;
         }
-        console.log(sys)
-
         const query = uni.createSelectorQuery().in(this);
         query.select('#_drag_button').boundingClientRect(data => {
             this.width = data.width;
             this.height = data.height;
             this.offsetWidth = data.width / 2;
             this.offsetHeight = data.height / 2;
-            this.left = this.windowWidth - this.width - this.edge;
+            this.left = this.windowWidth - this.width + this.edge;
             this.top = this.windowHeight - this.height - this.edge;
         }).exec();
     },
@@ -70,17 +66,13 @@ export default {
             if (e.touches.length !== 1) {
                 return false;
             }
-
             this.isMove = true;
-
             this.left = e.touches[0].clientX - this.offsetWidth;
-
             let clientY = e.touches[0].clientY - this.offsetHeight;
             // #ifdef H5
             clientY += this.height;
             // #endif
             let edgeBottom = this.windowHeight - this.height - this.edge;
-
             // 上下触及边界
             if (clientY < this.edge) {
                 this.top = this.edge;
@@ -89,22 +81,18 @@ export default {
             } else {
                 this.top = clientY
             }
-
         },
         touchend(e) {
             if (this.isDock) {
-                let edgeRigth = this.windowWidth - this.width - this.edge;
+                let edgeRigth = this.windowWidth - this.width + this.edge;
 
                 if (this.left < this.windowWidth / 2 - this.offsetWidth) {
                     this.left = this.edge;
                 } else {
                     this.left = edgeRigth;
                 }
-
             }
-
             this.isMove = false;
-
             this.$emit('btnTouchend');
         },
     }
