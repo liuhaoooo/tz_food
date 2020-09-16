@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "xw-empty": "/components/xw-empty/xw-empty"
+  }
+}
