@@ -1,5 +1,11 @@
 {
-	"pages": [ 
+	"pages": [
+		{
+            "path" : "pages/Auth/Auth",
+            "style" : {
+				"navigationBarTitleText": "输入本次订餐验证码"
+			}
+        }, 
 		{
             "path" : "pages/Home/Home",
             "style" : {
@@ -8,20 +14,12 @@
 				"navigationStyle": "custom"
 			}
         }
-        ,{
-            "path" : "pages/Auth/Auth",
-            "style" : {
-				"navigationBarTitleText": "输入本次订餐验证码"
-			}
-        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"usingComponents": {
-			
-		}
+		"usingComponents": {}
 	}
 }

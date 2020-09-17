@@ -83,7 +83,6 @@ const store = new Vuex.Store({
 		get_device_info(state, data) {
 			uni.getSystemInfo({
 				success: (res) => {
-					console.log(res)
 					let info = {
 						model: res.model,
 						pixelRatio: res.pixelRatio,
@@ -111,7 +110,6 @@ const store = new Vuex.Store({
 								data,
 								method: 'GET',
 							}).then(res => {
-								console.log(res)
 								state.commit('SET_OPENID', res.data.openid)
 								state.commit('USER_DATA', res.data)
 								resolve(res.data)

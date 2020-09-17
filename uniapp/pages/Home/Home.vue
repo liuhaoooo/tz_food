@@ -2,10 +2,13 @@
 <view class="bg-gradual-blue">
     <scroll-view scroll-y class="DrawerPage" :class="isShowModal?'show':''">
         <!-- 侧边抽屉（商家选择）-->
-        <view class="cu-modal drawer-modal justify-start" :class="modalName?'show':''" @tap="modalName=false">
-            <view class="cu-dialog basis-lg" @tap.stop="" :style="[{height:'calc(100vh)'}]">
-                <subs />
-            </view>
+        <view class="cu-modal bottom-modal" :class="showMySelect?'show':''" @tap="showMySelect=false">
+            <!-- <view class="cu-dialog" style="height:400rpx">
+                <view class="padding-xl">
+                    Modal 内容。
+                </view>
+            </view> -->
+            <my-select ref="mySelect" :selectedFood="selectedFood" />
         </view>
         <!-- main -->
         <view class="main">
@@ -19,7 +22,7 @@
             <!-- map -->
             <tzmap @getData="getData" />
             <!-- 展示 -->
-            <tzfood :foodList="foodList" />
+            <tzfood :foodList="foodList" @select="getData" />
         </view>
         <!--浮动按钮-->
         <drag-button :isDock="true" :existTabBar="true">
@@ -31,7 +34,7 @@
                 <view @click="showfriendModal">
                     <text class="cuIcon-friend"></text>
                 </view>
-                <view @click="showModal1">
+                <view @click="showModal">
                     <text class="cuIcon-shop"></text>
                 </view>
             </view>
@@ -60,30 +63,37 @@ import subs from "./components/Sub"
 import tzmap from "./components/Map"
 import tzfood from "./components/Food"
 import dragButton from "./components/FloatButton"
+import mySelect from "./components/MySelect"
 export default {
     components: {
         other,
         subs,
         tzmap,
         tzfood,
-        dragButton
+        dragButton,
+        mySelect
     },
     data() {
         return {
             isShowModal: false, //其他人
-            modalName: false, //选商家
+            showMySelect: false, //自己
             mainCur: 0,
-            foodList: ['']
+            foodList: [''],
+            selectedFood: {}
         };
     },
+    computed: {
+        ...mapGetters(["openid", "location"])
+    },
     onLoad() {
-
+        this.getSelectedFood()
     },
     methods: {
         ...mapActions([
             "get_openid",
             "set_user",
             "get_foodlist",
+            "get_select_food"
         ]),
         showfriendModal() {
             this.isShowModal = true
@@ -94,16 +104,25 @@ export default {
             this.isShowModal = false
             this.$refs.other.loop = false
         },
-        showModal1() {
-            this.modalName = true
+        showModal() {
+            this.showMySelect = true
         },
-        getData() {
+        getData(busid = 1) {
             this.get_foodlist({
-                busid: 2
+                busid
             }).then(res => {
                 this.foodList = res
             })
-        }
+        },
+        getSelectedFood() {
+            this.get_select_food({
+                id: this.openid,
+                area: this.location
+            }).then(res => {
+                this.selectedFood = res;
+                console.log(res)
+            });
+        },
     },
 }
 </script>

@@ -52,7 +52,10 @@ export default {
     },
     methods: {
         tabSelect(e) {
+            this.$store.commit('SET_LOADING', true)
             this.TabCur = e.currentTarget.dataset.id;
+            // console.log(this.TabCur)
+            this.$emit("select", this.TabCur + 1)
             this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
         },
     },
