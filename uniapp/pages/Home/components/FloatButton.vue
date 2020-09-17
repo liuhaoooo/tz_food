@@ -50,8 +50,8 @@ export default {
             this.height = data.height;
             this.offsetWidth = data.width / 2;
             this.offsetHeight = data.height / 2;
-            this.left = this.windowWidth - this.width + this.edge;
-            this.top = this.windowHeight - this.height + this.edge;
+            this.left = this.windowWidth - this.width - this.edge;
+            this.top = this.windowHeight - this.height - this.edge - 10;
         }).exec();
     },
     methods: {
@@ -77,7 +77,7 @@ export default {
             if (clientY < this.edge) {
                 this.top = this.edge;
             } else if (clientY > edgeBottom) {
-                this.top = edgeBottom;
+                this.top = edgeBottom - this.edge;
             } else {
                 this.top = clientY
             }
@@ -88,7 +88,7 @@ export default {
                 if (this.left < this.windowWidth / 2 - this.offsetWidth) {
                     this.left = this.edge;
                 } else {
-                    this.left = edgeRigth;
+                    this.left = edgeRigth - this.edge - this.edge;
                 }
             }
             this.isMove = false;

@@ -24,16 +24,16 @@
         <!--浮动按钮-->
         <drag-button :isDock="true" :existTabBar="true">
             <view class="button-content">
-                <button>
+                <view>
                     <text class="cuIcon-cart"></text>
                     <view class='cu-tag badge'>已选</view>
-                </button>
-                <button @click="showfriendModal">
+                </view>
+                <view @click="showfriendModal">
                     <text class="cuIcon-friend"></text>
-                </button>
-                <button @click="showModal1">
+                </view>
+                <view @click="showModal1">
                     <text class="cuIcon-shop"></text>
-                </button>
+                </view>
             </view>
         </drag-button>
     </scroll-view>
@@ -114,19 +114,21 @@ export default {
 .button-content {
     display: flex;
     flex-direction: column;
-    width: 150rpx;
+    width: 120rpx;
     background: rgba(88, 88, 88, 0.418);
     border-radius: 20rpx
 }
 
-.button-content>button {
+.button-content>view {
     width: 100%;
     height: 100rpx;
-    font-size: 40rpx;
+    font-size: 50rpx;
+    line-height: 100rpx;
     background: #ffffff00;
     color: #ffffff;
     border: none;
-    outline: none
+    outline: none;
+    text-align: center;
 }
 
 .headerinfo {
