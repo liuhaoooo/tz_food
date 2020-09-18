@@ -78,6 +78,7 @@ export default {
             }, 100)
         },
         close() {
+            this.arr = []
             this.wc = "background-color:rgba(0, 0, 0, .5)"
             this.obj = "opacity: 0;top: 50%"
             this.clear2 = setTimeout(() => {

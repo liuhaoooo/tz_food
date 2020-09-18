@@ -36,7 +36,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["userData"]),
+        ...mapGetters(["userData", "location"]),
         markers() {
             let marker = Object.assign({}, marker, {
                 latitude: this.latitude,
@@ -59,6 +59,7 @@ export default {
         this.getAuth();
     },
     methods: {
+        ...mapActions(["get_buslist"]),
         getAuth() {
             this.$store.commit('SET_LOADING', true)
             uni.authorize({
@@ -100,11 +101,25 @@ export default {
                 success: data => {
                     this.addressName = data[0].name;
                     let addr = data[0].regeocodeData.addressComponent.city;
-                    addr && this.$store.commit('SET_LOCATION', addr)
-                    addr && this.$emit('getData')
+                    if (addr) {
+                        this.$store.commit('SET_LOCATION', addr)
+                        this.get_buslist({
+                            area: this.location
+                        }).then(res => {
+                            this.$emit('getData')
+                        });
+                    }
                 }
             });
         },
     },
 }
 </script>
+
+<style>
+.map {
+    position: fixed;
+    top: 200rpx;
+    z-index: 10
+}
+</style>

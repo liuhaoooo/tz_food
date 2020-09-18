@@ -3,39 +3,52 @@
     <scroll-view scroll-y class="DrawerPage" :class="isShowModal?'show':''">
         <!-- 侧边抽屉（商家选择）-->
         <view class="cu-modal bottom-modal" :class="showMySelect?'show':''" @tap="showMySelect=false">
-            <!-- <view class="cu-dialog" style="height:400rpx">
-                <view class="padding-xl">
-                    Modal 内容。
-                </view>
-            </view> -->
             <my-select ref="mySelect" :selectedFood="selectedFood" />
+        </view>
+        <!-- 输入名字部门 -->
+        <view class="cu-modal" :class="showEnterName?'show':''">
+            <view class="cu-dialog">
+                <view class="bg-img" style="height:200px;">
+                    <view class="cu-form-group margin-top margin-buttom">
+                        <view class="title">姓名</view>
+                        <input placeholder="请输入姓名" v-model="userName" />
+                    </view>
+                    <view class="cu-form-group margin-top margin-buttom">
+                        <view class="title">部门</view>
+                        <input placeholder="请输入部门" v-model="department" />
+                    </view>
+                </view>
+                <view class="cu-bar bg-white">
+                    <view class="action margin-0 flex-sub  solid-left" @tap="showEnterName=false">我知道了</view>
+                </view>
+            </view>
         </view>
         <!-- main -->
         <view class="main">
-            <!-- 轮播 -->
+            <!-- banner -->
             <!-- <swiper class="screen-swiper" :circular="true" :autoplay="true" interval="5000" duration="500">
                 <swiper-item v-for="(item,index) in 4" :key="index">
                     <image :src="'https://ossweb-img.qq.com/images/lol/web201310/skin/big3900'+index+ '.jpg'" mode="aspectFill"></image>
                 </swiper-item>
             </swiper> -->
-            <view class="headerinfo"></view>
+            <view class="headerinfo" style="background-image: url('../../static/images/componentBg.png')"></view>
             <!-- map -->
             <tzmap @getData="getData" />
+
             <!-- 展示 -->
-            <tzfood :foodList="foodList" @select="getData" />
+            <tzfood :foodList="foodList" @select="getData" @selectfood="selectfood" />
         </view>
         <!--浮动按钮-->
         <drag-button :isDock="true" :existTabBar="true">
             <view class="button-content">
-                <view>
+                <view @click="showModal">
                     <text class="cuIcon-cart"></text>
-                    <view class='cu-tag badge'>已选</view>
                 </view>
                 <view @click="showfriendModal">
                     <text class="cuIcon-friend"></text>
                 </view>
-                <view @click="showModal">
-                    <text class="cuIcon-shop"></text>
+                <view>
+                    <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="cu-btn">点餐</button>
                 </view>
             </view>
         </drag-button>
@@ -77,13 +90,19 @@ export default {
         return {
             isShowModal: false, //其他人
             showMySelect: false, //自己
+            showEnterName: false, //输姓名
             mainCur: 0,
             foodList: [''],
-            selectedFood: {}
+            selectedFood: {},
+
+            userName: "",
+            department: "",
+            food_id: "",
+            avatarUrl: "",
         };
     },
     computed: {
-        ...mapGetters(["openid", "location"])
+        ...mapGetters(["openid", "location", "userData", "subInfo"])
     },
     onLoad() {
         this.getSelectedFood()
@@ -93,7 +112,9 @@ export default {
             "get_openid",
             "set_user",
             "get_foodlist",
-            "get_select_food"
+            "get_select_food",
+            "select_food",
+            "cancel_select"
         ]),
         showfriendModal() {
             this.isShowModal = true
@@ -106,6 +127,9 @@ export default {
         },
         showModal() {
             this.showMySelect = true
+        },
+        selectfood(id) {
+            this.food_id = id
         },
         getData(busid = 1) {
             this.get_foodlist({
@@ -120,9 +144,92 @@ export default {
                 area: this.location
             }).then(res => {
                 this.selectedFood = res;
-                console.log(res)
             });
         },
+        /*
+         *点餐部分
+         */
+        //获取权限
+        bindGetUserInfo(e) {
+            if (e.target.errMsg === "getUserInfo:ok") {
+                const _this = this;
+                uni.getUserInfo({
+                    provider: "weixin",
+                    success: res => {
+                        _this.avatarUrl = res.userInfo.avatarUrl;
+                        this.click_submit();
+                    }
+                });
+            } else {
+                uni.showToast({
+                    title: "需要授权",
+                    icon: "none",
+                    duration: 1000
+                });
+            }
+        },
+        //点击提交按钮（做判断）
+        click_submit() {
+            this.showEnterName = true;
+            return
+            if (this.userData.id == null) { //如果未注册
+                this.showEnterName = true;
+                return;
+            } else {
+                this.submit();
+            }
+        },
+        //设置姓名
+        setUser() {
+            if (!this.userName) {
+                uni.showToast({
+                    title: "姓名不能为空",
+                    icon: "none",
+                    duration: 1000
+                });
+                return;
+            }
+            if (!this.department) {
+                uni.showToast({
+                    title: "所在部门不能为空",
+                    icon: "none",
+                    duration: 1000
+                });
+                return;
+            }
+            let data = {
+                username: this.userName,
+                department: this.department,
+                openid: this.openid,
+                img: this.avatarUrl
+            };
+            this.set_user(data).then(res => {
+                this.submit();
+                Dialog.close();
+            });
+        },
+        //提交数据
+        submit() {
+            this.Loading = true;
+            let data = {
+                foodid: this.food_id,
+                openid: this.openid,
+                text: ""
+            };
+            this.select_food(data)
+                .then(res => {
+                    uni.showToast({
+                        title: "订餐成功",
+                        icon: "none",
+                        duration: 1000
+                    });
+                    this.get_openid();
+                    this.getSelectFood();
+                })
+                .catch(() => {
+                    this.get_openid();
+                });
+        }
     },
 }
 </script>
@@ -134,7 +241,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 120rpx;
-    background: rgba(88, 88, 88, 0.418);
+    /* background: rgba(88, 88, 88, 0.418); */
     border-radius: 20rpx
 }
 
@@ -143,19 +250,29 @@ export default {
     height: 100rpx;
     font-size: 50rpx;
     line-height: 100rpx;
-    background: #ffffff00;
+    background: rgb(243, 123, 29);
     color: #ffffff;
     border: none;
     outline: none;
     text-align: center;
+    margin-bottom: 10rpx;
+    margin-top: 10rpx;
+}
+
+.button-content>view>button {
+    width: 100%;
+    height: 100rpx;
+    font-size: 32rpx;
+    background: #ffffff00;
+    color: #ffffff;
+    border: 0;
+    outline: none;
 }
 
 .headerinfo {
     background: #ffffff;
-    z-index: 2;
     height: 380rpx;
     width: 100%;
-    background-image: url("../../static/images/heardinfo.png");
     background-size: cover;
 }
 </style>

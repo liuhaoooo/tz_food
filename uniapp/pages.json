@@ -5,7 +5,7 @@
             "style" : {
 				"navigationBarTitleText": "输入本次订餐验证码"
 			}
-        }, 
+        },
 		{
             "path" : "pages/Home/Home",
             "style" : {

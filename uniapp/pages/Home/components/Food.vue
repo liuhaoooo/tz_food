@@ -8,14 +8,20 @@
     <view class="VerticalBox">
         <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 710upx)" :scroll-into-view="'main-'+mainCur">
             <view v-if="!loading">
-                <view class="cu-list menu-avatar" v-show="foodList.length!=0">
-                    <view class="cu-item" style="height: 180rpx" v-for="(item,index) in foodList" :key="index">
-                        <view class="cu-avatar xl" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.jpg)'}]"></view>
-                        <view class="content margin-left">
-                            <view class="text-grey">{{item.food_name}}</view>
-                        </view>
-                    </view>
+                <!--  -->
+                <view class="cu-list menu-avatar padding-left padding-right" v-show="foodList.length!=0">
+                    <radio-group @change="RadioChange" style="width: 100%">
+                        <radio class="my-flex" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index">
+                            <view style="height: 180rpx" class="my-flex margin-left">
+                                <view class="cu-avatar xl" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.jpg)'}]"></view>
+                                <view class="content margin-left">
+                                    <view class="text-grey">{{item.food_name}}</view>
+                                </view>
+                            </view>
+                        </radio>
+                    </radio-group>
                 </view>
+                <!--  -->
                 <xw-empty :isShow="foodList.length==0" text="暂无数据" textColor="#777777" />
             </view>
             <image src="../../../static/images/loading-white.gif" mode="aspectFit" class="gif-white response" style="height:340upx" v-else></image>
@@ -38,7 +44,7 @@ export default {
     data() {
         return {
             TabCur: 0,
-            scrollLeft: 0
+            scrollLeft: 0,
         }
     },
     computed: {
@@ -54,10 +60,19 @@ export default {
         tabSelect(e) {
             this.$store.commit('SET_LOADING', true)
             this.TabCur = e.currentTarget.dataset.id;
-            // console.log(this.TabCur)
             this.$emit("select", this.TabCur + 1)
             this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+        },
+        RadioChange(e) {
+            this.$emit('selectfood', e.detail.value)
         },
     },
 }
 </script>
+
+<style>
+.my-flex {
+    display: flex;
+    align-items: center
+}
+</style>

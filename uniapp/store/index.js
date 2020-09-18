@@ -15,7 +15,8 @@ const store = new Vuex.Store({
 		userData: {},
 		device_info: {},
 		location: "",
-		loading: true
+		loading: true,
+		subInfo:{}
 	},
 	getters: {
 		device_info(state) {
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
 		userData(state) {
 			return state.userData
 		},
+		subInfo(state){
+			return state.subInfo
+		}
 	},
 	mutations: {
 		SET_LOADING(state, data) {
@@ -55,6 +59,9 @@ const store = new Vuex.Store({
 		},
 		USER_DATA(state, data) {
 			state.userData = data
+		},
+		SET_SUBINFO(state, data){
+			state.subInfo = data
 		}
 	},
 	actions: {
@@ -140,6 +147,7 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					state.commit('SET_SUBINFO', res.data)
 					resolve(res.data)
 				}).catch(err => reject(err))
 			})
