@@ -6,14 +6,14 @@
         </view>
     </view>
     <view class="VerticalBox">
-        <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 710upx)" :scroll-into-view="'main-'+mainCur">
+        <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 700upx)" :scroll-into-view="'main-'+mainCur">
             <view v-if="!loading">
                 <!--  -->
                 <view class="cu-list menu-avatar padding-left padding-right" v-show="foodList.length!=0">
                     <radio-group @change="RadioChange" style="width: 100%">
                         <radio class="my-flex" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index">
                             <view style="height: 180rpx" class="my-flex margin-left">
-                                <view class="cu-avatar xl" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.jpg)'}]"></view>
+                                <view class="cu-avatar xl" :style="[{backgroundImage:item.food_image||'url(../../../static/images/default_food.png)'}]"></view>
                                 <view class="content margin-left">
                                     <view class="text-grey">{{item.food_name}}</view>
                                 </view>

@@ -117,6 +117,7 @@ const store = new Vuex.Store({
 								data,
 								method: 'GET',
 							}).then(res => {
+								console.log(res.data.openid)
 								state.commit('SET_OPENID', res.data.openid)
 								state.commit('USER_DATA', res.data)
 								resolve(res.data)

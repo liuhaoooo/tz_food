@@ -5,21 +5,20 @@
         <view class="cu-modal bottom-modal" :class="showMySelect?'show':''" @tap="showMySelect=false">
             <my-select ref="mySelect" :selectedFood="selectedFood" />
         </view>
-        <!-- 输入名字部门 -->
+        <!-- 设置用户 -->
         <view class="cu-modal" :class="showEnterName?'show':''">
-            <view class="cu-dialog">
-                <view class="bg-img" style="height:200px;">
-                    <view class="cu-form-group margin-top margin-buttom">
-                        <view class="title">姓名</view>
+            <view class="cu-dialog" style="margin-bottom: 400rpx;">
+                <view class="bg-img">
+                    <view class=" cu-form-group">
                         <input placeholder="请输入姓名" v-model="userName" />
                     </view>
-                    <view class="cu-form-group margin-top margin-buttom">
-                        <view class="title">部门</view>
+                    <view class="cu-form-group">
                         <input placeholder="请输入部门" v-model="department" />
                     </view>
                 </view>
                 <view class="cu-bar bg-white">
-                    <view class="action margin-0 flex-sub  solid-left" @tap="showEnterName=false">我知道了</view>
+                    <view class="action margin-0 flex-sub  solid-left" @tap="showEnterName=false">取消</view>
+                    <view class="action margin-0 flex-sub  solid-left" @tap="setUser">提交</view>
                 </view>
             </view>
         </view>
@@ -30,8 +29,9 @@
                 <swiper-item v-for="(item,index) in 4" :key="index">
                     <image :src="'https://ossweb-img.qq.com/images/lol/web201310/skin/big3900'+index+ '.jpg'" mode="aspectFill"></image>
                 </swiper-item>
-            </swiper> -->
-            <view class="headerinfo" style="background-image: url('../../static/images/componentBg.png')"></view>
+            </swiper>-->
+            <!--<view class="headerinfo" style="background-image: url('../../static/images/componentBg.png')"></view>-->
+            <view class="headerinfo" style="background-image: url('http://liuhaooo.top/tz_food_header/componentBg.png')"></view>
             <!-- map -->
             <tzmap @getData="getData" />
 
@@ -48,7 +48,8 @@
                     <text class="cuIcon-friend"></text>
                 </view>
                 <view>
-                    <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="cu-btn">点餐</button>
+                    <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="float-button" v-if="selectedFood==null">点餐</button>
+                    <button class="float-button" style="background: #f31d28;" @click="cancelSelect" v-else>取消</button>
                 </view>
             </view>
         </drag-button>
@@ -143,6 +144,8 @@ export default {
                 id: this.openid,
                 area: this.location
             }).then(res => {
+                console.log('-------------')
+                console.log(res)
                 this.selectedFood = res;
             });
         },
@@ -170,8 +173,6 @@ export default {
         },
         //点击提交按钮（做判断）
         click_submit() {
-            this.showEnterName = true;
-            return
             if (this.userData.id == null) { //如果未注册
                 this.showEnterName = true;
                 return;
@@ -197,6 +198,7 @@ export default {
                 });
                 return;
             }
+            this.showEnterName = false
             let data = {
                 username: this.userName,
                 department: this.department,
@@ -205,7 +207,6 @@ export default {
             };
             this.set_user(data).then(res => {
                 this.submit();
-                Dialog.close();
             });
         },
         //提交数据
@@ -224,12 +225,29 @@ export default {
                         duration: 1000
                     });
                     this.get_openid();
-                    this.getSelectFood();
+                    this.getSelectedFood();
                 })
                 .catch(() => {
                     this.get_openid();
                 });
-        }
+        },
+        /**
+         * 取消菜单
+         */
+        cancelSelect() {
+            this.cancel_select({
+                    id: this.selectedFood.id
+                })
+                .then(res => {
+                    this.selectedFood = null;
+                    uni.showToast({
+                        title: "取消成功",
+                        icon: "none",
+                        duration: 1000
+                    });
+                })
+                .catch(() => {});
+        },
     },
 }
 </script>
@@ -241,8 +259,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 120rpx;
-    /* background: rgba(88, 88, 88, 0.418); */
-    border-radius: 20rpx
+    border-radius: 16rpx;
 }
 
 .button-content>view {
@@ -250,23 +267,32 @@ export default {
     height: 100rpx;
     font-size: 50rpx;
     line-height: 100rpx;
-    background: rgb(243, 123, 29);
+    background: #f37b1d;
     color: #ffffff;
     border: none;
     outline: none;
     text-align: center;
-    margin-bottom: 10rpx;
-    margin-top: 10rpx;
+    margin-bottom: 5rpx;
+    margin-top: 5rpx;
 }
 
-.button-content>view>button {
+.float-button {
     width: 100%;
     height: 100rpx;
     font-size: 32rpx;
-    background: #ffffff00;
+    background: #f37b1d;
     color: #ffffff;
     border: 0;
     outline: none;
+    text-align: center
+}
+
+.float-button[disabled] {
+    color: #ffffff !important;
+    background: #f8a769 !important;
+    border: 0 !important;
+    outline: none !important;
+    text-align: center !important;
 }
 
 .headerinfo {
