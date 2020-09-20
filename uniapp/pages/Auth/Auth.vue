@@ -1,11 +1,11 @@
 <template>
 <view class="content">
     <view class="cu-load load-modal" v-if="loadModal">
-        <!-- <view class="cuIcon-emojifill text-orange"></view> -->
-        <image src="https://image.weilanwl.com/gif/loading-1.gif" mode="aspectFit"></image>
-        <view class="gray-text">加载中...</view>
+        <!--<view class="cuIcon-loading2 text-orange"></view>-->
+        <!--<image src="https://image.weilanwl.com/gif/loading-1.gif" mode="aspectFit"></image>-->
+        <view class="gray-text">验证中...</view>
     </view>
-    <button type="default" @tap="open">弹出</button>
+    <!-- <button type="default" @tap="open">弹出</button>-->
     <keyboard @closeChange="closeChange($event)" ref="numberPad" />
 </view>
 </template>
@@ -48,10 +48,12 @@ export default {
                     url: "/pages/Home/Home"
                 });
             }).catch(() => {
-                setTimeout(() => {
-                    this.loadModal = false;
-                }, 2000)
-                this.$refs.numberPad.close()
+                this.loadModal = false;
+                uni.showToast({
+                    title: "验证码错误",
+                    icon: "none",
+                    duration: 1000
+                });
             })
         },
     }

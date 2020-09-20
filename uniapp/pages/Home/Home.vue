@@ -7,9 +7,9 @@
         </view>
         <!-- 设置用户 -->
         <view class="cu-modal" :class="showEnterName?'show':''">
-            <view class="cu-dialog" style="margin-bottom: 400rpx;">
+            <view class="cu-dialog" style="margin-bottom: 400rpx;" v-if="showEnterName">
                 <view class="bg-img">
-                    <view class=" cu-form-group">
+                    <view class="cu-form-group">
                         <input placeholder="请输入姓名" v-model="userName" />
                     </view>
                     <view class="cu-form-group">
@@ -34,14 +34,13 @@
             <view class="headerinfo" style="background-image: url('http://liuhaooo.top/tz_food_header/componentBg.png')"></view>
             <!-- map -->
             <tzmap @getData="getData" />
-
             <!-- 展示 -->
             <tzfood :foodList="foodList" @select="getData" @selectfood="selectfood" />
         </view>
         <!--浮动按钮-->
         <drag-button :isDock="true" :existTabBar="true">
             <view class="button-content">
-                <view @click="showModal">
+                <view @click="showMySelect=true">
                     <text class="cuIcon-cart"></text>
                 </view>
                 <view @click="showfriendModal">
@@ -49,7 +48,7 @@
                 </view>
                 <view>
                     <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="float-button" v-if="selectedFood==null">点餐</button>
-                    <button class="float-button" style="background: #f31d28;" @click="cancelSelect" v-else>取消</button>
+                    <button class="float-button" style="background: #f31d28b9;" @click="cancelSelect" v-else>取消</button>
                 </view>
             </view>
         </drag-button>
@@ -103,7 +102,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["openid", "location", "userData", "subInfo"])
+        ...mapGetters(["openid", "location", "userData"])
     },
     onLoad() {
         this.getSelectedFood()
@@ -126,9 +125,6 @@ export default {
             this.isShowModal = false
             this.$refs.other.loop = false
         },
-        showModal() {
-            this.showMySelect = true
-        },
         selectfood(id) {
             this.food_id = id
         },
@@ -144,8 +140,6 @@ export default {
                 id: this.openid,
                 area: this.location
             }).then(res => {
-                console.log('-------------')
-                console.log(res)
                 this.selectedFood = res;
             });
         },
@@ -267,7 +261,7 @@ export default {
     height: 100rpx;
     font-size: 50rpx;
     line-height: 100rpx;
-    background: #f37b1d;
+    background: #f57919b9;
     color: #ffffff;
     border: none;
     outline: none;
@@ -280,7 +274,7 @@ export default {
     width: 100%;
     height: 100rpx;
     font-size: 32rpx;
-    background: #f37b1d;
+    background: #f57919b9;
     color: #ffffff;
     border: 0;
     outline: none;
@@ -289,7 +283,7 @@ export default {
 
 .float-button[disabled] {
     color: #ffffff !important;
-    background: #f8a769 !important;
+    background: #fca665a1 !important;
     border: 0 !important;
     outline: none !important;
     text-align: center !important;

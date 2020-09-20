@@ -76,11 +76,6 @@ const store = new Vuex.Store({
 					if (res.data) {
 						resolve()
 					} else {
-						uni.showToast({
-							title: "验证码错误",
-							icon: "none",
-							duration: 1000
-						});
 						reject()
 					}
 				}).catch(err => reject(err))
