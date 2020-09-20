@@ -12,7 +12,7 @@
                     <radio-group @change="RadioChange" style="width: 100%">
                         <radio class="my-flex my-margin" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index">
                             <view style="height: 180rpx" class="my-flex">
-                                <view class="cu-avatar xl margin-left" :style="`background-image:url(../../../static/images/defaultFood_${index+1}.png)`"></view>
+                                <view class="cu-avatar xl margin-left" :style="`background-image:url(http://liuhaooo.top/tz_food_header/defaultFood_${index+1}.png)`"></view>
                                 <view class="content margin-left">
                                     <view class="text-grey">{{item.food_name}}</view>
                                 </view>
