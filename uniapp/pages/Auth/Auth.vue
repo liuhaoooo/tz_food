@@ -2,7 +2,7 @@
 <view class="content">
     <view class="cu-load load-modal" v-if="loadModal">
         <!--<view class="cuIcon-loading2 text-orange"></view>-->
-        <!--<image src="https://image.weilanwl.com/gif/loading-1.gif" mode="aspectFit"></image>-->
+        <image src="../../static/images/logo.png" mode="aspectFit" />
         <view class="gray-text">验证中...</view>
     </view>
     <!-- <button type="default" @tap="open">弹出</button>-->

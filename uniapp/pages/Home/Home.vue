@@ -3,6 +3,7 @@
     <scroll-view scroll-y class="DrawerPage" :class="isShowModal?'show':''">
         <!-- 加载动画 -->
         <view class="cu-load load-modal" v-if="loadModal">
+            <image src="../../static/images/logo.png" mode="aspectFit" />
             <view class="gray-text">请求中...</view>
         </view>
         <!-- 侧边抽屉（商家选择）-->
@@ -32,9 +33,9 @@
                 <view class="cu-bar bg-white justify-end">
                     <view class="content">确定取消吗</view>
                 </view>
-                <!-- <view class="padding-xl">
+                <view class="padding-xl" style="color:#666">
                     当前选择：{{selectedFood.food_name}}
-                </view> -->
+                </view>
                 <view class="cu-bar bg-white">
                     <view class="action margin-0 flex-sub text-green solid-left" @tap="cancelModal=false">取消</view>
                     <view class="action margin-0 flex-sub  solid-left" @tap="cancelSelect">确定</view>
@@ -49,23 +50,22 @@
                     <image :src="'https://ossweb-img.qq.com/images/lol/web201310/skin/big3900'+index+ '.jpg'" mode="aspectFill"></image>
                 </swiper-item>
             </swiper>-->
-            <!--<view class="headerinfo" style="background-image: url('../../static/images/componentBg.png')"></view>-->
             <view class="headerinfo" style="background-image: url('http://liuhaooo.top/tz_food_header/componentBg.png')"></view>
             <!-- map -->
             <tzmap @getData="getData" />
             <!-- 展示 -->
-            <tzfood :foodList="foodList" @select="getData" @selectfood="selectfood" />
+            <tzfood :foodList="foodList" @select="getData" @selectfood="selectfood" :disabled="selectedFood!=null" />
         </view>
         <!--浮动按钮-->
         <drag-button :isDock="true" :existTabBar="true">
             <view class="button-content">
-                <view @click="showMySelect=true">
+                <view @click="showMySelect=true" class="view1">
                     <text class="cuIcon-cart"></text>
                 </view>
                 <view @click="showfriendModal">
                     <text class="cuIcon-friend"></text>
                 </view>
-                <view>
+                <view class="view3">
                     <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="float-button" v-if="selectedFood==null">点餐</button>
                     <button class="float-button" style="background: #f31d28b9;" @click="cancelModal=true" v-else>取消</button>
                 </view>
@@ -273,52 +273,4 @@ export default {
 
 <style>
 @import "./css/index.css";
-
-.button-content {
-    display: flex;
-    flex-direction: column;
-    width: 120rpx;
-    border-radius: 16rpx;
-}
-
-.button-content>view {
-    width: 100%;
-    height: 100rpx;
-    font-size: 50rpx;
-    line-height: 100rpx;
-    background: #f57919b9;
-    color: #ffffff;
-    border: none;
-    outline: none;
-    text-align: center;
-    margin-bottom: 5rpx;
-    margin-top: 5rpx;
-}
-
-.float-button {
-    width: 100%;
-    height: 100rpx;
-    line-height: 100rpx;
-    font-size: 32rpx;
-    background: #f57919b9;
-    color: #ffffff;
-    border: 0;
-    outline: none;
-    text-align: center
-}
-
-.float-button[disabled] {
-    color: #ffffff !important;
-    background: #fca665a1 !important;
-    border: 0 !important;
-    outline: none !important;
-    text-align: center !important;
-}
-
-.headerinfo {
-    background: #ffffff;
-    height: 380rpx;
-    width: 100%;
-    background-size: cover;
-}
 </style>

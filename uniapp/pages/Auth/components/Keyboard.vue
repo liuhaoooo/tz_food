@@ -40,27 +40,16 @@ export default {
     },
     methods: {
         del() {
-            if (this.xz > 0) {
-                let arr1 = this.arr
-                arr1[this.xz - 1] = ""
-                this.arr = arr1
-                this.xz--;
-            }
+            this.arr.pop()
             uni.vibrateShort();
         },
         numshuzi(num) {
-            if (this.arr.length <= 6) {
-                let arr1 = this.arr
-                arr1[this.xz] = num
-                this.arr = arr1
+            if (this.arr.length < 6) {
                 uni.vibrateShort();
-                this.xz++
-                if (this.xz == 6) {
-                    let str = ""
-                    for (let item of this.arr) {
-                        str += item
-                    }
-                    this.$emit('closeChange', str)
+                this.arr.push(num)
+                if (this.arr.length == 6) {
+                    this.$emit('closeChange', this.arr.join(''))
+                    this.arr = []
                 }
             }
         },

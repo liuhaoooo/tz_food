@@ -10,7 +10,7 @@
             <view v-if="!loading">
                 <view class="cu-list menu-avatar" v-show="foodList.length!=0">
                     <radio-group @change="RadioChange" style="width: 100%">
-                        <radio class="my-flex my-margin" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index">
+                        <radio class="my-flex my-margin" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index" :disabled="disabled">
                             <view style="height: 180rpx" class="my-flex">
                                 <view v-if="imgNameArr[index]!=undefined" class="cu-avatar xl margin-left" :style="'background-image:url(http://liuhaooo.top/tz_food_header/defaultFood_'+imgNameArr[index]+'.png)'"></view>
                                 <view class="content margin-left">
@@ -42,6 +42,7 @@ export default {
     data() {
         return {
             TabCur: 0,
+            radio: 0
         }
     },
     computed: {
@@ -59,6 +60,10 @@ export default {
         foodList: {
             type: Array,
             default: []
+        },
+        disabled: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -69,6 +74,7 @@ export default {
             this.$emit("select", item.bus_id)
         },
         RadioChange(e) {
+            console.log(e.value)
             this.$emit('selectfood', e.detail.value)
         },
     },
