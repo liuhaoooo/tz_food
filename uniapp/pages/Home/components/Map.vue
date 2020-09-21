@@ -59,9 +59,9 @@ export default {
         this.getAuth();
     },
     methods: {
-        ...mapActions(["get_buslist"]),
+        ...mapActions(["get_buslist", "loading_show"]),
         getAuth() {
-            this.$store.commit('SET_LOADING', true)
+            this.loading_show(true)
             uni.authorize({
                 scope: "scope.userLocation",
                 success: () => {

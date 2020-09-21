@@ -16,7 +16,7 @@
             <view></view>
             <view @tap="numshuzi(0)">0</view>
             <view @tap="del">
-                <uni-icons type="arrowthinleft"></uni-icons>
+                <text class="cuIcon-close"></text>
             </view>
         </view>
     </view>
@@ -24,11 +24,7 @@
 </template>
 
 <script>
-import uniIcons from "@/components/uni-icons/uni-icons.vue"
 export default {
-    components: {
-        uniIcons
-    },
     data() {
         return {
             wc: "background-color:rgba(0, 0, 0, .0)",
@@ -53,19 +49,20 @@ export default {
             uni.vibrateShort();
         },
         numshuzi(num) {
-            let arr1 = this.arr
-            arr1[this.xz] = num
-            this.arr = arr1
-            uni.vibrateShort();
-            this.xz++
-            if (this.xz == 6) {
-                let str = ""
-                for (let item of this.arr) {
-                    str += item
+            if (this.arr.length <= 6) {
+                let arr1 = this.arr
+                arr1[this.xz] = num
+                this.arr = arr1
+                uni.vibrateShort();
+                this.xz++
+                if (this.xz == 6) {
+                    let str = ""
+                    for (let item of this.arr) {
+                        str += item
+                    }
+                    this.$emit('closeChange', str)
                 }
-                this.$emit('closeChange', str)
             }
-
         },
         open() {
             this.flag = true;

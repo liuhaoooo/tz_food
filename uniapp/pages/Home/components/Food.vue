@@ -12,7 +12,7 @@
                     <radio-group @change="RadioChange" style="width: 100%">
                         <radio class="my-flex my-margin" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index">
                             <view style="height: 180rpx" class="my-flex">
-                                <view class="cu-avatar xl margin-left" :style="`background-image:url(http://liuhaooo.top/tz_food_header/defaultFood_${index+1}.png)`"></view>
+                                <view v-if="imgNameArr[index]!=undefined" class="cu-avatar xl margin-left" :style="'background-image:url(http://liuhaooo.top/tz_food_header/defaultFood_'+imgNameArr[index]+'.png)'"></view>
                                 <view class="content margin-left">
                                     <view class="text-grey">{{item.food_name}}</view>
                                 </view>
@@ -22,7 +22,7 @@
                 </view>
                 <xw-empty :isShow="foodList.length==0" text="暂无数据" textColor="#777777" />
             </view>
-            <image src="../../../static/images/loading-white.gif" mode="aspectFit" class="gif-white response" style="height:340upx" v-else></image>
+            <image src="../../../static/images/loading-white.gif" mode="aspectFit" class="gif-white response" style="height:340upx" v-else />
         </scroll-view>
     </view>
 </scroll-view>
@@ -46,7 +46,14 @@ export default {
     },
     computed: {
         ...mapState(['loading']),
-        ...mapGetters(["subInfo"])
+        ...mapGetters(["subInfo"]),
+        imgNameArr() {
+            let newArr = []
+            for (let i in this.foodList) {
+                this.foodList[i] && newArr.push(Math.floor(Math.random() * 7))
+            }
+            return newArr
+        }
     },
     props: {
         foodList: {
@@ -55,8 +62,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions(["loading_show"]),
         tabSelect(item, index) {
-            this.$store.commit('SET_LOADING', true)
+            this.loading_show(true)
             this.TabCur = index;
             this.$emit("select", item.bus_id)
         },

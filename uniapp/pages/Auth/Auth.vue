@@ -23,8 +23,7 @@ export default {
     },
     data() {
         return {
-            loadProgress: 0,
-            loadModal: false,
+            loadProgress: 0
         };
     },
     onLoad() {
@@ -32,23 +31,24 @@ export default {
             this.$refs.numberPad.open();
         }, 50);
     },
+    computed: {
+        ...mapState(['loadModal'])
+    },
     methods: {
-        ...mapActions(["check_code"]),
+        ...mapActions(["check_code", "loadModal_show"]),
         open() {
             this.$refs.numberPad.open()
         },
         closeChange(code) {
-            this.loadModal = true;
+            this.loadModal_show(true)
             this.check_code({
                 code
             }).then(() => {
-                this.loadModal = false;
                 this.$refs.numberPad.close()
                 uni.reLaunch({
                     url: "/pages/Home/Home"
                 });
             }).catch(() => {
-                this.loadModal = false;
                 uni.showToast({
                     title: "验证码错误",
                     icon: "none",

@@ -1,6 +1,10 @@
 <template>
 <view class="bg-gradual-blue">
     <scroll-view scroll-y class="DrawerPage" :class="isShowModal?'show':''">
+        <!-- 加载动画 -->
+        <view class="cu-load load-modal" v-if="loadModal">
+            <view class="gray-text">请求中...</view>
+        </view>
         <!-- 侧边抽屉（商家选择）-->
         <view class="cu-modal bottom-modal" :class="showMySelect?'show':''" @tap="showMySelect=false">
             <my-select ref="mySelect" :selectedFood="selectedFood" />
@@ -19,6 +23,21 @@
                 <view class="cu-bar bg-white">
                     <view class="action margin-0 flex-sub  solid-left" @tap="showEnterName=false">取消</view>
                     <view class="action margin-0 flex-sub  solid-left" @tap="setUser">提交</view>
+                </view>
+            </view>
+        </view>
+        <!--取消对话框-->
+        <view class="cu-modal" :class="cancelModal?'show':''">
+            <view class="cu-dialog">
+                <view class="cu-bar bg-white justify-end">
+                    <view class="content">确定取消吗</view>
+                </view>
+                <!-- <view class="padding-xl">
+                    当前选择：{{selectedFood.food_name}}
+                </view> -->
+                <view class="cu-bar bg-white">
+                    <view class="action margin-0 flex-sub text-green solid-left" @tap="cancelModal=false">取消</view>
+                    <view class="action margin-0 flex-sub  solid-left" @tap="cancelSelect">确定</view>
                 </view>
             </view>
         </view>
@@ -48,7 +67,7 @@
                 </view>
                 <view>
                     <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" :disabled="!food_id" class="float-button" v-if="selectedFood==null">点餐</button>
-                    <button class="float-button" style="background: #f31d28b9;" @click="cancelSelect" v-else>取消</button>
+                    <button class="float-button" style="background: #f31d28b9;" @click="cancelModal=true" v-else>取消</button>
                 </view>
             </view>
         </drag-button>
@@ -91,7 +110,8 @@ export default {
             isShowModal: false, //其他人
             showMySelect: false, //自己
             showEnterName: false, //输姓名
-            mainCur: 0,
+            cancelModal: false, //取消对话框
+
             foodList: [''],
             selectedFood: {},
 
@@ -102,7 +122,8 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["openid", "location", "userData"])
+        ...mapGetters(["openid", "location", "userData"]),
+        ...mapState(['loadModal'])
     },
     onLoad() {
         this.getSelectedFood()
@@ -114,7 +135,8 @@ export default {
             "get_foodlist",
             "get_select_food",
             "select_food",
-            "cancel_select"
+            "cancel_select",
+            "loadModal_show"
         ]),
         showfriendModal() {
             this.isShowModal = true
@@ -193,6 +215,7 @@ export default {
                 return;
             }
             this.showEnterName = false
+            this.loadModal_show(true)
             let data = {
                 username: this.userName,
                 department: this.department,
@@ -205,7 +228,7 @@ export default {
         },
         //提交数据
         submit() {
-            this.Loading = true;
+            this.loadModal_show(true)
             let data = {
                 foodid: this.food_id,
                 openid: this.openid,
@@ -229,6 +252,8 @@ export default {
          * 取消菜单
          */
         cancelSelect() {
+            this.cancelModal = false
+            this.loadModal_show(true)
             this.cancel_select({
                     id: this.selectedFood.id
                 })
@@ -273,6 +298,7 @@ export default {
 .float-button {
     width: 100%;
     height: 100rpx;
+    line-height: 100rpx;
     font-size: 32rpx;
     background: #f57919b9;
     color: #ffffff;

@@ -16,7 +16,8 @@ const store = new Vuex.Store({
 		device_info: {},
 		location: "",
 		loading: true,
-		subInfo:{}
+		loadModal: false,
+		subInfo: {}
 	},
 	getters: {
 		device_info(state) {
@@ -34,13 +35,16 @@ const store = new Vuex.Store({
 		userData(state) {
 			return state.userData
 		},
-		subInfo(state){
+		subInfo(state) {
 			return state.subInfo
 		}
 	},
 	mutations: {
 		SET_LOADING(state, data) {
 			state.loading = data
+		},
+		SET_LOADMODAL(state, data) {
+			state.loadModal = data
 		},
 		SET_LOCATION(state, data) {
 			state.location = data
@@ -60,11 +64,17 @@ const store = new Vuex.Store({
 		USER_DATA(state, data) {
 			state.userData = data
 		},
-		SET_SUBINFO(state, data){
+		SET_SUBINFO(state, data) {
 			state.subInfo = data
 		}
 	},
 	actions: {
+		loading_show(state, data) {
+			state.commit('SET_LOADING', data)
+		},
+		loadModal_show(state, data) {
+			state.commit('SET_LOADMODAL', data)
+		},
 		//进入小程序验证
 		check_code(state, data) {
 			return new Promise((resolve, reject) => {
@@ -73,12 +83,16 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					state.commit('SET_LOADMODAL', false)
 					if (res.data) {
 						resolve()
 					} else {
 						reject()
 					}
-				}).catch(err => reject(err))
+				}).catch(err => {
+					state.commit('SET_LOADMODAL', false)
+					reject(err)
+				})
 			})
 		},
 		//获取手机信息
@@ -132,7 +146,10 @@ const store = new Vuex.Store({
 					method: 'GET',
 				}).then(res => {
 					resolve(res)
-				}).catch(err => reject(err))
+				}).catch(err => {
+					state.commit('SET_LOADMODAL', false)
+					reject(err)
+				})
 			})
 		},
 		//获取商家
@@ -172,6 +189,7 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					state.commit('SET_LOADMODAL', false)
 					if (res.code == -2) {
 						uni.showToast({
 							title: "你已经点过餐了",
@@ -189,7 +207,10 @@ const store = new Vuex.Store({
 						reject()
 					}
 					resolve(res.data)
-				}).catch(err => reject(err))
+				}).catch(err => {
+					state.commit('SET_LOADMODAL', false)
+					reject(err)
+				})
 			})
 		},
 		//获取已选择菜单列表
@@ -212,6 +233,7 @@ const store = new Vuex.Store({
 					data,
 					method: 'GET',
 				}).then(res => {
+					state.commit('SET_LOADMODAL', false)
 					if (res.code == -3) {
 						uni.showToast({
 							title: "非点餐时间不能取消",
@@ -221,7 +243,10 @@ const store = new Vuex.Store({
 						reject()
 					}
 					res.code == 0 && resolve(res)
-				}).catch(err => reject(err))
+				}).catch(err => {
+					state.commit('SET_LOADMODAL', false)
+					reject(err)
+				})
 			})
 		}
 	}
