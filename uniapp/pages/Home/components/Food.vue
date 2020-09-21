@@ -12,7 +12,7 @@
                     <radio-group @change="RadioChange" style="width: 100%">
                         <radio class="my-flex my-margin" :checked="radio==index" :value="item.food_id" v-for="(item,index) in foodList" :key="index" :disabled="disabled">
                             <view style="height: 180rpx" class="my-flex">
-                                <view v-if="imgNameArr[index]!=undefined" class="cu-avatar xl margin-left" :style="'background-image:url(http://liuhaooo.top/tz_food_header/defaultFood_'+imgNameArr[index]+'.png)'"></view>
+                                <view v-if="imgNameArr[index]!=undefined" class="cu-avatar xl margin-left" :style="'background-image:url(https://tzeat.cwmpd.com:8443/img/default_food_'+imgNameArr[index]+'.png)'"></view>
                                 <view class="content margin-left">
                                     <view class="text-grey">{{item.food_name}}</view>
                                 </view>
@@ -41,8 +41,7 @@ export default {
     },
     data() {
         return {
-            TabCur: 0,
-            radio: 0
+            TabCur: 0
         }
     },
     computed: {
@@ -74,7 +73,6 @@ export default {
             this.$emit("select", item.bus_id)
         },
         RadioChange(e) {
-            console.log(e.value)
             this.$emit('selectfood', e.detail.value)
         },
     },

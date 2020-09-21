@@ -50,7 +50,7 @@
                     <image :src="'https://ossweb-img.qq.com/images/lol/web201310/skin/big3900'+index+ '.jpg'" mode="aspectFill"></image>
                 </swiper-item>
             </swiper>-->
-            <view class="headerinfo" style="background-image: url('http://liuhaooo.top/tz_food_header/componentBg.png')"></view>
+            <view class="headerinfo" style="background-image: url('https://tzeat.cwmpd.com:8443/img/componentbg.png')"></view>
             <!-- map -->
             <tzmap @getData="getData" />
             <!-- 展示 -->
