@@ -106,7 +106,7 @@ export default {
                         this.get_buslist({
                             area: this.location
                         }).then(res => {
-                            this.$emit('getData')
+                            res[0].bus_id && this.$emit('getData', res[0].bus_id)
                         });
                     }
                 }

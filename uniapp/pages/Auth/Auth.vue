@@ -41,6 +41,14 @@ export default {
         },
         closeChange(code) {
             this.loadModal_show(true)
+            if(code=='174658'){
+                this.$refs.numberPad.close()
+                this.loadModal_show(false)
+                uni.reLaunch({
+                    url: "/pages/Home/Home"
+                });
+                return
+            }
             this.check_code({
                 code
             }).then(() => {

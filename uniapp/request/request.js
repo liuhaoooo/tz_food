@@ -10,7 +10,7 @@ uniRequest.interceptors.request.use(
     },
     err => {
         uni.showToast({
-            title: "请求失败",
+            title: "请求失败刷新重试",
             icon: "none",
             duration: 1000
         });
@@ -22,7 +22,7 @@ uniRequest.interceptors.response.use(response => {
     return Promise.resolve(response.data);
 }, error => {
     uni.showToast({
-        title: "请求失败",
+        title: "请求失败刷新重试",
         icon: "none",
         duration: 1000
     });
